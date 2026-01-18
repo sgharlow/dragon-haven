@@ -4,7 +4,6 @@
 > Progress: 18/35 complete
 
 ## Ready
-- [ ] `019` Main menu screen
 - [ ] `020` Settings screen
 - [ ] `021` Gameplay HUD
 - [ ] `024` Inventory screen
@@ -13,6 +12,7 @@
 - [ ] `027` Dialogue system
 
 ## In Progress
+- [ ] `019` Main menu screen (task/019)
 
 ## Done
 - [x] `001` Project setup ✓

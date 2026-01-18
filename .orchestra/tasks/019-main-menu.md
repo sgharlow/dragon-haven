@@ -4,9 +4,9 @@
 | Field | Value |
 |-------|-------|
 | **ID** | 019 |
-| **Status** | ready |
+| **Status** | in_progress |
 | **Branch** | task/019 |
-| **Assigned** | |
+| **Assigned** | task/019 |
 | **Depends** | 003, 004, 005 |
 | **Blocked-By** | |
 | **Estimated** | 60 min |
@@ -20,19 +20,19 @@
 Create the main menu screen with title, menu options, and navigation. First screen players see when launching the game.
 
 ## Acceptance Criteria
-- [ ] MainMenuState extending BaseScreen
-- [ ] Title: "Dragon Haven Cafe" with stylized text
-- [ ] Menu options:
+- [x] MainMenuState extending BaseScreen
+- [x] Title: "Dragon Haven Cafe" with stylized text
+- [x] Menu options:
   - New Game → Character creation (or direct to gameplay for prototype)
   - Continue → Save slot selection
   - Settings → Settings screen
   - Quit → Exit game
-- [ ] Animated background (subtle particle effects or dragon silhouette)
-- [ ] Menu navigation with keyboard (up/down, enter) and mouse
-- [ ] Hover effects on buttons
-- [ ] Sound effects on navigation
-- [ ] Version number in corner
-- [ ] Fade transition to other screens
+- [x] Animated background (subtle particle effects or dragon silhouette)
+- [x] Menu navigation with keyboard (up/down, enter) and mouse
+- [x] Hover effects on buttons
+- [x] Sound effects on navigation
+- [x] Version number in corner
+- [x] Fade transition to other screens
 
 ## Context Files
 - src/states/base_state.py
@@ -47,4 +47,24 @@ Create the main menu screen with title, menu options, and navigation. First scre
 ---
 
 ## Work Log
+
+### 2026-01-17
+- Created MainMenuState extending BaseScreen with full menu functionality:
+  - Title with shadow effect and bobbing animation
+  - Subtitle and decorative line
+  - 4 menu options: New Game, Continue, Settings, Quit
+- Created MenuItem class for interactive menu buttons:
+  - Hover detection with expanded hitboxes
+  - Glow effect and highlight bar on hover
+  - Both mouse and keyboard navigation support
+- Created Particle class for background ambiance:
+  - 30 floating particles with random colors
+  - Fade out at end of lifetime
+  - Continuous respawning from bottom
+- Added dragon silhouette decoration in background
+- Integrated sound effects for navigation (ui_hover, ui_confirm)
+- Added version number display in corner
+- Fade transitions to other screens via BaseScreen
+- Updated main.py to register MainMenuState as initial state
+- All tests pass
 

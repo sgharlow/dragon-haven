@@ -6,6 +6,7 @@ A dragon-raising cafe management simulation game.
 from game import Game
 from state_manager import StateManager
 from states.test_state import TestState
+from states.main_menu_state import MainMenuState
 
 
 def main():
@@ -18,11 +19,13 @@ def main():
     game.register_state_manager(state_manager)
 
     # Register states
-    # TODO: Replace test state with real game states as they're implemented
+    game.register_state("main_menu", MainMenuState(game))
     game.register_state("test", TestState(game))
+    game.register_state("gameplay", TestState(game))  # Placeholder until gameplay state exists
+    game.register_state("settings", TestState(game))  # Placeholder until settings state exists
 
-    # Set initial state
-    game.set_initial_state("test")
+    # Set initial state to main menu
+    game.set_initial_state("main_menu")
 
     # Run the game loop
     game.run()
