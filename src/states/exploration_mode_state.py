@@ -600,15 +600,15 @@ class ExplorationModeState(BaseScreen):
     def _update_hud(self):
         """Update HUD data."""
         # Player info
-        gold = self.inventory.get_gold()
+        gold = self.inventory.gold
         zone = self.world.get_current_zone()
         location = zone.name if zone else "Unknown"
         self.hud.set_player_info(gold, location)
 
         # Time info
-        time_str = self.time_mgr.get_time_string()
-        day = self.time_mgr.get_day()
-        season = self.time_mgr.get_season()
+        time_str = self.time_mgr.get_formatted_time()
+        day = self.time_mgr.get_current_day()
+        season = self.time_mgr.get_current_season()
         weather = self.world.get_weather()
         self.hud.set_time_info(time_str, day, season, weather)
 
