@@ -1,15 +1,15 @@
 # Tasks
 
 > Last updated: 2026-01-18
-> Progress: 31/35 complete
+> Progress: 32/35 complete
 
 ## Ready
-- [ ] `032` Balance tuning
 - [ ] `033` Save/load full implementation
 
 ## In Progress
 
 ## Done
+- [x] `032` Balance tuning ✓
 - [x] `031` Screen integration ✓
 - [x] `030` Story content ✓
 - [x] `029` Character relationships ✓
@@ -43,5 +43,5 @@
 - [x] `019` Main menu screen ✓
 
 ## Blocked
-- [ ] `034` Final polish (depends: 032, 033)
+- [ ] `034` Final polish (depends: 033)
 - [ ] `035` Documentation (depends: 034)

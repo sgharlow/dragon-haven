@@ -93,12 +93,14 @@ TIME_AFTERNOON_START = 12  # 12:00 PM
 TIME_EVENING_START = 18   # 6:00 PM
 TIME_NIGHT_START = 0      # 12:00 AM (wraps around)
 
-# Day length: 24 in-game hours = 24 real minutes (1 minute per hour)
-REAL_SECONDS_PER_GAME_HOUR = 60.0  # 1 real minute = 1 game hour
+# Day length: 24 in-game hours = 12 real minutes (30 sec per hour)
+# BALANCE: Faster time allows meaningful progression in 15-30 min session
+# At 30 sec/hour: 1 service period (4 hours) = 2 real minutes
+REAL_SECONDS_PER_GAME_HOUR = 30.0  # 30 real seconds = 1 game hour
 GAME_HOURS_PER_DAY = 24
 
 # Seasons (simplified)
-DAYS_PER_SEASON = 10
+DAYS_PER_SEASON = 7  # BALANCE: Shorter seasons for variety
 SEASONS = ['spring', 'summer']
 
 # Cafe operating hours
@@ -234,9 +236,11 @@ CUSTOMER_STATE_EATING = 'eating'         # Eating food
 CUSTOMER_STATE_LEAVING = 'leaving'       # About to leave
 
 # Patience settings (game hours)
-CUSTOMER_PATIENCE_BASE = 1.5             # Base patience (90 min real time equiv)
-CUSTOMER_PATIENCE_VARIATION = 0.5        # +/- 30 min variation
-CUSTOMER_EATING_TIME = 0.5               # Time spent eating
+# BALANCE: With 30 sec/hour, 2 game hours = 60 real seconds
+# Customers should feel urgent but not frustrating
+CUSTOMER_PATIENCE_BASE = 2.0             # Base patience = 60 real seconds
+CUSTOMER_PATIENCE_VARIATION = 0.5        # +/- 15 real seconds
+CUSTOMER_EATING_TIME = 0.5               # 15 real seconds eating
 
 # Spawn rates (customers per hour at different reputation levels)
 CUSTOMER_SPAWN_BASE = 2.0                # 2 per hour base
@@ -278,32 +282,37 @@ DRAGON_STAGE_HATCHLING = 'hatchling'
 DRAGON_STAGE_JUVENILE = 'juvenile'
 
 # Stage progression (days alive)
-DRAGON_EGG_DAYS = 3        # Days 1-3: Egg
-DRAGON_HATCHLING_DAYS = 7  # Days 4-10: Hatchling (HATCHLING_END = EGG + HATCHLING)
-# Days 11+: Juvenile
+# BALANCE: Faster growth for shorter play sessions (15-30 min target)
+# At 12 real min/day: Egg hatches in 12 min, Juvenile at 36 min
+DRAGON_EGG_DAYS = 1        # Day 1: Egg (hatches quickly!)
+DRAGON_HATCHLING_DAYS = 3  # Days 2-4: Hatchling
+# Days 5+: Juvenile
 
 # Stat ranges
 DRAGON_STAT_MAX = 100.0
-DRAGON_BOND_MAX = 1000
+DRAGON_BOND_MAX = 500  # BALANCE: Lower max for achievable progression
 
 # Stat decay rates (per game hour)
-DRAGON_HUNGER_DECAY = 2.0    # Loses 2 hunger per hour
-DRAGON_HAPPINESS_DECAY = 0.5  # Loses 0.5 happiness per hour
-DRAGON_STAMINA_REGEN = 5.0    # Gains 5 stamina per hour (when resting)
+# BALANCE: With 30 sec/hour, decay is 2x faster in real-time
+# Hunger: 3/hour = full hunger depletes in ~33 hours (16 min real)
+# Happiness: 1/hour = full happiness depletes in 100 hours (50 min real)
+DRAGON_HUNGER_DECAY = 3.0    # Loses 3 hunger per hour - needs regular feeding
+DRAGON_HAPPINESS_DECAY = 1.0  # Loses 1 happiness per hour - needs attention
+DRAGON_STAMINA_REGEN = 8.0    # Gains 8 stamina per hour (when resting)
 
 # Stat thresholds
-DRAGON_HUNGER_WARNING = 30.0
-DRAGON_HAPPINESS_WARNING = 30.0
-DRAGON_STAMINA_LOW = 20.0
+DRAGON_HUNGER_WARNING = 40.0  # BALANCE: Earlier warning
+DRAGON_HAPPINESS_WARNING = 40.0
+DRAGON_STAMINA_LOW = 25.0
 
-# Feeding effects
-DRAGON_FEED_HUNGER_RESTORE = 30.0
-DRAGON_FEED_HAPPINESS_BONUS = 10.0
-DRAGON_FEED_BOND_BONUS = 5
+# Feeding effects - generous to feel rewarding
+DRAGON_FEED_HUNGER_RESTORE = 35.0
+DRAGON_FEED_HAPPINESS_BONUS = 12.0
+DRAGON_FEED_BOND_BONUS = 8
 
 # Petting effects
-DRAGON_PET_HAPPINESS = 15.0
-DRAGON_PET_BOND = 3
+DRAGON_PET_HAPPINESS = 18.0  # BALANCE: More rewarding
+DRAGON_PET_BOND = 5
 
 # Color shift rate (how fast color changes from food)
 DRAGON_COLOR_SHIFT_RATE = 0.05
@@ -350,8 +359,8 @@ INVENTORY_FRIDGE_SLOTS = 30
 ITEM_DEFAULT_STACK_SIZE = 10
 ITEM_DEFAULT_SPOIL_DAYS = 3  # Days until item spoils (0 = never)
 
-# Starting gold
-STARTING_GOLD = 100
+# Starting gold - enough to get started without feeling poor
+STARTING_GOLD = 150
 
 # =============================================================================
 # WORLD/ZONE SYSTEM
@@ -831,10 +840,11 @@ COOKING_LANE_KEYS = ['a', 's', 'd', 'f']  # Keyboard keys for lanes
 COOKING_LANE_KEYS_ALT = ['left', 'down', 'up', 'right']  # Arrow keys
 
 # Timing windows (milliseconds)
-TIMING_PERFECT = 50     # ±50ms for PERFECT
-TIMING_GOOD = 100       # ±100ms for GOOD
-TIMING_OK = 150         # ±150ms for OK
-# Beyond ±150ms = MISS
+# BALANCE: Generous windows for casual enjoyment, skill rewarded at PERFECT
+TIMING_PERFECT = 75     # ±75ms for PERFECT (tight but achievable)
+TIMING_GOOD = 125       # ±125ms for GOOD (comfortable)
+TIMING_OK = 180         # ±180ms for OK (forgiving)
+# Beyond ±180ms = MISS
 
 # Timing grades
 GRADE_PERFECT = 'perfect'
@@ -842,57 +852,63 @@ GRADE_GOOD = 'good'
 GRADE_OK = 'ok'
 GRADE_MISS = 'miss'
 
-# Scoring
+# Scoring - OK gives meaningful points, PERFECT highly rewarded
 SCORE_PERFECT = 100
-SCORE_GOOD = 70
-SCORE_OK = 30
+SCORE_GOOD = 65
+SCORE_OK = 35
 SCORE_MISS = 0
 
-# Combo multipliers
+# Combo multipliers - achievable thresholds
 COMBO_MULTIPLIER_THRESHOLDS = {
-    5: 1.2,    # 5+ combo = 1.2x
-    10: 1.5,   # 10+ combo = 1.5x
-    20: 2.0,   # 20+ combo = 2.0x
-    30: 2.5,   # 30+ combo = 2.5x
+    3: 1.1,    # 3+ combo = 1.1x (early reward)
+    7: 1.3,    # 7+ combo = 1.3x
+    12: 1.6,   # 12+ combo = 1.6x
+    20: 2.0,   # 20+ combo = 2.0x (skilled players)
 }
 
 # Note speed (pixels per second)
-COOKING_NOTE_SPEED = 300
-COOKING_NOTE_SPEED_EASY = 200  # Easy mode
+# BALANCE: Slower notes = more readable, less frantic
+COOKING_NOTE_SPEED = 250
+COOKING_NOTE_SPEED_EASY = 180  # Easy mode - very readable
 
 # Note dimensions
-COOKING_NOTE_WIDTH = 60
-COOKING_NOTE_HEIGHT = 20
-COOKING_HIT_LINE_Y = 600  # Y position of hit line
+COOKING_NOTE_WIDTH = 64  # Slightly wider for easier hits
+COOKING_NOTE_HEIGHT = 22
+COOKING_HIT_LINE_Y = 580  # Y position of hit line
 
 # Game duration based on difficulty (seconds)
-COOKING_DURATION_BASE = 15  # Base duration
-COOKING_DURATION_PER_DIFFICULTY = 3  # +3 seconds per difficulty level
+# BALANCE: Keep minigames short and snappy
+COOKING_DURATION_BASE = 12  # 12 second base
+COOKING_DURATION_PER_DIFFICULTY = 2  # +2 seconds per difficulty level
 
 # Notes per second based on difficulty
-COOKING_NOTES_PER_SECOND_BASE = 1.5
-COOKING_NOTES_PER_SECOND_PER_DIFFICULTY = 0.3
+# BALANCE: Lower density = more forgiving
+COOKING_NOTES_PER_SECOND_BASE = 1.2
+COOKING_NOTES_PER_SECOND_PER_DIFFICULTY = 0.25
 
 # Quality score thresholds (percentage of max possible score)
+# BALANCE: More forgiving thresholds for casual players
 QUALITY_SCORE_THRESHOLDS = {
-    1: 0.0,    # 0-39% = 1 star
-    2: 0.4,    # 40-59% = 2 stars
-    3: 0.6,    # 60-74% = 3 stars
-    4: 0.75,   # 75-89% = 4 stars
-    5: 0.9,    # 90%+ = 5 stars
+    1: 0.0,    # 0-29% = 1 star (really bad)
+    2: 0.3,    # 30-49% = 2 stars (struggling)
+    3: 0.5,    # 50-69% = 3 stars (decent - most players land here)
+    4: 0.7,    # 70-84% = 4 stars (good!)
+    5: 0.85,   # 85%+ = 5 stars (excellent)
 }
 
 # Ingredient quality bonus (multiplier to final score)
+# BALANCE: Quality matters but doesn't punish harshly
 INGREDIENT_QUALITY_BONUS = {
-    1: 0.8,   # Poor ingredients = -20%
-    2: 0.9,   # Below average = -10%
+    1: 0.85,  # Poor ingredients = -15%
+    2: 0.92,  # Below average = -8%
     3: 1.0,   # Average = no bonus
-    4: 1.1,   # Good = +10%
-    5: 1.2,   # Excellent = +20%
+    4: 1.08,  # Good = +8%
+    5: 1.15,  # Excellent = +15%
 }
 
 # Easy mode multiplier for timing windows
-EASY_MODE_TIMING_MULTIPLIER = 1.5  # 50% wider timing windows
+# BALANCE: Easy mode is significantly easier - 75% wider windows
+EASY_MODE_TIMING_MULTIPLIER = 1.75
 
 # Visual settings
 COOKING_LANE_WIDTH = 80
