@@ -292,9 +292,24 @@ class ExplorationModeState(BaseScreen):
             return
 
         if event.type == pygame.KEYDOWN:
-            # Escape to exit to menu
+            # Escape to open pause menu
             if event.key == pygame.K_ESCAPE:
-                self.fade_to_state('main_menu')
+                self.transition_to('pause_menu')
+                return
+
+            # I to open inventory
+            if event.key == pygame.K_i:
+                self.transition_to('inventory')
+                return
+
+            # R to open recipe book
+            if event.key == pygame.K_r:
+                self.transition_to('recipe_book')
+                return
+
+            # D to open dragon status
+            if event.key == pygame.K_d:
+                self.transition_to('dragon_status')
                 return
 
             # P to pet dragon
@@ -305,7 +320,7 @@ class ExplorationModeState(BaseScreen):
             # C to open cafe (if in cafe grounds)
             if event.key == pygame.K_c:
                 if self.world.get_current_zone_id() == ZONE_CAFE_GROUNDS:
-                    self.fade_to_state('cafe_mode')
+                    self.fade_to_state('cafe')
                     return
 
     def update(self, dt: float) -> bool:

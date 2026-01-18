@@ -177,8 +177,24 @@ class CafeModeState(BaseScreen):
             return
 
         if event.type == pygame.KEYDOWN:
+            # Escape to open pause menu
             if event.key == pygame.K_ESCAPE:
-                self.fade_to_state('main_menu')
+                self.transition_to('pause_menu')
+                return
+
+            # I to open inventory
+            if event.key == pygame.K_i:
+                self.transition_to('inventory')
+                return
+
+            # R to open recipe book
+            if event.key == pygame.K_r:
+                self.transition_to('recipe_book')
+                return
+
+            # D to open dragon status
+            if event.key == pygame.K_d:
+                self.transition_to('dragon_status')
                 return
 
         elif event.type == pygame.MOUSEBUTTONDOWN:
