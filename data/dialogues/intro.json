@@ -1,0 +1,71 @@
+{
+  "id": "intro",
+  "name": "Introduction",
+  "start_id": "start",
+  "nodes": {
+    "start": {
+      "speaker": "???",
+      "portrait": "dragon",
+      "text": "Crack... crack... The egg begins to move! Something is stirring inside...",
+      "next_id": "hatch"
+    },
+    "hatch": {
+      "speaker": "Baby Dragon",
+      "portrait": "dragon",
+      "text": "Chirp! A tiny dragon head pokes through the shell, blinking at you curiously.",
+      "set_flags": ["dragon_hatched"],
+      "next_id": "name_prompt"
+    },
+    "name_prompt": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The little dragon seems to be waiting for something. Perhaps you should give it a name?",
+      "trigger_event": "open_name_dragon",
+      "next_id": "after_name"
+    },
+    "after_name": {
+      "speaker": "Baby Dragon",
+      "portrait": "dragon",
+      "text": "The dragon chirps happily at its new name! It seems to understand you already.",
+      "next_id": "tutorial_start"
+    },
+    "tutorial_start": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Welcome to Dragon Haven Cafe! You've inherited this cozy establishment along with a very special companion.",
+      "choices": [
+        {
+          "text": "Tell me more about the cafe",
+          "next_id": "cafe_info"
+        },
+        {
+          "text": "Tell me about my dragon",
+          "next_id": "dragon_info"
+        },
+        {
+          "text": "I'm ready to get started!",
+          "next_id": "end_intro"
+        }
+      ]
+    },
+    "cafe_info": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The cafe serves magical dishes that can influence your dragon's color and abilities. Gather ingredients, cook recipes, and serve customers to build your reputation!",
+      "next_id": "tutorial_start"
+    },
+    "dragon_info": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Your dragon will grow through stages: Egg, Hatchling, and Juvenile. Feed it well, keep it happy, and your bond will strengthen. The food you serve affects its color!",
+      "next_id": "tutorial_start"
+    },
+    "end_intro": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Good luck with your cafe! Remember: a happy dragon makes for a prosperous business.",
+      "set_flags": ["intro_complete"],
+      "trigger_event": "end_intro"
+    }
+  }
+}
