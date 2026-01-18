@@ -1,24 +1,24 @@
 # Tasks
 
 > Last updated: 2026-01-17
-> Progress: 0/35 complete
+> Progress: 1/35 complete
 
 ## Ready
-- [ ] `001` Project setup
+- [ ] `002` Game engine core
+- [ ] `004` Asset generation system
+- [ ] `005` Sound manager
+- [ ] `006` Save system foundation
+- [ ] `009` Inventory system
 
 ## In Progress
 
 ## Done
+- [x] `001` Project setup ✓
 
 ## Blocked
-- [ ] `002` Game engine core (depends: 001)
 - [ ] `003` State machine (depends: 002)
-- [ ] `004` Asset generation system (depends: 001)
-- [ ] `005` Sound manager (depends: 001)
-- [ ] `006` Save system foundation (depends: 001)
 - [ ] `007` Time system (depends: 002)
 - [ ] `008` Dragon system (depends: 004, 007)
-- [ ] `009` Inventory system (depends: 001)
 - [ ] `010` World/zone system (depends: 007, 008)
 - [ ] `011` Resource spawning (depends: 009, 010)
 - [ ] `012` Economy system (depends: 009)
