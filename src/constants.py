@@ -339,6 +339,55 @@ ZONE_SPAWN_POINTS = {
 }
 
 # =============================================================================
+# ECONOMY SYSTEM
+# =============================================================================
+# Quality multipliers for pricing (1-5 stars)
+QUALITY_PRICE_MULTIPLIERS = {
+    1: 0.6,   # Poor quality
+    2: 0.8,   # Below average
+    3: 1.0,   # Average
+    4: 1.25,  # Good
+    5: 1.5,   # Excellent
+}
+
+# Reputation bonus tiers (every 100 reputation points)
+REPUTATION_PRICE_BONUS = 0.05  # +5% per reputation tier
+
+# Tip calculation
+TIP_BASE_PERCENT = 0.10        # 10% base tip
+TIP_SATISFACTION_BONUS = 0.05  # +5% per satisfaction level above 3
+TIP_MAX_PERCENT = 0.30         # 30% max tip
+
+# Upgrade definitions: (name, cost, type, amount)
+UPGRADE_CARRIED_SLOTS = 'upgrade_carried'
+UPGRADE_STORAGE_SLOTS = 'upgrade_storage'
+UPGRADE_FRIDGE_SLOTS = 'upgrade_fridge'
+
+UPGRADES = {
+    UPGRADE_CARRIED_SLOTS: {
+        'name': 'Expand Backpack',
+        'description': 'Carry 5 more items while exploring',
+        'cost': 500,
+        'amount': 5,
+        'max_purchases': 4,  # Can buy up to 4 times (20 + 20 = 40 slots max)
+    },
+    UPGRADE_STORAGE_SLOTS: {
+        'name': 'Expand Storage',
+        'description': 'Store 50 more items in cafe storage',
+        'cost': 1000,
+        'amount': 50,
+        'max_purchases': 4,  # Can buy up to 4 times (100 + 200 = 300 slots max)
+    },
+    UPGRADE_FRIDGE_SLOTS: {
+        'name': 'Expand Fridge',
+        'description': 'Keep 10 more items fresh',
+        'cost': 750,
+        'amount': 10,
+        'max_purchases': 5,  # Can buy up to 5 times (30 + 50 = 80 slots max)
+    },
+}
+
+# =============================================================================
 # GAME VERSION
 # =============================================================================
 VERSION = "0.1.0"
