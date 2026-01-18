@@ -779,6 +779,88 @@ DEFAULT_UNLOCKED_RECIPES = [
 ]
 
 # =============================================================================
+# COOKING MINIGAME
+# =============================================================================
+# Lane configuration (4 lanes)
+COOKING_LANES = 4
+COOKING_LANE_KEYS = ['a', 's', 'd', 'f']  # Keyboard keys for lanes
+COOKING_LANE_KEYS_ALT = ['left', 'down', 'up', 'right']  # Arrow keys
+
+# Timing windows (milliseconds)
+TIMING_PERFECT = 50     # ±50ms for PERFECT
+TIMING_GOOD = 100       # ±100ms for GOOD
+TIMING_OK = 150         # ±150ms for OK
+# Beyond ±150ms = MISS
+
+# Timing grades
+GRADE_PERFECT = 'perfect'
+GRADE_GOOD = 'good'
+GRADE_OK = 'ok'
+GRADE_MISS = 'miss'
+
+# Scoring
+SCORE_PERFECT = 100
+SCORE_GOOD = 70
+SCORE_OK = 30
+SCORE_MISS = 0
+
+# Combo multipliers
+COMBO_MULTIPLIER_THRESHOLDS = {
+    5: 1.2,    # 5+ combo = 1.2x
+    10: 1.5,   # 10+ combo = 1.5x
+    20: 2.0,   # 20+ combo = 2.0x
+    30: 2.5,   # 30+ combo = 2.5x
+}
+
+# Note speed (pixels per second)
+COOKING_NOTE_SPEED = 300
+COOKING_NOTE_SPEED_EASY = 200  # Easy mode
+
+# Note dimensions
+COOKING_NOTE_WIDTH = 60
+COOKING_NOTE_HEIGHT = 20
+COOKING_HIT_LINE_Y = 600  # Y position of hit line
+
+# Game duration based on difficulty (seconds)
+COOKING_DURATION_BASE = 15  # Base duration
+COOKING_DURATION_PER_DIFFICULTY = 3  # +3 seconds per difficulty level
+
+# Notes per second based on difficulty
+COOKING_NOTES_PER_SECOND_BASE = 1.5
+COOKING_NOTES_PER_SECOND_PER_DIFFICULTY = 0.3
+
+# Quality score thresholds (percentage of max possible score)
+QUALITY_SCORE_THRESHOLDS = {
+    1: 0.0,    # 0-39% = 1 star
+    2: 0.4,    # 40-59% = 2 stars
+    3: 0.6,    # 60-74% = 3 stars
+    4: 0.75,   # 75-89% = 4 stars
+    5: 0.9,    # 90%+ = 5 stars
+}
+
+# Ingredient quality bonus (multiplier to final score)
+INGREDIENT_QUALITY_BONUS = {
+    1: 0.8,   # Poor ingredients = -20%
+    2: 0.9,   # Below average = -10%
+    3: 1.0,   # Average = no bonus
+    4: 1.1,   # Good = +10%
+    5: 1.2,   # Excellent = +20%
+}
+
+# Easy mode multiplier for timing windows
+EASY_MODE_TIMING_MULTIPLIER = 1.5  # 50% wider timing windows
+
+# Visual settings
+COOKING_LANE_WIDTH = 80
+COOKING_LANE_SPACING = 10
+COOKING_LANE_COLORS = [
+    (220, 80, 80),    # Red
+    (80, 180, 80),    # Green
+    (80, 120, 220),   # Blue
+    (220, 180, 80),   # Yellow
+]
+
+# =============================================================================
 # GAME VERSION
 # =============================================================================
 VERSION = "0.1.0"

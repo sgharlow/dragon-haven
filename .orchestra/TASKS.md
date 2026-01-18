@@ -4,7 +4,6 @@
 > Progress: 16/35 complete
 
 ## Ready
-- [ ] `017` Cooking minigame
 - [ ] `018` Reputation system
 - [ ] `019` Main menu screen
 - [ ] `020` Settings screen
@@ -15,6 +14,7 @@
 - [ ] `027` Dialogue system
 
 ## In Progress
+- [ ] `017` Cooking minigame (task/017)
 
 ## Done
 - [x] `001` Project setup ✓
