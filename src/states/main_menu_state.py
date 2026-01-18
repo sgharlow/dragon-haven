@@ -218,14 +218,31 @@ class MainMenuState(BaseScreen):
         self.sound.play('ui_confirm')
 
         if action == "new_game":
-            # For prototype, go directly to gameplay
-            # In full game, this would go to character creation
-            self.fade_to_state("gameplay")
+            # Initialize fresh game state
+            from game_state import get_game_state_manager
+            game_state_mgr = get_game_state_manager()
+            game_state_mgr.new_game()
+            self.fade_to_state("exploration")
 
         elif action == "continue":
-            # Go to save slot selection
-            # For prototype, just try to load and go to gameplay
-            self.fade_to_state("gameplay")
+            # Go to save/load screen in load mode
+            # First check if any saves exist
+            from save_manager import get_save_manager
+            save_mgr = get_save_manager()
+            if save_mgr.has_any_saves():
+                # Would transition to load screen, for now go to most recent
+                most_recent = save_mgr.get_most_recent_slot()
+                if most_recent:
+                    from game_state import get_game_state_manager
+                    game_state_mgr = get_game_state_manager()
+                    if game_state_mgr.load_game(most_recent):
+                        self.fade_to_state("exploration")
+                        return
+            # No saves or load failed - start new game instead
+            from game_state import get_game_state_manager
+            game_state_mgr = get_game_state_manager()
+            game_state_mgr.new_game()
+            self.fade_to_state("exploration")
 
         elif action == "settings":
             self.fade_to_state("settings")

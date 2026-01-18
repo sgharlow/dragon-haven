@@ -386,29 +386,22 @@ class SaveLoadState(BaseScreen):
 
     def _save_to_slot(self, slot: int):
         """Save current game to slot."""
-        # TODO: Get current game state from game systems
-        # For now, create placeholder save data
-        save_data = SaveData()
-        save_data.player.name = "Player"
-        save_data.dragon.name = "Ember"
-        save_data.dragon.stage = "hatchling"
-        save_data.world.day_number = 3
-        save_data.cafe.level = 1
+        from game_state import get_game_state_manager
 
-        if self.save_manager.save(slot, save_data):
+        game_state_mgr = get_game_state_manager()
+        if game_state_mgr.save_game(slot):
             self.sound.play('ui_confirm')
             self._refresh_slots()
-            # Show success message (could add a notification)
         else:
             self.sound.play('error')
 
     def _load_from_slot(self, slot: int):
         """Load game from slot."""
-        save_data = self.save_manager.load(slot)
-        if save_data:
+        from game_state import get_game_state_manager
+
+        game_state_mgr = get_game_state_manager()
+        if game_state_mgr.load_game(slot):
             self.sound.play('ui_confirm')
-            # TODO: Apply save data to game systems
-            # For now, just go to exploration
             self.fade_to_state("exploration")
         else:
             self.sound.play('error')

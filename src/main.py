@@ -28,6 +28,7 @@ from systems.recipes import get_recipe_manager
 from systems.dialogue import get_dialogue_manager
 from systems.story import get_story_manager
 from entities.story_character import get_character_manager
+from game_state import get_game_state_manager
 
 
 def initialize_systems():
@@ -64,6 +65,10 @@ def initialize_systems():
     # Initialize character system
     char_mgr = get_character_manager()
     char_mgr.load_characters_from_file('../data/characters/story_characters.json')
+
+    # Initialize game state manager and enable auto-save
+    game_state_mgr = get_game_state_manager()
+    game_state_mgr.enable_autosave()
 
 
 def main():
