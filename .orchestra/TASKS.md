@@ -1,10 +1,9 @@
 # Tasks
 
 > Last updated: 2026-01-17
-> Progress: 2/35 complete
+> Progress: 3/35 complete
 
 ## Ready
-- [ ] `003` State machine
 - [ ] `004` Asset generation system
 - [ ] `005` Sound manager
 - [ ] `006` Save system foundation
@@ -16,6 +15,7 @@
 ## Done
 - [x] `001` Project setup ✓
 - [x] `002` Game engine core ✓
+- [x] `003` State machine ✓
 
 ## Blocked
 - [ ] `008` Dragon system (depends: 004, 007)
