@@ -1,10 +1,9 @@
 # Tasks
 
 > Last updated: 2026-01-17
-> Progress: 19/35 complete
+> Progress: 20/35 complete
 
 ## Ready
-- [ ] `020` Settings screen
 - [ ] `021` Gameplay HUD
 - [ ] `024` Inventory screen
 - [ ] `025` Recipe book screen
@@ -14,6 +13,7 @@
 ## In Progress
 
 ## Done
+- [x] `020` Settings screen ✓
 - [x] `001` Project setup ✓
 - [x] `002` Game engine core ✓
 - [x] `003` State machine ✓

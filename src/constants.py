@@ -905,6 +905,43 @@ COOKING_LANE_COLORS = [
 ]
 
 # =============================================================================
+# SETTINGS SYSTEM
+# =============================================================================
+# Volume settings (0-100)
+DEFAULT_MASTER_VOLUME = 80
+DEFAULT_SFX_VOLUME = 80
+DEFAULT_MUSIC_VOLUME = 60
+
+# Game speed options
+GAME_SPEED_SLOW = 0.75
+GAME_SPEED_NORMAL = 1.0
+GAME_SPEED_FAST = 1.25
+GAME_SPEED_OPTIONS = [GAME_SPEED_SLOW, GAME_SPEED_NORMAL, GAME_SPEED_FAST]
+GAME_SPEED_LABELS = ['Slow (0.75x)', 'Normal (1x)', 'Fast (1.25x)']
+
+# Cooking difficulty options
+COOKING_DIFFICULTY_EASY = 'easy'
+COOKING_DIFFICULTY_NORMAL = 'normal'
+COOKING_DIFFICULTY_OPTIONS = [COOKING_DIFFICULTY_EASY, COOKING_DIFFICULTY_NORMAL]
+COOKING_DIFFICULTY_LABELS = ['Easy', 'Normal']
+
+# Display settings
+DEFAULT_FULLSCREEN = False
+
+# Settings file path
+SETTINGS_FILE = 'settings.json'
+
+# Default settings dict
+DEFAULT_SETTINGS = {
+    'master_volume': DEFAULT_MASTER_VOLUME,
+    'sfx_volume': DEFAULT_SFX_VOLUME,
+    'music_volume': DEFAULT_MUSIC_VOLUME,
+    'game_speed': GAME_SPEED_NORMAL,
+    'cooking_difficulty': COOKING_DIFFICULTY_NORMAL,
+    'fullscreen': DEFAULT_FULLSCREEN,
+}
+
+# =============================================================================
 # GAME VERSION
 # =============================================================================
 VERSION = "0.1.0"

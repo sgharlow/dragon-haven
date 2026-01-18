@@ -1,0 +1,8 @@
+{
+  "master_volume": 80,
+  "sfx_volume": 80,
+  "music_volume": 60,
+  "game_speed": 1.0,
+  "cooking_difficulty": "normal",
+  "fullscreen": false
+}

@@ -7,6 +7,7 @@ from game import Game
 from state_manager import StateManager
 from states.test_state import TestState
 from states.main_menu_state import MainMenuState
+from states.settings_state import SettingsState
 
 
 def main():
@@ -22,7 +23,7 @@ def main():
     game.register_state("main_menu", MainMenuState(game))
     game.register_state("test", TestState(game))
     game.register_state("gameplay", TestState(game))  # Placeholder until gameplay state exists
-    game.register_state("settings", TestState(game))  # Placeholder until settings state exists
+    game.register_state("settings", SettingsState(game))
 
     # Set initial state to main menu
     game.set_initial_state("main_menu")
