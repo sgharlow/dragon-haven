@@ -1,14 +1,14 @@
 # Tasks
 
 > Last updated: 2026-01-17
-> Progress: 3/35 complete
+> Progress: 4/35 complete
 
 ## Ready
-- [ ] `004` Asset generation system
 - [ ] `005` Sound manager
 - [ ] `006` Save system foundation
 - [ ] `007` Time system
 - [ ] `009` Inventory system
+- [ ] `027` Dialogue system
 
 ## In Progress
 
@@ -16,6 +16,7 @@
 - [x] `001` Project setup ✓
 - [x] `002` Game engine core ✓
 - [x] `003` State machine ✓
+- [x] `004` Asset generation system ✓
 
 ## Blocked
 - [ ] `008` Dragon system (depends: 004, 007)
@@ -36,7 +37,6 @@
 - [ ] `024` Inventory screen (depends: 004, 009)
 - [ ] `025` Recipe book screen (depends: 004, 016)
 - [ ] `026` Dragon status screen (depends: 004, 008)
-- [ ] `027` Dialogue system (depends: 003, 004)
 - [ ] `028` Story event system (depends: 007, 013, 027)
 - [ ] `029` Character relationships (depends: 028)
 - [ ] `030` Story content (depends: 028, 029)
