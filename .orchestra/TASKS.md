@@ -1,10 +1,9 @@
 # Tasks
 
 > Last updated: 2026-01-17
-> Progress: 5/35 complete
+> Progress: 6/35 complete
 
 ## Ready
-- [ ] `006` Save system foundation
 - [ ] `007` Time system
 - [ ] `009` Inventory system
 - [ ] `019` Main menu screen
@@ -19,6 +18,7 @@
 - [x] `003` State machine ✓
 - [x] `004` Asset generation system ✓
 - [x] `005` Sound manager ✓
+- [x] `006` Save system foundation ✓
 
 ## Blocked
 - [ ] `008` Dragon system (depends: 004, 007)
