@@ -6,3 +6,5 @@ from ui.hud import HUD, Notification
 from ui.order_bubble import OrderBubble, PatienceMeter
 from ui.table import Table, TableSeat, CustomerSprite, CafeFloor
 from ui.zone_renderer import ZoneRenderer
+from ui.item_slot import ItemSlot, ItemSlotGrid
+from ui.item_tooltip import ItemTooltip, ConfirmDialog
