@@ -1,7 +1,7 @@
 # Tasks
 
 > Last updated: 2026-01-17
-> Progress: 16/35 complete
+> Progress: 17/35 complete
 
 ## Ready
 - [ ] `018` Reputation system
@@ -14,7 +14,6 @@
 - [ ] `027` Dialogue system
 
 ## In Progress
-- [ ] `017` Cooking minigame (task/017)
 
 ## Done
 - [x] `001` Project setup ✓
@@ -33,6 +32,7 @@
 - [x] `014` Staff system ✓
 - [x] `015` Customer system ✓
 - [x] `016` Recipe system ✓
+- [x] `017` Cooking minigame ✓
 
 ## Blocked
 - [ ] `022` Cafe mode UI (depends: 013, 014, 015, 017, 021)
