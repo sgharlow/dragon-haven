@@ -1,10 +1,11 @@
 # Tasks
 
 > Last updated: 2026-01-17
-> Progress: 12/35 complete
+> Progress: 13/35 complete
 
 ## Ready
-- [ ] `013` Cafe system
+- [ ] `014` Staff system
+- [ ] `015` Customer system
 - [ ] `016` Recipe system
 - [ ] `019` Main menu screen
 - [ ] `020` Settings screen
@@ -28,10 +29,9 @@
 - [x] `010` World/zone system ✓
 - [x] `011` Resource spawning ✓
 - [x] `012` Economy system ✓
+- [x] `013` Cafe system ✓
 
 ## Blocked
-- [ ] `014` Staff system (depends: 013)
-- [ ] `015` Customer system (depends: 013)
 - [ ] `017` Cooking minigame (depends: 005, 016)
 - [ ] `018` Reputation system (depends: 013, 015)
 - [ ] `022` Cafe mode UI (depends: 013, 014, 015, 017, 021)

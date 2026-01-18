@@ -105,6 +105,22 @@ SEASONS = ['spring', 'summer']
 CAFE_OPEN_HOUR = 8   # Opens at 8 AM
 CAFE_CLOSE_HOUR = 22  # Closes at 10 PM
 
+# Cafe states
+CAFE_STATE_CLOSED = 'closed'
+CAFE_STATE_PREP = 'prep'
+CAFE_STATE_SERVICE = 'service'
+CAFE_STATE_CLEANUP = 'cleanup'
+
+# Service period (simplified for prototype - single lunch service)
+CAFE_SERVICE_START = 10    # Service starts at 10 AM
+CAFE_SERVICE_END = 14      # Service ends at 2 PM
+CAFE_PREP_DURATION = 1     # 1 hour prep before service
+CAFE_CLEANUP_DURATION = 1  # 1 hour cleanup after service
+
+# Menu settings
+CAFE_MAX_MENU_ITEMS = 6    # Max dishes on menu at once
+CAFE_SKIP_REP_PENALTY = 10  # Reputation penalty for skipping a day
+
 # =============================================================================
 # DRAGON SYSTEM
 # =============================================================================
