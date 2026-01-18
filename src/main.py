@@ -7,7 +7,6 @@ from game import Game
 from state_manager import StateManager
 
 # Import all states
-from states.base_state import BaseState, BaseScreen
 from states.main_menu_state import MainMenuState
 from states.settings_state import SettingsState
 from states.exploration_mode_state import ExplorationModeState
@@ -50,9 +49,8 @@ def initialize_systems():
     # Initialize world/zones
     world_mgr = get_world_manager()
 
-    # Initialize recipe system
+    # Initialize recipe system (recipes loaded from constants.py)
     recipe_mgr = get_recipe_manager()
-    recipe_mgr.load_recipes_from_directory('../data/recipes/')
 
     # Initialize dialogue system
     dialogue_mgr = get_dialogue_manager()
@@ -64,7 +62,7 @@ def initialize_systems():
 
     # Initialize character system
     char_mgr = get_character_manager()
-    char_mgr.load_characters_from_file('../data/characters/story_characters.json')
+    char_mgr.load_characters_file('../data/characters/story_characters.json')
 
     # Initialize game state manager and enable auto-save
     game_state_mgr = get_game_state_manager()

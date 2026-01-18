@@ -3,8 +3,8 @@ Game State Management for Dragon Haven Cafe.
 Handles collection and application of complete game state for save/load.
 """
 
-from typing import Dict, Any, Optional
-from save_manager import get_save_manager, SaveData, SaveMeta
+from typing import Dict, Any
+from save_manager import get_save_manager, SaveData
 
 # Import all systems with state
 from systems.time_system import get_time_manager
