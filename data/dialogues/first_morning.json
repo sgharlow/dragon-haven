@@ -1,0 +1,32 @@
+{
+  "id": "first_morning",
+  "name": "First Morning at the Cafe",
+  "start_id": "wake_up",
+  "nodes": {
+    "wake_up": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Dawn breaks over Dragon Haven. Your first full day running the cafe begins.",
+      "next_id": "morning_tasks"
+    },
+    "morning_tasks": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The cafe needs preparation before opening. You'll need to gather ingredients, prepare the kitchen, and get ready for customers.",
+      "next_id": "tutorial_prompt"
+    },
+    "tutorial_prompt": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "(A note on the counter) 'Start simple, dear. The meadow beyond the cafe has wild herbs and vegetables. Gather what you need, then come back and cook something nice.'",
+      "next_id": "explore_hint"
+    },
+    "explore_hint": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Press E to explore the surrounding zones. Gather ingredients to cook recipes. Press I to check your inventory.",
+      "trigger_event": "enable_exploration",
+      "set_flags": ["tutorial_exploration"]
+    }
+  }
+}

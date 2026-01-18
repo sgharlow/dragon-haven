@@ -1,0 +1,61 @@
+{
+  "id": "prologue_egg",
+  "name": "The Discovery",
+  "start_id": "explore_storage",
+  "nodes": {
+    "explore_storage": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Following your mother's letter, you descend into the storage cellar. Between dusty crates and old furniture, something catches your eye...",
+      "next_id": "find_nest"
+    },
+    "find_nest": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "A nest of soft blankets, carefully arranged. In its center sits a large, warmly glowing egg. It pulses gently with inner light.",
+      "next_id": "egg_discovery"
+    },
+    "egg_discovery": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "A dragon egg! Your mother's greatest secret. It seems to respond to your presence, the glow brightening slightly.",
+      "choices": [
+        {
+          "text": "Touch the egg gently",
+          "next_id": "touch_egg",
+          "set_flags": ["gentle_with_egg"]
+        },
+        {
+          "text": "Speak softly to it",
+          "next_id": "speak_to_egg"
+        }
+      ]
+    },
+    "touch_egg": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The shell is warm under your fingertips. You feel a faint vibration, like a tiny heartbeat. Something stirs within.",
+      "next_id": "egg_responds"
+    },
+    "speak_to_egg": {
+      "speaker": "You",
+      "portrait": "player",
+      "text": "Hello there, little one. I'm going to take care of you now.",
+      "next_id": "egg_responds"
+    },
+    "egg_responds": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The egg rocks slightly, as if acknowledging you. A bond begins to form - one that will change your life forever.",
+      "set_flags": ["egg_discovered"],
+      "trigger_event": "egg_tutorial",
+      "next_id": "end_discovery"
+    },
+    "end_discovery": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "(In a letter left beside the nest) 'Feed it well, treat it kindly, and it will be the most loyal companion you could ever have. The food you serve shapes who it becomes.'",
+      "set_flags": ["read_egg_letter"]
+    }
+  }
+}

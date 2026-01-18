@@ -1,65 +1,100 @@
 [
   {
-    "id": "prologue_start",
+    "id": "prologue_intro",
     "chapter": "prologue",
     "sequence_order": 1,
     "name": "A New Beginning",
     "description": "The player arrives at Dragon Haven Cafe",
     "conditions": [
-      {"type": "day_range", "value": [1, 1]}
+      {"type": "day_range", "value": [1, 1]},
+      {"type": "not_flag", "value": "arrival_complete"}
     ],
-    "dialogue_id": "intro",
+    "dialogue_id": "prologue_intro",
     "outcomes": [
       {"type": "set_flag", "value": "prologue_started"},
-      {"type": "next_event", "value": "first_morning"}
+      {"type": "set_flag", "value": "arrival_complete"}
+    ]
+  },
+  {
+    "id": "egg_discovery",
+    "chapter": "prologue",
+    "sequence_order": 2,
+    "name": "The Discovery",
+    "description": "Finding the dragon egg in the cellar",
+    "conditions": [
+      {"type": "flag", "value": "arrival_complete"},
+      {"type": "not_flag", "value": "egg_discovered"}
+    ],
+    "dialogue_id": "prologue_egg",
+    "outcomes": [
+      {"type": "set_flag", "value": "egg_discovered"},
+      {"type": "unlock_zone", "value": "cellar"}
     ]
   },
   {
     "id": "first_morning",
     "chapter": "prologue",
-    "sequence_order": 2,
+    "sequence_order": 3,
     "name": "First Morning",
-    "description": "The cafe's first day of business",
+    "description": "Your first day running the cafe",
     "conditions": [
-      {"type": "events_completed", "value": ["prologue_start"]},
+      {"type": "flag", "value": "egg_discovered"},
+      {"type": "day_min", "value": 2},
       {"type": "time_of_day", "value": [6, 10]}
     ],
     "dialogue_id": "first_morning",
     "outcomes": [
-      {"type": "set_flag", "value": "tutorial_cafe"},
-      {"type": "gold_reward", "value": 100}
+      {"type": "set_flag", "value": "tutorial_started"},
+      {"type": "gold_reward", "value": 100},
+      {"type": "unlock_zone", "value": "meadow"}
     ]
   },
   {
     "id": "first_customer",
     "chapter": "prologue",
-    "sequence_order": 3,
+    "sequence_order": 4,
     "name": "First Customer",
     "description": "Your first customer arrives",
     "conditions": [
-      {"type": "events_completed", "value": ["first_morning"]},
+      {"type": "flag", "value": "tutorial_started"},
       {"type": "location", "value": "cafe"}
     ],
     "dialogue_id": "first_customer",
     "outcomes": [
       {"type": "set_flag", "value": "served_first_customer"},
-      {"type": "reputation_change", "value": 5}
+      {"type": "reputation_change", "value": 10}
     ]
   },
   {
     "id": "dragon_hatches",
     "chapter": "prologue",
-    "sequence_order": 4,
+    "sequence_order": 5,
     "name": "The Hatching",
     "description": "Your dragon hatches from its egg",
     "conditions": [
       {"type": "dragon_stage", "value": "hatchling"},
-      {"type": "not_flag", "value": "dragon_hatched_event"}
+      {"type": "not_flag", "value": "dragon_hatched"}
     ],
     "dialogue_id": "dragon_hatches",
     "outcomes": [
-      {"type": "set_flag", "value": "dragon_hatched_event"},
+      {"type": "set_flag", "value": "dragon_hatched"},
       {"type": "unlock_recipe", "value": "dragon_treat"}
+    ]
+  },
+  {
+    "id": "mothers_advice",
+    "chapter": "prologue",
+    "sequence_order": 6,
+    "name": "Mother's Wisdom",
+    "description": "A letter from mother with advice",
+    "conditions": [
+      {"type": "flag", "value": "dragon_hatched"},
+      {"type": "day_min", "value": 4}
+    ],
+    "dialogue_id": "mothers_advice",
+    "outcomes": [
+      {"type": "set_flag", "value": "received_mothers_advice"},
+      {"type": "unlock_recipe", "value": "comfort_stew"}
     ]
   },
   {
@@ -69,14 +104,16 @@
     "name": "Prologue Complete",
     "description": "The prologue concludes",
     "conditions": [
-      {"type": "events_completed", "value": ["first_customer", "dragon_hatches"]},
-      {"type": "day_min", "value": 3}
+      {"type": "flag", "value": "served_first_customer"},
+      {"type": "flag", "value": "dragon_hatched"},
+      {"type": "day_min", "value": 5},
+      {"type": "reputation_min", "value": 20}
     ],
     "dialogue_id": "prologue_end",
     "outcomes": [
       {"type": "set_chapter", "value": "chapter1"},
       {"type": "set_flag", "value": "chapter1_unlocked"},
-      {"type": "unlock_zone", "value": "meadow"}
+      {"type": "unlock_zone", "value": "forest"}
     ]
   }
 ]

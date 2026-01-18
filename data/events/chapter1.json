@@ -1,0 +1,99 @@
+[
+  {
+    "id": "ch1_marcus_arrives",
+    "chapter": "chapter1",
+    "sequence_order": 1,
+    "name": "The Wanderer Arrives",
+    "description": "Marcus the Wanderer visits the cafe",
+    "conditions": [
+      {"type": "chapter", "value": "chapter1"},
+      {"type": "reputation_min", "value": 30},
+      {"type": "not_flag", "value": "marcus_met"}
+    ],
+    "dialogue_id": "marcus_arrival",
+    "outcomes": [
+      {"type": "set_flag", "value": "marcus_met"},
+      {"type": "set_flag", "value": "ch1_started"}
+    ]
+  },
+  {
+    "id": "ch1_marcus_regular",
+    "chapter": "chapter1",
+    "sequence_order": 2,
+    "name": "A Regular Customer",
+    "description": "Marcus becomes a regular",
+    "conditions": [
+      {"type": "flag", "value": "marcus_met"},
+      {"type": "day_min", "value": 8}
+    ],
+    "dialogue_id": "marcus_regular",
+    "outcomes": [
+      {"type": "set_flag", "value": "marcus_regular"}
+    ],
+    "repeatable": false
+  },
+  {
+    "id": "ch1_marcus_request",
+    "chapter": "chapter1",
+    "sequence_order": 3,
+    "name": "A Special Request",
+    "description": "Marcus requests a specific dish",
+    "conditions": [
+      {"type": "flag", "value": "marcus_regular"},
+      {"type": "day_min", "value": 10}
+    ],
+    "dialogue_id": "marcus_request",
+    "outcomes": [
+      {"type": "set_flag", "value": "marcus_quest_active"},
+      {"type": "unlock_recipe", "value": "traveler_stew"}
+    ]
+  },
+  {
+    "id": "ch1_marcus_backstory",
+    "chapter": "chapter1",
+    "sequence_order": 4,
+    "name": "A Wanderer's Tale",
+    "description": "Marcus opens up about his past",
+    "conditions": [
+      {"type": "flag", "value": "marcus_quest_active"},
+      {"type": "not_flag", "value": "marcus_backstory_complete"}
+    ],
+    "dialogue_id": "marcus_backstory",
+    "outcomes": [
+      {"type": "set_flag", "value": "marcus_backstory_complete"}
+    ]
+  },
+  {
+    "id": "ch1_marcus_resolution",
+    "chapter": "chapter1",
+    "sequence_order": 5,
+    "name": "Finding Home",
+    "description": "Marcus decides to stay",
+    "conditions": [
+      {"type": "flag", "value": "marcus_backstory_complete"},
+      {"type": "day_min", "value": 14}
+    ],
+    "dialogue_id": "marcus_resolution",
+    "outcomes": [
+      {"type": "set_flag", "value": "marcus_resolved"},
+      {"type": "reputation_change", "value": 25},
+      {"type": "unlock_recipe", "value": "wanderers_feast"}
+    ]
+  },
+  {
+    "id": "ch1_complete",
+    "chapter": "chapter1",
+    "sequence_order": 10,
+    "name": "Chapter 1 Complete",
+    "description": "Chapter 1 concludes",
+    "conditions": [
+      {"type": "flag", "value": "marcus_resolved"},
+      {"type": "reputation_min", "value": 75}
+    ],
+    "dialogue_id": "chapter1_end",
+    "outcomes": [
+      {"type": "set_chapter", "value": "chapter2"},
+      {"type": "set_flag", "value": "chapter2_unlocked"}
+    ]
+  }
+]

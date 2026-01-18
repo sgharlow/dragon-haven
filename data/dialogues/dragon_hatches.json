@@ -1,0 +1,51 @@
+{
+  "id": "dragon_hatches",
+  "name": "The Hatching",
+  "start_id": "egg_shakes",
+  "nodes": {
+    "egg_shakes": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The egg is moving! Cracks appear across its surface as something inside struggles to break free.",
+      "next_id": "first_crack"
+    },
+    "first_crack": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "CRACK! A piece of shell falls away, revealing a tiny snout. Large, curious eyes blink open for the first time.",
+      "next_id": "hatching"
+    },
+    "hatching": {
+      "speaker": "Baby Dragon",
+      "portrait": "dragon",
+      "text": "*Chirp!* The little dragon tumbles out of its shell, looking up at you with wonder. Its scales shimmer in the light.",
+      "next_id": "first_look"
+    },
+    "first_look": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The dragon stumbles toward you on wobbly legs. It's no bigger than a cat, with oversized eyes and tiny wing-buds.",
+      "next_id": "name_prompt"
+    },
+    "name_prompt": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The dragon chirps expectantly. What will you call this little one?",
+      "trigger_event": "name_dragon_popup",
+      "set_flags": ["dragon_hatched"],
+      "next_id": "after_naming"
+    },
+    "after_naming": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The dragon seems to understand. It chirps happily and nuzzles against your hand. A lifelong bond has formed.",
+      "next_id": "mother_note"
+    },
+    "mother_note": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "(In your mind, you hear your mother's voice) 'The food you cook shapes the dragon's color and abilities. Treat it well, and it will help your cafe flourish.'",
+      "set_flags": ["hatching_complete"]
+    }
+  }
+}

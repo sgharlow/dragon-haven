@@ -1,0 +1,94 @@
+{
+  "id": "marcus_backstory",
+  "name": "Marcus's Past",
+  "start_id": "marcus_opens_up",
+  "nodes": {
+    "marcus_opens_up": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Marcus has been staring out the window for some time. There's a weight in his eyes today.",
+      "next_id": "approach_marcus"
+    },
+    "approach_marcus": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Do you approach him?",
+      "choices": [
+        {
+          "text": "Sit down beside him quietly",
+          "next_id": "sit_quietly",
+          "set_flags": ["marcus_trusted"]
+        },
+        {
+          "text": "Ask if he wants his usual order",
+          "next_id": "offer_food"
+        }
+      ]
+    },
+    "sit_quietly": {
+      "speaker": "Marcus",
+      "portrait": "marcus",
+      "text": "*After a long silence* I wasn't always a wanderer, you know. I had a home once. A purpose.",
+      "next_id": "marcus_past_1"
+    },
+    "offer_food": {
+      "speaker": "Marcus",
+      "portrait": "marcus",
+      "text": "Food... yes. Food was always how she showed she cared too. *He laughs sadly* Sit down. I think I need to tell someone.",
+      "next_id": "marcus_past_1"
+    },
+    "marcus_past_1": {
+      "speaker": "Marcus",
+      "portrait": "marcus",
+      "text": "I was a guild master once. We protected a town - good people, families, children. They trusted us. Trusted ME.",
+      "next_id": "marcus_past_2"
+    },
+    "marcus_past_2": {
+      "speaker": "Marcus",
+      "portrait": "marcus",
+      "text": "Then the raiders came. A night attack, overwhelming numbers. I made a call - told the guild to fall back, regroup.",
+      "next_id": "marcus_failure"
+    },
+    "marcus_failure": {
+      "speaker": "Marcus",
+      "portrait": "marcus",
+      "text": "We saved the guild. But the town... *His voice breaks* Fifteen families. Gone. Because I chose to retreat.",
+      "next_id": "marcus_confession"
+    },
+    "marcus_confession": {
+      "speaker": "Marcus",
+      "portrait": "marcus",
+      "text": "I've been running ever since. Can't stay in one place. Keep moving, keep helping where I can, and maybe someday the scales will balance.",
+      "choices": [
+        {
+          "text": "You made an impossible choice. That doesn't make you a coward.",
+          "next_id": "comfort_marcus",
+          "set_flags": ["marcus_comforted"]
+        },
+        {
+          "text": "You're still helping people. That has to count for something.",
+          "next_id": "encourage_marcus"
+        }
+      ]
+    },
+    "comfort_marcus": {
+      "speaker": "Marcus",
+      "portrait": "marcus",
+      "text": "*He looks at you, surprised* No one's ever... thank you. Maybe that's why I keep coming back here.",
+      "next_id": "marcus_resolve"
+    },
+    "encourage_marcus": {
+      "speaker": "Marcus",
+      "portrait": "marcus",
+      "text": "Count for something... *He considers this* Perhaps. Perhaps running isn't the only way to atone.",
+      "next_id": "marcus_resolve"
+    },
+    "marcus_resolve": {
+      "speaker": "Marcus",
+      "portrait": "marcus",
+      "text": "You know what? I think I might stay a while. This cafe... you... there's something worth protecting here.",
+      "set_flags": ["marcus_backstory_complete"],
+      "trigger_event": "marcus_becomes_regular"
+    }
+  }
+}

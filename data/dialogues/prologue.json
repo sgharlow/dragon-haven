@@ -1,0 +1,72 @@
+{
+  "id": "prologue_intro",
+  "name": "Prologue - A New Beginning",
+  "start_id": "mothers_letter",
+  "nodes": {
+    "mothers_letter": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "A letter arrives on a quiet morning. The handwriting is familiar - it's from your mother.",
+      "next_id": "letter_content"
+    },
+    "letter_content": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "My dear child, I'm afraid I must ask something of you. My health has taken a turn, and I can no longer run the cafe. Would you consider taking over Dragon Haven?",
+      "next_id": "letter_2"
+    },
+    "letter_2": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "I know it's a lot to ask. But this place... it's special. More special than you know. There's something in the storage cellar I've been protecting for years.",
+      "next_id": "player_response_1"
+    },
+    "player_response_1": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "What do you say?",
+      "choices": [
+        {
+          "text": "Of course, Mother. I'll take care of it.",
+          "next_id": "accept_positive",
+          "set_flags": ["player_kind"]
+        },
+        {
+          "text": "I... I'll do my best.",
+          "next_id": "accept_humble"
+        }
+      ]
+    },
+    "accept_positive": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "Thank you, my dear. I knew I could count on you. Your kindness has always been your greatest strength.",
+      "next_id": "travel_to_cafe"
+    },
+    "accept_humble": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "That's all I ask. The cafe has a way of bringing out the best in people. You'll find your footing.",
+      "next_id": "travel_to_cafe"
+    },
+    "travel_to_cafe": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "After a long journey, you arrive at Dragon Haven Cafe. The building is cozy, nestled between rolling hills and ancient trees.",
+      "next_id": "cafe_arrival"
+    },
+    "cafe_arrival": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The door creaks open. Inside, dust motes dance in the afternoon light. Everything is just as you remember from childhood visits.",
+      "trigger_event": "show_cafe",
+      "next_id": "end_arrival"
+    },
+    "end_arrival": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "A new chapter begins. Welcome to Dragon Haven Cafe.",
+      "set_flags": ["arrival_complete"]
+    }
+  }
+}

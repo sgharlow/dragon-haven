@@ -1,0 +1,66 @@
+{
+  "id": "marcus_arrival",
+  "name": "Chapter 1 - The Wanderer",
+  "start_id": "stranger_enters",
+  "nodes": {
+    "stranger_enters": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The cafe door swings open. A weathered traveler steps inside, his clothes dusty from the road, a worn pack slung over his shoulder.",
+      "next_id": "marcus_intro"
+    },
+    "marcus_intro": {
+      "speaker": "Marcus",
+      "portrait": "marcus",
+      "text": "Is this... Dragon Haven? They said in town there was a place where wanderers could find rest. And perhaps... something more.",
+      "next_id": "player_greet"
+    },
+    "player_greet": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "How do you greet this stranger?",
+      "choices": [
+        {
+          "text": "Welcome! Please, sit anywhere you like.",
+          "next_id": "warm_welcome",
+          "set_flags": ["marcus_warm_welcome"]
+        },
+        {
+          "text": "Yes, this is Dragon Haven. What brings you here?",
+          "next_id": "curious_response"
+        }
+      ]
+    },
+    "warm_welcome": {
+      "speaker": "Marcus",
+      "portrait": "marcus",
+      "text": "Ah, kindness. That's becoming rare these days. *He smiles wearily* I'm Marcus. I've been traveling for... longer than I care to count.",
+      "next_id": "marcus_sits"
+    },
+    "curious_response": {
+      "speaker": "Marcus",
+      "portrait": "marcus",
+      "text": "What brings anyone anywhere? Running from something. Searching for something. *He shrugs* I'm Marcus. Mind if I sit?",
+      "next_id": "marcus_sits"
+    },
+    "marcus_sits": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Marcus settles into a corner booth with the air of someone who's done this countless times. His eyes linger on the dragon by your side.",
+      "next_id": "notices_dragon"
+    },
+    "notices_dragon": {
+      "speaker": "Marcus",
+      "portrait": "marcus",
+      "text": "A dragon companion? It's been years since I've seen one. They used to be more common... before the Wandering Years.",
+      "set_flags": ["marcus_met"],
+      "trigger_event": "marcus_first_visit_complete",
+      "next_id": "marcus_end"
+    },
+    "marcus_end": {
+      "speaker": "Marcus",
+      "portrait": "marcus",
+      "text": "I think I'll become a regular here. If you'll have me. Something about this place feels... like a story waiting to be told."
+    }
+  }
+}
