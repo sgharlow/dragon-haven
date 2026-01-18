@@ -122,6 +122,50 @@ CAFE_MAX_MENU_ITEMS = 6    # Max dishes on menu at once
 CAFE_SKIP_REP_PENALTY = 10  # Reputation penalty for skipping a day
 
 # =============================================================================
+# REPUTATION SYSTEM
+# =============================================================================
+# Reputation range
+REPUTATION_MIN = 0
+REPUTATION_MAX = 500
+
+# Reputation levels (tier name, min reputation, max reputation)
+REPUTATION_LEVEL_UNKNOWN = 'unknown'
+REPUTATION_LEVEL_LOCAL = 'local_favorite'
+REPUTATION_LEVEL_TOWN = 'town_attraction'
+REPUTATION_LEVEL_REGIONAL = 'regional_fame'
+
+REPUTATION_LEVELS = {
+    REPUTATION_LEVEL_UNKNOWN: {'min': 0, 'max': 49, 'name': 'Unknown'},
+    REPUTATION_LEVEL_LOCAL: {'min': 50, 'max': 149, 'name': 'Local Favorite'},
+    REPUTATION_LEVEL_TOWN: {'min': 150, 'max': 299, 'name': 'Town Attraction'},
+    REPUTATION_LEVEL_REGIONAL: {'min': 300, 'max': 500, 'name': 'Regional Fame'},
+}
+
+# Customer count range per reputation level
+REPUTATION_CUSTOMER_RANGE = {
+    REPUTATION_LEVEL_UNKNOWN: (1, 2),
+    REPUTATION_LEVEL_LOCAL: (2, 4),
+    REPUTATION_LEVEL_TOWN: (3, 6),
+    REPUTATION_LEVEL_REGIONAL: (5, 8),
+}
+
+# Reputation gains/losses
+REP_GAIN_SATISFIED = 3      # Satisfied customer (rating 4+)
+REP_GAIN_DELIGHTED = 5      # Delighted customer (rating 5)
+REP_LOSS_ANGRY = -5         # Angry customer (rating 2-)
+REP_LOSS_NEUTRAL = -1       # Neutral customer (rating 2-3)
+
+# Daily reputation decay (if cafe not operated)
+REPUTATION_DAILY_DECAY = 2
+
+# Level up unlocks (reputation level -> list of unlocks)
+REPUTATION_UNLOCKS = {
+    REPUTATION_LEVEL_LOCAL: ['berry_juice', 'mushroom_skewers'],
+    REPUTATION_LEVEL_TOWN: ['forest_fish_plate', 'honey_cake'],
+    REPUTATION_LEVEL_REGIONAL: ['game_roast', 'all_recipes'],
+}
+
+# =============================================================================
 # STAFF SYSTEM
 # =============================================================================
 # Staff roles

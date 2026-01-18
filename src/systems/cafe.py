@@ -10,7 +10,13 @@ from constants import (
     CAFE_STATE_CLOSED, CAFE_STATE_PREP, CAFE_STATE_SERVICE, CAFE_STATE_CLEANUP,
     CAFE_SERVICE_START, CAFE_SERVICE_END,
     CAFE_PREP_DURATION, CAFE_CLEANUP_DURATION,
-    CAFE_MAX_MENU_ITEMS, CAFE_SKIP_REP_PENALTY
+    CAFE_MAX_MENU_ITEMS, CAFE_SKIP_REP_PENALTY,
+    REPUTATION_MIN, REPUTATION_MAX,
+    REPUTATION_LEVEL_UNKNOWN, REPUTATION_LEVEL_LOCAL,
+    REPUTATION_LEVEL_TOWN, REPUTATION_LEVEL_REGIONAL,
+    REPUTATION_LEVELS, REPUTATION_CUSTOMER_RANGE, REPUTATION_UNLOCKS,
+    REP_GAIN_SATISFIED, REP_GAIN_DELIGHTED, REP_LOSS_ANGRY, REP_LOSS_NEUTRAL,
+    REPUTATION_DAILY_DECAY,
 )
 from systems.time_system import get_time_manager
 from systems.economy import get_economy
@@ -273,16 +279,139 @@ class CafeManager:
         return self._today_stats.revenue + self._today_stats.tips
 
     # =========================================================================
-    # REPUTATION
+    # REPUTATION SYSTEM
     # =========================================================================
 
     def get_reputation(self) -> int:
         """Get current reputation."""
         return self._reputation
 
-    def add_reputation(self, amount: int):
-        """Add or remove reputation."""
-        self._reputation = max(0, self._reputation + amount)
+    def add_reputation(self, amount: int) -> Dict[str, Any]:
+        """
+        Add or remove reputation.
+
+        Args:
+            amount: Amount to add (negative to subtract)
+
+        Returns:
+            Dict with 'old_level', 'new_level', 'level_changed', 'unlocks'
+        """
+        old_level = self.get_reputation_level()
+        old_rep = self._reputation
+
+        self._reputation = max(REPUTATION_MIN, min(REPUTATION_MAX, self._reputation + amount))
+
+        new_level = self.get_reputation_level()
+        level_changed = old_level != new_level
+        unlocks = []
+
+        # Check for level up unlocks
+        if level_changed and amount > 0:
+            unlocks = REPUTATION_UNLOCKS.get(new_level, [])
+
+        return {
+            'old_reputation': old_rep,
+            'new_reputation': self._reputation,
+            'change': self._reputation - old_rep,
+            'old_level': old_level,
+            'new_level': new_level,
+            'level_changed': level_changed,
+            'unlocks': unlocks,
+        }
+
+    def get_reputation_level(self) -> str:
+        """
+        Get the current reputation tier.
+
+        Returns:
+            One of REPUTATION_LEVEL_* constants
+        """
+        for level_id, level_data in REPUTATION_LEVELS.items():
+            if level_data['min'] <= self._reputation <= level_data['max']:
+                return level_id
+        return REPUTATION_LEVEL_REGIONAL  # Max level if above all
+
+    def get_reputation_level_name(self) -> str:
+        """Get the display name of current reputation level."""
+        level = self.get_reputation_level()
+        return REPUTATION_LEVELS.get(level, {}).get('name', 'Unknown')
+
+    def get_reputation_progress(self) -> Dict[str, Any]:
+        """
+        Get reputation progress towards next level.
+
+        Returns:
+            Dict with 'current', 'min', 'max', 'progress_percent', 'level_name'
+        """
+        level = self.get_reputation_level()
+        level_data = REPUTATION_LEVELS.get(level, {})
+        min_rep = level_data.get('min', 0)
+        max_rep = level_data.get('max', REPUTATION_MAX)
+
+        # Progress within current level
+        if max_rep > min_rep:
+            progress = (self._reputation - min_rep) / (max_rep - min_rep) * 100
+        else:
+            progress = 100.0
+
+        return {
+            'current': self._reputation,
+            'level_min': min_rep,
+            'level_max': max_rep,
+            'progress_percent': min(100.0, progress),
+            'level_name': level_data.get('name', 'Unknown'),
+            'level_id': level,
+        }
+
+    def get_customer_count_range(self) -> tuple:
+        """
+        Get the customer count range for current reputation level.
+
+        Returns:
+            (min_customers, max_customers) tuple
+        """
+        level = self.get_reputation_level()
+        return REPUTATION_CUSTOMER_RANGE.get(level, (1, 2))
+
+    def apply_customer_feedback(self, satisfaction: float) -> Dict[str, Any]:
+        """
+        Apply reputation change based on customer satisfaction.
+
+        Args:
+            satisfaction: Customer satisfaction rating (1-5)
+
+        Returns:
+            Result dict from add_reputation
+        """
+        if satisfaction >= 5:
+            rep_change = REP_GAIN_DELIGHTED
+        elif satisfaction >= 4:
+            rep_change = REP_GAIN_SATISFIED
+        elif satisfaction <= 2:
+            rep_change = REP_LOSS_ANGRY
+        elif satisfaction < 3:
+            rep_change = REP_LOSS_NEUTRAL
+        else:
+            rep_change = 0  # Neutral (3) = no change
+
+        if rep_change != 0:
+            return self.add_reputation(rep_change)
+        return {'change': 0, 'level_changed': False}
+
+    def apply_daily_decay(self, cafe_operated: bool = True) -> Dict[str, Any]:
+        """
+        Apply daily reputation decay if cafe wasn't operated.
+
+        Args:
+            cafe_operated: Whether cafe was operated today
+
+        Returns:
+            Result dict from add_reputation
+        """
+        if cafe_operated:
+            return {'change': 0, 'level_changed': False}
+
+        return self.add_reputation(-REPUTATION_DAILY_DECAY)
 
     # =========================================================================
     # SKIP DAY
