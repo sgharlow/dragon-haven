@@ -1,13 +1,15 @@
 # Tasks
 
 > Last updated: 2026-01-17
-> Progress: 8/35 complete
+> Progress: 9/35 complete
 
 ## Ready
-- [ ] `009` Inventory system
 - [ ] `010` World/zone system
+- [ ] `012` Economy system
+- [ ] `016` Recipe system
 - [ ] `019` Main menu screen
 - [ ] `020` Settings screen
+- [ ] `024` Inventory screen
 - [ ] `026` Dragon status screen
 - [ ] `027` Dialogue system
 
@@ -22,20 +24,18 @@
 - [x] `006` Save system foundation ✓
 - [x] `007` Time system ✓
 - [x] `008` Dragon system ✓
+- [x] `009` Inventory system ✓
 
 ## Blocked
 - [ ] `011` Resource spawning (depends: 009, 010)
-- [ ] `012` Economy system (depends: 009)
 - [ ] `013` Cafe system (depends: 007, 012)
 - [ ] `014` Staff system (depends: 013)
 - [ ] `015` Customer system (depends: 013)
-- [ ] `016` Recipe system (depends: 009)
 - [ ] `017` Cooking minigame (depends: 005, 016)
 - [ ] `018` Reputation system (depends: 013, 015)
 - [ ] `021` Gameplay HUD (depends: 004, 007, 008, 012)
 - [ ] `022` Cafe mode UI (depends: 013, 014, 015, 017, 021)
 - [ ] `023` Exploration mode UI (depends: 008, 010, 011, 021)
-- [ ] `024` Inventory screen (depends: 004, 009)
 - [ ] `025` Recipe book screen (depends: 004, 016)
 - [ ] `028` Story event system (depends: 007, 013, 027)
 - [ ] `029` Character relationships (depends: 028)

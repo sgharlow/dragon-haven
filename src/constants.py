@@ -159,6 +159,37 @@ DRAGON_STAGE_ABILITIES = {
 }
 
 # =============================================================================
+# INVENTORY SYSTEM
+# =============================================================================
+# Item categories
+ITEM_VEGETABLE = 'vegetable'
+ITEM_FRUIT = 'fruit'
+ITEM_GRAIN = 'grain'
+ITEM_MEAT = 'meat'
+ITEM_SEAFOOD = 'seafood'
+ITEM_DAIRY = 'dairy'
+ITEM_SPICE = 'spice'
+ITEM_SPECIAL = 'special'
+
+# All categories for iteration
+ITEM_CATEGORIES = [
+    ITEM_VEGETABLE, ITEM_FRUIT, ITEM_GRAIN, ITEM_MEAT,
+    ITEM_SEAFOOD, ITEM_DAIRY, ITEM_SPICE, ITEM_SPECIAL
+]
+
+# Inventory capacities
+INVENTORY_CARRIED_SLOTS = 20
+INVENTORY_STORAGE_SLOTS = 100
+INVENTORY_FRIDGE_SLOTS = 30
+
+# Item defaults
+ITEM_DEFAULT_STACK_SIZE = 10
+ITEM_DEFAULT_SPOIL_DAYS = 3  # Days until item spoils (0 = never)
+
+# Starting gold
+STARTING_GOLD = 100
+
+# =============================================================================
 # GAME VERSION
 # =============================================================================
 VERSION = "0.1.0"
