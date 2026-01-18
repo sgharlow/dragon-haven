@@ -1,0 +1,537 @@
+  
+**DRAGON HAVEN CAFE**
+
+Software Design Specification
+
+*A Dragon-Raising Cafe Management Simulation Game*
+
+Version 1.0
+
+January 2026
+
+# **Table of Contents**
+
+# **1\. Executive Summary**
+
+## **1.1 Game Concept**
+
+Dragon Haven Cafe is a single-player simulation game that combines creature-raising mechanics with cafe management gameplay. Players raise a baby dragon from egg to adulthood while operating a family cafe, gathering ingredients from an explorable world, and helping a colorful cast of characters overcome their personal challenges.
+
+The game emphasizes nurturing relationships, both with the dragon companion and with visiting characters, creating an emotionally engaging experience that rewards patience and care over optimization.
+
+## **1.2 Core Pillars**
+
+* Dragon Nurturing: Raise a unique dragon companion from hatchling to majestic adult through feeding, bonding, and exploration
+
+* Cafe Management: Operate a cozy cafe by gathering ingredients, cooking recipes, and serving customers
+
+* Story-Driven Progression: Help troubled visitors resolve their personal issues through food and friendship
+
+* Relaxed Exploration: Discover a charming world filled with ingredients, secrets, and evolving landscapes
+
+## **1.3 Target Platform & Audience**
+
+| Attribute | Details |
+| :---- | :---- |
+| Target Platforms | PC (Steam), Nintendo Switch, PlayStation 5, Xbox Series X/S |
+| Target Audience | Ages 10+, fans of simulation games, cozy games, creature collectors |
+| ESRB Rating Target | E10+ (Everyone 10+) |
+| Play Session Length | 30-90 minutes optimal, save anywhere |
+| Total Playtime | 25-40 hours main story, 60+ hours completionist |
+
+# **2\. Game Systems Overview**
+
+## **2.1 System Architecture**
+
+The game consists of five interconnected core systems that communicate through a central Game State Manager:
+
+| System | Primary Function | Dependencies |
+| :---- | :---- | :---- |
+| Dragon System | Manages dragon state, growth, abilities, and bonding | Time, Inventory, World |
+| Cafe System | Handles cafe operations, recipes, customers, reputation | Inventory, Time, Story |
+| World System | Controls exploration, resource spawning, weather | Time, Dragon, Story |
+| Story System | Manages narrative, character arcs, progression gates | Cafe, Time, Dragon |
+| Time System | Controls day/night cycle, seasons, scheduling | None (core system) |
+
+## **2.2 Game Loop**
+
+Each in-game day follows this primary loop structure:
+
+1. Morning Phase: Wake up, check dragon status, optional garden harvest
+
+2. Exploration Phase: Gather ingredients, discover recipes, bond with dragon
+
+3. Cafe Operation: Morning service (10:00-14:00), evening service (17:00-21:00)
+
+4. Story Events: Character interactions trigger based on conditions
+
+5. Evening Phase: Feed dragon, review day summary, save and sleep
+
+# **3\. Dragon Raising System**
+
+## **3.1 Dragon Life Stages**
+
+The dragon progresses through five distinct life stages, each unlocking new abilities and changing the dragon's appearance and size:
+
+| Stage | Duration | Size | Key Abilities |
+| :---- | :---- | :---- | :---- |
+| Egg | Day 1-3 | 30cm diameter | None (incubation period) |
+| Hatchling | Day 4-10 | Cat-sized (40cm) | Crawl into small spaces, fetch items |
+| Juvenile | Day 11-25 | Large dog (1m) | Break rocks, intimidate small creatures |
+| Adolescent | Day 26-45 | Horse-sized (2m) | Glide short distances, fire breath (weak) |
+| Adult | Day 46+ | Large (4m wingspan) | Full flight, powerful fire, rideable |
+
+## **3.2 Dragon Stats & Attributes**
+
+### **3.2.1 Core Stats**
+
+| Stat | Range | Effects | Recovery Method |
+| :---- | :---- | :---- | :---- |
+| Hunger | 0-100 | Below 30: reduced stamina regen | Feed any cooked dish |
+| Stamina | 0-100 (scales with stage) | Depletes during abilities, exploration | Rest, feeding, time passage |
+| Happiness | 0-100 | Affects ability effectiveness, color vibrancy | Petting, playing, favorite foods |
+| Bond Level | 0-1000 (lifetime) | Unlocks abilities, story scenes, final evolution | All positive interactions |
+
+### **3.2.2 Dragon Color System**
+
+The dragon's color changes based on the types of food consumed. Color is tracked as RGB values influenced by food categories:
+
+* Red Channel: Increased by spicy foods, meat dishes, warm-temperature foods
+
+* Green Channel: Increased by vegetable dishes, salads, herb-based recipes
+
+* Blue Channel: Increased by seafood, cold dishes, desserts with berries
+
+Color transitions occur gradually over 3-5 feedings, allowing players to deliberately influence their dragon's appearance.
+
+## **3.3 Dragon Abilities**
+
+| Ability | Stage Required | Function | Stamina Cost |
+| :---- | :---- | :---- | :---- |
+| Burrow Fetch | Hatchling | Retrieve items from small holes and dens | 5 per use |
+| Sniff Track | Hatchling | Highlight nearby collectibles on minimap | 10 per activation |
+| Rock Smash | Juvenile | Break certain rocks to reveal items/paths | 15 per rock |
+| Creature Scare | Juvenile | Frighten aggressive creatures temporarily | 20 per use |
+| Glide | Adolescent | Descend from heights safely, reach platforms | 3 per second |
+| Ember Breath | Adolescent | Light torches, clear brambles | 25 per use |
+| Full Flight | Adult | Free flight with player mounted | 5 per second |
+| Fire Stream | Adult | Powerful flame for combat/obstacles | 40 per use |
+
+## **3.4 Dragon Data Structure**
+
+The following data structure defines a dragon entity:
+
+DragonEntity {    // Identity    id: UUID    name: String (player-assigned, max 20 chars)    createdAt: DateTime        // Growth    stage: Enum (EGG, HATCHLING, JUVENILE, ADOLESCENT, ADULT)    daysInStage: Integer    totalDaysAlive: Integer        // Stats (0-100 unless noted)    hunger: Float    stamina: Float    maxStamina: Float (calculated from stage \+ bond)    happiness: Float    bondLevel: Integer (0-1000)        // Appearance    colorRGB: {r: Float, g: Float, b: Float} (0.0-1.0)    colorTargetRGB: {r: Float, g: Float, b: Float}    colorTransitionProgress: Float (0.0-1.0)        // Abilities    unlockedAbilities: Array\<AbilityID\>    abilityExperience: Map\<AbilityID, Integer\>        // Preferences (discovered through gameplay)    favoriteFoods: Array\<RecipeID\> (max 5\)    dislikedFoods: Array\<RecipeID\> (max 3\)        // Daily tracking    fedToday: Integer    pettedToday: Integer    abilitiesUsedToday: Integer}
+
+# **4\. Cafe Management System**
+
+## **4.1 Cafe Operations Overview**
+
+The cafe operates during two service windows each day. Players must balance time between cafe duties, exploration, and dragon care.
+
+| Service Period | Time Window | Customer Volume | Focus |
+| :---- | :---- | :---- | :---- |
+| Morning Service | 10:00 \- 14:00 | Low-Medium | Breakfast, Light meals |
+| Evening Service | 17:00 \- 21:00 | Medium-High | Dinner, Full courses |
+
+## **4.2 Staff System**
+
+The player works alongside NPC staff members who can perform tasks autonomously with varying effectiveness:
+
+| Staff Member | Role | Trait | Management Need |
+| :---- | :---- | :---- | :---- |
+| Melody | Server | Enthusiastic but clumsy | Occasional pep talks |
+| Bruno | Chef | Skilled but prideful | Recipe guidance |
+| Sage | Busser/Support | Lazy but perceptive | Frequent motivation |
+
+Staff Morale (0-100) affects their work efficiency. If left unattended, staff will slack off, reducing customer satisfaction. The player can:
+
+* Talk to staff to boost morale (+10-20 based on dialogue choice)
+
+* Assign specific tasks to override autonomous behavior
+
+* Upgrade staff skills through story progression
+
+## **4.3 Recipe System**
+
+### **4.3.1 Recipe Structure**
+
+Recipe {    id: RecipeID    name: String    description: String    category: Enum (APPETIZER, MAIN, DESSERT, BEVERAGE, SPECIAL)        // Requirements    ingredients: Array\<{itemId: ItemID, quantity: Integer, qualityMin: Integer}\>    unlockCondition: Condition (story progress, discovery, etc.)        // Cooking    difficulty: Integer (1-5 stars)    rhythmPattern: RhythmSequence    cookTime: Integer (in-game minutes)        // Output    baseQuality: Integer (1-5)    satisfactionValue: Integer    priceRange: {min: Integer, max: Integer}        // Effects    dragonColorInfluence: {r: Float, g: Float, b: Float}    specialEffects: Array\<EffectID\>}
+
+### **4.3.2 Cooking Minigame**
+
+Cooking uses a rhythm-based minigame where players press buttons in time with music:
+
+* Each recipe has a unique musical track and rhythm pattern
+
+* Notes appear on 4 lanes corresponding to controller buttons
+
+* Timing grades: Perfect, Good, OK, Miss
+
+* Final dish quality \= Base Quality \+ (Performance Score \* Quality Modifier)
+
+* Ingredient quality provides bonus multiplier to final score
+
+## **4.4 Customer System**
+
+Customer {    id: CustomerID    type: Enum (REGULAR, STORY\_CHARACTER, SPECIAL\_EVENT)        // Appearance    spriteId: SpriteID    nameDisplay: String (generic for regulars, named for story)        // Behavior    patience: Integer (seconds before leaving unhappy)    orderPreferences: Array\<RecipeCategory\>    qualityExpectation: Integer (1-5)        // Order    currentOrder: RecipeID | null    orderTime: DateTime    satisfaction: Float (0-100)        // Rewards    baseTip: Integer    tipMultiplier: Float (based on satisfaction)    reputationGain: Integer}
+
+## **4.5 Reputation System**
+
+Cafe Reputation (0-1000) determines customer volume, available recipes, and story progression gates:
+
+| Reputation Level | Points Required | Benefits | Customer Volume |
+| :---- | :---- | :---- | :---- |
+| Unknown | 0-99 | Basic recipes only | 1-3 per service |
+| Local Favorite | 100-299 | Intermediate recipes, garden upgrade | 3-6 per service |
+| Town Attraction | 300-599 | Advanced recipes, delivery service | 5-10 per service |
+| Regional Fame | 600-899 | Rare recipes, special customers | 8-15 per service |
+| Legendary | 900-1000 | All recipes, postgame content | 12-20 per service |
+
+# **5\. World & Exploration System**
+
+## **5.1 World Structure**
+
+The game world consists of interconnected zones that unlock progressively as the dragon grows:
+
+| Zone | Dragon Stage Required | Primary Resources | Key Features |
+| :---- | :---- | :---- | :---- |
+| Cafe Grounds | None | Basic vegetables, herbs | Garden, animal pens, tutorial area |
+| Meadow Fields | Hatchling | Grains, fruits, eggs | Animal dens, berry bushes |
+| Forest Depths | Juvenile | Mushrooms, nuts, game meat | Blocked paths, treasure caves |
+| Coastal Shore | Juvenile | Seafood, salt, seaweed | Fishing spots, tidal caves |
+| Mountain Pass | Adolescent | Rare herbs, minerals, honey | Vertical traversal, hot springs |
+| Ancient Ruins | Adolescent | Special ingredients, recipes | Puzzles, lore collectibles |
+| Sky Islands | Adult | Legendary ingredients | Flight-only access, endgame |
+
+## **5.2 Resource Gathering**
+
+Resources spawn according to the following rules:
+
+* Common resources: Respawn daily at fixed locations
+
+* Uncommon resources: 50% spawn chance daily, rotating locations
+
+* Rare resources: Weather/season dependent, limited spawn points
+
+* Dragon-assisted: Only accessible with specific dragon abilities
+
+### **5.2.1 Ingredient Data Structure**
+
+Ingredient {    id: ItemID    name: String    description: String    category: Enum (VEGETABLE, FRUIT, GRAIN, MEAT, SEAFOOD, DAIRY, SPICE, SPECIAL)        // Gathering    gatherMethod: Enum (PICK, DIG, FISH, HUNT, DRAGON\_ABILITY)    requiredTool: ToolID | null    requiredDragonAbility: AbilityID | null        // Quality    quality: Integer (1-5)    qualityFactors: Array\<{condition: Condition, modifier: Integer}\>        // Spawning    spawnZones: Array\<ZoneID\>    spawnChance: Float (0.0-1.0)    respawnDays: Integer    seasonalAvailability: Array\<Season\>        // Storage    stackSize: Integer (max in inventory slot)    spoilDays: Integer (0 \= never spoils)}
+
+## **5.3 Time & Weather Systems**
+
+### **5.3.1 Day/Night Cycle**
+
+* 1 in-game day \= 24 real-time minutes (at 1x speed)
+
+* Time passes only in exploration/cafe modes, pauses in menus/cutscenes
+
+* Player can sleep to advance to next morning at any time after 18:00
+
+* Skipping cafe service results in reputation penalty
+
+### **5.3.2 Seasons**
+
+* 4 seasons: Spring, Summer, Autumn, Winter
+
+* Each season \= 10 in-game days
+
+* Seasons affect: ingredient availability, customer preferences, special events
+
+### **5.3.3 Weather States**
+
+| Weather | Probability | Effects | Special Resources |
+| :---- | :---- | :---- | :---- |
+| Sunny | 40% | Normal operations | Sun-dried ingredients |
+| Cloudy | 25% | Slightly reduced stamina drain | Mushroom boost |
+| Rainy | 20% | Faster plant growth, fewer customers | Rainwater, snails |
+| Stormy | 10% | Cafe closed, exploration dangerous | Storm flowers, lightning crystals |
+| Special | 5% | Unique events (meteor shower, etc.) | Event-specific legendary items |
+
+# **6\. Story & Progression System**
+
+## **6.1 Main Story Structure**
+
+The game is divided into chapters, each introducing a new story character who visits the cafe with a personal problem to resolve:
+
+| Chapter | Story Character | Theme | Unlock Condition |
+| :---- | :---- | :---- | :---- |
+| Prologue | (Tutorial) | Learning basics, mother falls ill | New Game |
+| 1 | Marcus the Wanderer | Finding purpose after failure | Complete Prologue |
+| 2 | Lily the Perfectionist | Accepting imperfection | Reputation 100+ |
+| 3 | Old Man Garrett | Letting go of the past | Dragon: Juvenile |
+| 4 | The Estranged Siblings | Family reconciliation | Reputation 300+ |
+| 5 | Captain Vera | Courage vs. recklessness | Dragon: Adolescent |
+| 6 | The Masked Noble | Identity and authenticity | Reputation 600+ |
+| Finale | Mother's Secret | Heritage and acceptance | Dragon: Adult |
+
+## **6.2 Story Event System**
+
+StoryEvent {    id: EventID    chapter: Integer    sequenceOrder: Integer (order within chapter)        // Trigger conditions (ALL must be true)    conditions: {        timeOfDay: TimeRange | null        dayOfWeek: Array\<DayOfWeek\> | null        weather: Weather | null        location: ZoneID | null        reputationMin: Integer | null        dragonStageMin: DragonStage | null        previousEventsCompleted: Array\<EventID\>        recipesCookedForCharacter: Array\<RecipeID\> | null    }        // Event content    dialogueTree: DialogueTreeID    cutsceneId: CutsceneID | null        // Outcomes    reputationChange: Integer    unlocks: Array\<UnlockID\> (recipes, zones, items)    nextEventId: EventID | null}
+
+## **6.3 Character Relationship System**
+
+Each story character has an Affinity level (0-100) that increases through:
+
+* Cooking their requested dishes (+5 base, \+10 if high quality)
+
+* Discovering and cooking their favorite recipes (+15)
+
+* Positive dialogue choices during events (+5-10)
+
+* Giving gifts of preferred ingredients (+3-8)
+
+Affinity thresholds unlock additional dialogue, backstory revelations, and post-chapter bonus content.
+
+# **7\. Inventory & Economy System**
+
+## **7.1 Inventory Structure**
+
+PlayerInventory {    // Carried inventory (during exploration)    carriedSlots: Integer (default: 20, upgradeable to 40\)    carriedItems: Array\<{itemId: ItemID, quantity: Integer, quality: Integer}\>        // Cafe storage (accessed at cafe)    storageSlots: Integer (default: 100, upgradeable to 300\)    storedItems: Array\<{itemId: ItemID, quantity: Integer, quality: Integer}\>        // Refrigerator (prevents spoilage)    fridgeSlots: Integer (default: 30, upgradeable to 60\)    fridgeItems: Array\<{itemId: ItemID, quantity: Integer, quality: Integer}\>        // Recipe book    unlockedRecipes: Array\<RecipeID\>    masteredRecipes: Array\<RecipeID\> (cooked 10+ times with perfect score)        // Currency    gold: Integer}
+
+## **7.2 Economy Balance**
+
+| Income Source | Gold Range | Frequency |
+| :---- | :---- | :---- |
+| Dish sale (1-star) | 10-30 gold | Per customer |
+| Dish sale (5-star) | 80-200 gold | Per customer |
+| Tips (high satisfaction) | 5-50 gold | Per customer |
+| Story chapter completion | 500-2000 gold | 7 total |
+| Ingredient sale | 1-20 gold per item | Optional |
+
+| Expense | Gold Cost | Notes |
+| :---- | :---- | :---- |
+| Inventory upgrade (+5 slots) | 500 gold | Max 4 purchases |
+| Storage upgrade (+50 slots) | 1000 gold | Max 4 purchases |
+| Garden expansion | 2000 gold | 3 tiers |
+| Cafe renovation | 3000-10000 gold | Cosmetic \+ capacity |
+| Special ingredient (shop) | 50-500 gold | Limited stock |
+
+# **8\. User Interface Specifications**
+
+## **8.1 Screen Flow Diagram**
+
+Main navigation flow between game screens:
+
+\[Title Screen\]    |    \+---\> \[Main Menu\]            |            \+---\> \[New Game\] \---\> \[Character Creation\] \---\> \[Prologue\]            |            \+---\> \[Continue\] \---\> \[Save Slot Selection\] \---\> \[Gameplay HUD\]            |            \+---\> \[Options\] \---\> \[Settings Screens\]\[Gameplay HUD\]    |    \+---\> \[Pause Menu\]    |       \+---\> \[Inventory\]    |       \+---\> \[Recipe Book\]    |       \+---\> \[Dragon Status\]    |       \+---\> \[Map\]    |       \+---\> \[Quest Log\]    |       \+---\> \[Save/Load\]    |       \+---\> \[Options\]    |    \+---\> \[Cafe Mode\]    |       \+---\> \[Kitchen\]    |       \+---\> \[Serving Area\]    |       \+---\> \[Menu Management\]    |    \+---\> \[Exploration Mode\]            \+---\> \[World Map\]            \+---\> \[Zone Navigation\]
+
+## **8.2 HUD Elements**
+
+| Element | Position | Always Visible | Information Displayed |
+| :---- | :---- | :---- | :---- |
+| Time/Date | Top-Right | Yes | Current time, day, season, weather icon |
+| Dragon Status | Bottom-Left | Yes (exploration) | Hunger, stamina bars, happiness indicator |
+| Player Status | Top-Left | Yes | Gold, current location name |
+| Minimap | Bottom-Right | Toggle | Local area, resource markers, objectives |
+| Quick Inventory | Bottom-Center | Toggle | 8 item slots, equipped tool |
+| Notification Area | Top-Center | On Event | Achievements, story prompts, warnings |
+
+## **8.3 Control Schemes**
+
+### **8.3.1 Gamepad Controls**
+
+| Input | Exploration Mode | Cafe Mode |
+| :---- | :---- | :---- |
+| Left Stick | Move player | Move player |
+| Right Stick | Camera control | Camera control |
+| A / Cross | Interact / Gather | Take order / Serve |
+| B / Circle | Cancel / Back | Cancel / Back |
+| X / Square | Call dragon | Open kitchen |
+| Y / Triangle | Dragon ability | Talk to staff |
+| LB / L1 | Quick inventory left | Quick inventory left |
+| RB / R1 | Quick inventory right | Quick inventory right |
+| LT / L2 | Sprint (hold) | Time speed up (hold) |
+| RT / R2 | Mount/dismount dragon | N/A |
+| Start/Options | Pause menu | Pause menu |
+| Select/Share | Map toggle | Recipe book |
+
+# **9\. Technical Requirements**
+
+## **9.1 Platform Specifications**
+
+### **9.1.1 PC Requirements**
+
+| Component | Minimum | Recommended |
+| :---- | :---- | :---- |
+| OS | Windows 10 64-bit | Windows 11 64-bit |
+| CPU | Intel i5-6500 / AMD Ryzen 3 1200 | Intel i7-8700 / AMD Ryzen 5 3600 |
+| RAM | 8 GB | 16 GB |
+| GPU | GTX 1050 / RX 560 (4GB VRAM) | GTX 1660 / RX 5600 XT |
+| Storage | 15 GB HDD | 15 GB SSD |
+| Resolution | 1280x720 @ 30fps | 1920x1080 @ 60fps |
+
+### **9.1.2 Console Targets**
+
+* Nintendo Switch: 720p handheld / 1080p docked, 30fps target
+
+* PlayStation 5: 4K upscaled, 60fps
+
+* Xbox Series X: 4K upscaled, 60fps
+
+* Xbox Series S: 1440p, 60fps
+
+## **9.2 Engine & Framework**
+
+* Primary Engine: Unity 2023 LTS (or Unreal Engine 5.3+)
+
+* Rendering: URP (Universal Render Pipeline) for stylized graphics
+
+* Audio: FMOD or Wwise for adaptive music system
+
+* Networking: None required (single-player only)
+
+* Analytics: Optional telemetry for balancing data
+
+## **9.3 Save System**
+
+SaveData {    // Meta    saveSlot: Integer (1-3)    version: String    playtime: Integer (seconds)    lastSaved: DateTime        // Core state    playerData: PlayerInventory    dragonData: DragonEntity    cafeData: {        reputation: Integer        totalCustomersServed: Integer        menuSettings: Array\<RecipeID\>        staffMorale: Map\<StaffID, Integer\>        upgrades: Array\<UpgradeID\>    }        // World state    currentDay: Integer    currentSeason: Season    weather: Weather    zoneStates: Map\<ZoneID, ZoneState\>    resourceSpawns: Map\<SpawnPointID, SpawnState\>        // Story state    currentChapter: Integer    completedEvents: Array\<EventID\>    characterAffinities: Map\<CharacterID, Integer\>    dialogueFlags: Map\<FlagID, Boolean\>        // Collection data    discoveredRecipes: Array\<RecipeID\>    ingredientCodex: Map\<ItemID, {discovered: Boolean, timesGathered: Integer}\>    achievements: Array\<AchievementID\>}
+
+## **9.4 Performance Budgets**
+
+| Metric | Target (PC/Console) | Target (Switch) |
+| :---- | :---- | :---- |
+| Frame Time | \< 16.67ms (60fps) | \< 33.33ms (30fps) |
+| Draw Calls | \< 2000 per frame | \< 800 per frame |
+| Memory (RAM) | \< 4 GB | \< 3 GB |
+| VRAM | \< 3 GB | \< 1 GB |
+| Load Time (zone) | \< 3 seconds | \< 8 seconds |
+| Save/Load | \< 2 seconds | \< 4 seconds |
+
+# **10\. Art & Audio Direction**
+
+## **10.1 Visual Style**
+
+The game employs a stylized, storybook aesthetic with the following characteristics:
+
+* Soft, hand-painted textures with visible brush strokes
+
+* Warm, inviting color palette with pastel accents
+
+* Cel-shaded characters with expressive, anime-inspired faces
+
+* Dynamic lighting that emphasizes time-of-day atmosphere
+
+* Minimal UI chrome, preferring diegetic elements where possible
+
+## **10.2 Character Design Guidelines**
+
+* Player Character: Customizable gender, 3 skin tones, 8 hair styles/colors
+
+* Story Characters: Distinct silhouettes, memorable color schemes, expressive animations
+
+* Dragon: Smooth quadruped design, large expressive eyes, color-shifting scales
+
+* NPCs: Simplified designs, repeated archetypes with palette swaps
+
+## **10.3 Audio Requirements**
+
+### **10.3.1 Music**
+
+| Context | Tracks Needed | Style Notes |
+| :---- | :---- | :---- |
+| Main Theme | 1 | Memorable melody, orchestral with folk elements |
+| Cafe (Day) | 3 | Upbeat, jazzy, acoustic instruments |
+| Cafe (Evening) | 2 | Relaxed, warm, piano-focused |
+| Exploration | 1 per zone (7) | Ambient, adaptive layers based on activity |
+| Cooking Minigame | 5 | Rhythmic, catchy, varied tempos |
+| Story Emotional | 5 | Sad, hopeful, tense, heartwarming, triumphant |
+| Dragon Themes | 5 | One per life stage, evolving motif |
+
+### **10.3.2 Sound Effects**
+
+* UI: Menu navigation, confirmations, notifications (\~50 sounds)
+
+* Cooking: Chopping, sizzling, boiling, rhythm game hits (\~100 sounds)
+
+* Dragon: Vocalizations per stage, ability sounds (\~80 sounds)
+
+* Environment: Ambient per zone, weather, time transitions (\~150 sounds)
+
+* Characters: Emote sounds, footsteps, reactions (\~100 sounds)
+
+### **10.3.3 Voice**
+
+Limited voice acting approach:
+
+* No full voice acting for dialogue (text-based with character voices)
+
+* Emotive voice clips per character (laugh, gasp, sigh, etc.) \- 10-15 per character
+
+* Dragon vocalizations fully voiced, procedurally mixed
+
+# **11\. Accessibility Features**
+
+## **11.1 Required Features**
+
+* Fully remappable controls (all platforms)
+
+* Subtitle system with speaker identification and size options
+
+* Colorblind modes (Deuteranopia, Protanopia, Tritanopia)
+
+* Screen reader support for menus (PC)
+
+* Adjustable text size (small, medium, large, extra large)
+
+* High contrast mode for UI elements
+
+## **11.2 Gameplay Assists**
+
+* Adjustable game speed (0.5x, 0.75x, 1x, 1.25x)
+
+* Cooking minigame difficulty (Easy: wider timing windows, Hard: original)
+
+* Auto-serve mode for cafe (AI handles serving, player manages kitchen)
+
+* Quest markers always visible toggle
+
+* No fail mode (dragon stats don't decrease, cafe reputation can't drop)
+
+# **12\. Appendices**
+
+## **12.1 Complete Recipe List (Sample)**
+
+| Recipe Name | Category | Difficulty | Key Ingredients |
+| :---- | :---- | :---- | :---- |
+| Garden Salad | Appetizer | 1 Star | Lettuce, Tomato, Cucumber |
+| Herb Omelette | Main | 2 Star | Eggs, Herbs, Butter |
+| Dragon's Breath Stew | Main | 4 Star | Spicy Pepper, Game Meat, Root Vegetables |
+| Honey Cake | Dessert | 3 Star | Flour, Honey, Eggs, Cream |
+| Moonlight Parfait | Dessert | 5 Star | Star Berries, Lunar Cream, Crystal Sugar |
+
+Full recipe list: 80+ recipes across all categories, documented in separate Recipe Design Document.
+
+## **12.2 Achievement List (Sample)**
+
+| Achievement | Condition | Type |
+| :---- | :---- | :---- |
+| First Steps | Complete the Prologue | Story |
+| Dragon Bonded | Reach Bond Level 100 with your dragon | Dragon |
+| Master Chef | Master 20 different recipes | Cooking |
+| Five Star Service | Achieve 100% satisfaction on 50 customers | Cafe |
+| Sky Rider | Fly with your adult dragon for the first time | Dragon |
+| Completionist | Discover all recipes, ingredients, and locations | Collection |
+
+Full achievement list: 40 achievements, documented in separate Achievement Design Document.
+
+## **12.3 Localization Requirements**
+
+Target languages for launch:
+
+* Full localization: English, Japanese, French, German, Spanish, Portuguese (BR), Chinese (Simplified), Korean
+
+* Estimated word count: 120,000 words
+
+* All UI text externalized to localization tables
+
+* Support for RTL languages in future updates
+
+## **12.4 Document Revision History**
+
+| Version | Date | Changes |
+| :---- | :---- | :---- |
+| 1.0 | January 2026 | Initial specification document |
+
+*— End of Document —*
