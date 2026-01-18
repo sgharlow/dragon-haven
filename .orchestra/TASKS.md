@@ -1,13 +1,14 @@
 # Tasks
 
 > Last updated: 2026-01-17
-> Progress: 7/35 complete
+> Progress: 8/35 complete
 
 ## Ready
-- [ ] `008` Dragon system
 - [ ] `009` Inventory system
+- [ ] `010` World/zone system
 - [ ] `019` Main menu screen
 - [ ] `020` Settings screen
+- [ ] `026` Dragon status screen
 - [ ] `027` Dialogue system
 
 ## In Progress
@@ -20,9 +21,9 @@
 - [x] `005` Sound manager ✓
 - [x] `006` Save system foundation ✓
 - [x] `007` Time system ✓
+- [x] `008` Dragon system ✓
 
 ## Blocked
-- [ ] `010` World/zone system (depends: 007, 008)
 - [ ] `011` Resource spawning (depends: 009, 010)
 - [ ] `012` Economy system (depends: 009)
 - [ ] `013` Cafe system (depends: 007, 012)
@@ -36,7 +37,6 @@
 - [ ] `023` Exploration mode UI (depends: 008, 010, 011, 021)
 - [ ] `024` Inventory screen (depends: 004, 009)
 - [ ] `025` Recipe book screen (depends: 004, 016)
-- [ ] `026` Dragon status screen (depends: 004, 008)
 - [ ] `028` Story event system (depends: 007, 013, 027)
 - [ ] `029` Character relationships (depends: 028)
 - [ ] `030` Story content (depends: 028, 029)

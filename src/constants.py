@@ -106,6 +106,59 @@ CAFE_OPEN_HOUR = 8   # Opens at 8 AM
 CAFE_CLOSE_HOUR = 22  # Closes at 10 PM
 
 # =============================================================================
+# DRAGON SYSTEM
+# =============================================================================
+# Life stages and their day ranges
+DRAGON_STAGE_EGG = 'egg'
+DRAGON_STAGE_HATCHLING = 'hatchling'
+DRAGON_STAGE_JUVENILE = 'juvenile'
+
+# Stage progression (days alive)
+DRAGON_EGG_DAYS = 3        # Days 1-3: Egg
+DRAGON_HATCHLING_DAYS = 7  # Days 4-10: Hatchling (HATCHLING_END = EGG + HATCHLING)
+# Days 11+: Juvenile
+
+# Stat ranges
+DRAGON_STAT_MAX = 100.0
+DRAGON_BOND_MAX = 1000
+
+# Stat decay rates (per game hour)
+DRAGON_HUNGER_DECAY = 2.0    # Loses 2 hunger per hour
+DRAGON_HAPPINESS_DECAY = 0.5  # Loses 0.5 happiness per hour
+DRAGON_STAMINA_REGEN = 5.0    # Gains 5 stamina per hour (when resting)
+
+# Stat thresholds
+DRAGON_HUNGER_WARNING = 30.0
+DRAGON_HAPPINESS_WARNING = 30.0
+DRAGON_STAMINA_LOW = 20.0
+
+# Feeding effects
+DRAGON_FEED_HUNGER_RESTORE = 30.0
+DRAGON_FEED_HAPPINESS_BONUS = 10.0
+DRAGON_FEED_BOND_BONUS = 5
+
+# Petting effects
+DRAGON_PET_HAPPINESS = 15.0
+DRAGON_PET_BOND = 3
+
+# Color shift rate (how fast color changes from food)
+DRAGON_COLOR_SHIFT_RATE = 0.05
+
+# Ability stamina costs
+DRAGON_ABILITY_COSTS = {
+    'burrow_fetch': 20,
+    'sniff_track': 15,
+    'rock_smash': 30,
+}
+
+# Abilities unlocked per stage
+DRAGON_STAGE_ABILITIES = {
+    DRAGON_STAGE_EGG: [],
+    DRAGON_STAGE_HATCHLING: ['burrow_fetch', 'sniff_track'],
+    DRAGON_STAGE_JUVENILE: ['burrow_fetch', 'sniff_track', 'rock_smash'],
+}
+
+# =============================================================================
 # GAME VERSION
 # =============================================================================
 VERSION = "0.1.0"
