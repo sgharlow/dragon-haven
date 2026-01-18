@@ -240,6 +240,105 @@ WEATHER_RESOURCE_MULTIPLIER = {
 }
 
 # =============================================================================
+# RESOURCE SPAWNING SYSTEM
+# =============================================================================
+# Spawn rarity tiers (daily spawn chance)
+SPAWN_RARITY_COMMON = 'common'       # 100% spawn chance
+SPAWN_RARITY_UNCOMMON = 'uncommon'   # 50% spawn chance
+SPAWN_RARITY_RARE = 'rare'           # 25% spawn chance
+
+SPAWN_CHANCE = {
+    SPAWN_RARITY_COMMON: 1.0,
+    SPAWN_RARITY_UNCOMMON: 0.5,
+    SPAWN_RARITY_RARE: 0.25,
+}
+
+# Default respawn times (days)
+RESPAWN_DAYS = {
+    SPAWN_RARITY_COMMON: 1,
+    SPAWN_RARITY_UNCOMMON: 2,
+    SPAWN_RARITY_RARE: 3,
+}
+
+# Quality range (1-5 stars)
+QUALITY_MIN = 1
+QUALITY_MAX = 5
+
+# Quality bonuses
+QUALITY_SEASON_BONUS = {
+    'spring': {'herb': 1, 'flower': 1, 'berry': 0},
+    'summer': {'berry': 1, 'honey': 1, 'herb': 0},
+}
+
+QUALITY_WEATHER_BONUS = {
+    WEATHER_SUNNY: {'honey': 1, 'berry': 0},
+    WEATHER_CLOUDY: {'mushroom': 1, 'herb': 0},
+    WEATHER_RAINY: {'herb': 1, 'mushroom': 1, 'fish': 1},
+}
+
+# Dragon ability requirements for certain spawn points
+ABILITY_BURROW = 'burrow_fetch'
+ABILITY_SNIFF = 'sniff_track'
+ABILITY_SMASH = 'rock_smash'
+
+# =============================================================================
+# INGREDIENT DEFINITIONS
+# =============================================================================
+# Base ingredients with: (name, category, base_price, spoil_days, color_influence)
+INGREDIENTS = {
+    # Cafe Grounds - Basic ingredients
+    'garden_herb': ('Garden Herb', ITEM_SPICE, 5, 2, (0.3, 0.7, 0.3)),
+    'wild_berry': ('Wild Berry', ITEM_FRUIT, 8, 2, (0.8, 0.2, 0.4)),
+    'edible_flower': ('Edible Flower', ITEM_SPECIAL, 10, 1, (0.6, 0.4, 0.7)),
+
+    # Meadow Fields - Mid-tier ingredients
+    'meadow_berry': ('Meadow Berry', ITEM_FRUIT, 12, 3, (0.7, 0.3, 0.5)),
+    'golden_honey': ('Golden Honey', ITEM_SPECIAL, 25, 0, (0.9, 0.7, 0.2)),  # Never spoils
+    'wild_herb': ('Wild Herb', ITEM_SPICE, 10, 3, (0.2, 0.8, 0.3)),
+    'field_mushroom': ('Field Mushroom', ITEM_VEGETABLE, 15, 2, (0.5, 0.4, 0.3)),
+    'buried_root': ('Buried Root', ITEM_VEGETABLE, 18, 4, (0.6, 0.4, 0.2)),
+
+    # Forest Depths - Rare ingredients
+    'rare_mushroom': ('Rare Mushroom', ITEM_VEGETABLE, 30, 2, (0.4, 0.3, 0.6)),
+    'forest_herb': ('Forest Herb', ITEM_SPICE, 20, 3, (0.1, 0.6, 0.2)),
+    'wild_game': ('Wild Game', ITEM_MEAT, 35, 1, (0.8, 0.3, 0.2)),
+    'forest_fish': ('Forest Fish', ITEM_SEAFOOD, 28, 1, (0.3, 0.5, 0.8)),
+    'crystal_shard': ('Crystal Shard', ITEM_SPECIAL, 50, 0, (0.5, 0.5, 0.9)),  # Never spoils
+    'hidden_truffle': ('Hidden Truffle', ITEM_SPECIAL, 45, 2, (0.4, 0.3, 0.2)),
+}
+
+# Spawn point definitions per zone: list of (id, name, x, y, ingredient_id, rarity, ability_required)
+ZONE_SPAWN_POINTS = {
+    ZONE_CAFE_GROUNDS: [
+        ('cg_herb_1', 'Garden Patch', 5, 5, 'garden_herb', SPAWN_RARITY_COMMON, None),
+        ('cg_herb_2', 'Herb Garden', 3, 8, 'garden_herb', SPAWN_RARITY_COMMON, None),
+        ('cg_berry_1', 'Berry Bush', 8, 10, 'wild_berry', SPAWN_RARITY_COMMON, None),
+        ('cg_flower_1', 'Flower Bed', 15, 7, 'edible_flower', SPAWN_RARITY_UNCOMMON, None),
+        ('cg_flower_2', 'Window Box', 12, 3, 'edible_flower', SPAWN_RARITY_UNCOMMON, None),
+    ],
+    ZONE_MEADOW_FIELDS: [
+        ('mf_berry_1', 'Wild Berry Thicket', 4, 8, 'meadow_berry', SPAWN_RARITY_COMMON, None),
+        ('mf_berry_2', 'Sunlit Berries', 16, 5, 'meadow_berry', SPAWN_RARITY_COMMON, None),
+        ('mf_honey_1', 'Bee Hive', 12, 3, 'golden_honey', SPAWN_RARITY_RARE, None),
+        ('mf_herb_1', 'Herb Meadow', 16, 12, 'wild_herb', SPAWN_RARITY_COMMON, None),
+        ('mf_mushroom_1', 'Mushroom Circle', 7, 14, 'field_mushroom', SPAWN_RARITY_UNCOMMON, None),
+        ('mf_mushroom_2', 'Shady Spot', 3, 11, 'field_mushroom', SPAWN_RARITY_UNCOMMON, None),
+        ('mf_root_1', 'Buried Treasure', 10, 6, 'buried_root', SPAWN_RARITY_UNCOMMON, ABILITY_BURROW),
+        ('mf_root_2', 'Deep Soil', 14, 10, 'buried_root', SPAWN_RARITY_RARE, ABILITY_BURROW),
+    ],
+    ZONE_FOREST_DEPTHS: [
+        ('fd_mushroom_1', 'Rare Fungi', 6, 6, 'rare_mushroom', SPAWN_RARITY_UNCOMMON, None),
+        ('fd_mushroom_2', 'Hidden Grove', 14, 4, 'rare_mushroom', SPAWN_RARITY_RARE, ABILITY_SNIFF),
+        ('fd_herb_1', 'Forest Floor', 10, 8, 'forest_herb', SPAWN_RARITY_COMMON, None),
+        ('fd_herb_2', 'Mossy Bank', 4, 12, 'forest_herb', SPAWN_RARITY_UNCOMMON, None),
+        ('fd_game_1', 'Hunting Grounds', 10, 11, 'wild_game', SPAWN_RARITY_RARE, ABILITY_SNIFF),
+        ('fd_fish_1', 'Forest Stream', 17, 9, 'forest_fish', SPAWN_RARITY_UNCOMMON, None),
+        ('fd_crystal_1', 'Crystal Cave', 18, 13, 'crystal_shard', SPAWN_RARITY_RARE, ABILITY_SMASH),
+        ('fd_truffle_1', 'Truffle Spot', 8, 3, 'hidden_truffle', SPAWN_RARITY_RARE, ABILITY_SNIFF),
+    ],
+}
+
+# =============================================================================
 # GAME VERSION
 # =============================================================================
 VERSION = "0.1.0"

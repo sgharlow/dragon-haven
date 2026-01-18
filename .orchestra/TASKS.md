@@ -4,7 +4,6 @@
 > Progress: 10/35 complete
 
 ## Ready
-- [ ] `011` Resource spawning
 - [ ] `012` Economy system
 - [ ] `016` Recipe system
 - [ ] `019` Main menu screen
@@ -14,6 +13,7 @@
 - [ ] `027` Dialogue system
 
 ## In Progress
+- [ ] `011` Resource spawning (task/011)
 
 ## Done
 - [x] `001` Project setup ✓

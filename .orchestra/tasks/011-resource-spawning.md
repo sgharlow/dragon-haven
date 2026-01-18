@@ -4,9 +4,9 @@
 | Field | Value |
 |-------|-------|
 | **ID** | 011 |
-| **Status** | ready |
+| **Status** | in_progress |
 | **Branch** | task/011 |
-| **Assigned** | |
+| **Assigned** | task/011 |
 | **Depends** | 009, 010 |
 | **Blocked-By** | |
 | **Estimated** | 60 min |
@@ -19,21 +19,21 @@
 Create the resource spawning system that populates zones with gatherable ingredients. Handles spawn points, respawn timers, quality variation, and dragon-assisted gathering.
 
 ## Acceptance Criteria
-- [ ] SpawnPoint class: position, item_id, spawn_chance, respawn_days, requires_ability
-- [ ] ResourceManager class
-- [ ] Spawn points defined per zone
-- [ ] Common resources: 100% daily spawn
-- [ ] Uncommon resources: 50% daily spawn
-- [ ] Rare resources: 25% daily spawn, weather-dependent
-- [ ] Quality variation (1-5 stars) based on:
+- [x] SpawnPoint class: position, item_id, spawn_chance, respawn_days, requires_ability
+- [x] ResourceManager class
+- [x] Spawn points defined per zone
+- [x] Common resources: 100% daily spawn
+- [x] Uncommon resources: 50% daily spawn
+- [x] Rare resources: 25% daily spawn, weather-dependent
+- [x] Quality variation (1-5 stars) based on:
   - Season bonuses
   - Weather conditions
   - Random variance
-- [ ] gather(spawn_point) method - adds to inventory
-- [ ] Dragon ability requirements (some spots need rock_smash, etc.)
-- [ ] Visual indicators for available resources
-- [ ] Daily respawn logic tied to time system
-- [ ] Serialization for save/load (which points are depleted)
+- [x] gather(spawn_point) method - adds to inventory
+- [x] Dragon ability requirements (some spots need rock_smash, etc.)
+- [x] Visual indicators for available resources
+- [x] Daily respawn logic tied to time system
+- [x] Serialization for save/load (which points are depleted)
 
 ## Context Files
 - src/systems/inventory.py
@@ -48,4 +48,18 @@ Create the resource spawning system that populates zones with gatherable ingredi
 ---
 
 ## Work Log
+
+### 2026-01-17
+- Added resource spawning constants to constants.py (rarity tiers, quality bonuses)
+- Defined 14 ingredient types across 3 zones
+- Defined 21 spawn points across all zones with positions, rarities, and ability requirements
+- Created SpawnPoint class with spawn chance, respawn timers, quality calculation
+- Implemented quality variation based on season, weather, and random variance (1-5 stars)
+- Created ResourceManager class with singleton access
+- Implemented gathering with inventory integration and ability checking
+- Added visual indicator system for UI
+- Implemented daily respawn logic with weather influence on rare spawns
+- Added full serialization (get_state/load_state)
+- Updated systems/__init__.py with new exports
+- All tests pass
 
