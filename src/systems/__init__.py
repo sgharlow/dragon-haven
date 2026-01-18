@@ -5,3 +5,4 @@ from systems.world import Zone, WorldManager, get_world_manager
 from systems.resources import SpawnPoint, ResourceManager, get_resource_manager
 from systems.economy import EconomyManager, get_economy
 from systems.cafe import CafeManager, ServiceStats, get_cafe_manager
+from systems.recipes import Recipe, RecipeMastery, RecipeManager, get_recipe_manager

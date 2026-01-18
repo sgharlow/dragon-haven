@@ -4,7 +4,6 @@
 > Progress: 15/35 complete
 
 ## Ready
-- [ ] `016` Recipe system
 - [ ] `018` Reputation system
 - [ ] `019` Main menu screen
 - [ ] `020` Settings screen
@@ -14,6 +13,7 @@
 - [ ] `027` Dialogue system
 
 ## In Progress
+- [ ] `016` Recipe system (task/016)
 
 ## Done
 - [x] `001` Project setup ✓

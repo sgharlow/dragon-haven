@@ -508,6 +508,277 @@ UPGRADES = {
 }
 
 # =============================================================================
+# RECIPE SYSTEM
+# =============================================================================
+# Recipe categories
+RECIPE_CATEGORY_APPETIZER = 'appetizer'
+RECIPE_CATEGORY_MAIN = 'main'
+RECIPE_CATEGORY_DESSERT = 'dessert'
+RECIPE_CATEGORY_BEVERAGE = 'beverage'
+
+ALL_RECIPE_CATEGORIES = [
+    RECIPE_CATEGORY_APPETIZER,
+    RECIPE_CATEGORY_MAIN,
+    RECIPE_CATEGORY_DESSERT,
+    RECIPE_CATEGORY_BEVERAGE,
+]
+
+# Difficulty levels (1-5 stars)
+RECIPE_DIFFICULTY_MIN = 1
+RECIPE_DIFFICULTY_MAX = 5
+
+# Base quality per difficulty
+RECIPE_BASE_QUALITY = {
+    1: 2,  # Easy recipes start at 2-star quality
+    2: 2,
+    3: 3,  # Medium recipes start at 3-star
+    4: 3,
+    5: 4,  # Hard recipes start at 4-star (harder but better base)
+}
+
+# Mastery requirements
+RECIPE_MASTERY_COOK_COUNT = 10  # Cook 10 times to progress
+RECIPE_MASTERY_PERFECT_COUNT = 5  # Need 5 perfect (5-star) cooks for full mastery
+
+# Recipe unlock types
+UNLOCK_TYPE_DEFAULT = 'default'       # Available from start
+UNLOCK_TYPE_REPUTATION = 'reputation'  # Requires reputation level
+UNLOCK_TYPE_STORY = 'story'           # Requires story progress
+UNLOCK_TYPE_DISCOVERY = 'discovery'   # Found through exploration
+
+# Recipe definitions
+# Format: id -> {name, description, category, difficulty, base_price, ingredients, color_influence, unlock}
+# ingredients: list of (item_id, quantity, min_quality)
+# color_influence: (r, g, b) modifiers for dragon color (0.0-1.0)
+# unlock: {type, requirement} - e.g., {type: 'reputation', requirement: 50}
+
+RECIPES = {
+    # =========================================================================
+    # APPETIZERS (4) - Difficulty 1-2
+    # =========================================================================
+    'herb_salad': {
+        'name': 'Fresh Herb Salad',
+        'description': 'A light salad with garden herbs. Simple but refreshing.',
+        'category': RECIPE_CATEGORY_APPETIZER,
+        'difficulty': 1,
+        'base_price': 25,
+        'ingredients': [
+            ('garden_herb', 2, 1),
+            ('edible_flower', 1, 1),
+        ],
+        'color_influence': (0.3, 0.7, 0.4),  # Green-heavy
+        'unlock': {'type': UNLOCK_TYPE_DEFAULT},
+    },
+    'berry_toast': {
+        'name': 'Berry Toast',
+        'description': 'Toasted bread topped with fresh wild berries.',
+        'category': RECIPE_CATEGORY_APPETIZER,
+        'difficulty': 1,
+        'base_price': 30,
+        'ingredients': [
+            ('wild_berry', 2, 1),
+        ],
+        'color_influence': (0.7, 0.3, 0.5),  # Red-pink
+        'unlock': {'type': UNLOCK_TYPE_DEFAULT},
+    },
+    'mushroom_skewers': {
+        'name': 'Mushroom Skewers',
+        'description': 'Grilled mushrooms on wooden skewers with herbs.',
+        'category': RECIPE_CATEGORY_APPETIZER,
+        'difficulty': 2,
+        'base_price': 40,
+        'ingredients': [
+            ('field_mushroom', 2, 2),
+            ('wild_herb', 1, 1),
+        ],
+        'color_influence': (0.5, 0.5, 0.4),  # Earthy brown
+        'unlock': {'type': UNLOCK_TYPE_REPUTATION, 'requirement': 20},
+    },
+    'honey_bites': {
+        'name': 'Honey Glazed Bites',
+        'description': 'Sweet bites glazed with golden honey.',
+        'category': RECIPE_CATEGORY_APPETIZER,
+        'difficulty': 2,
+        'base_price': 50,
+        'ingredients': [
+            ('golden_honey', 1, 1),
+            ('meadow_berry', 1, 2),
+        ],
+        'color_influence': (0.8, 0.6, 0.3),  # Golden
+        'unlock': {'type': UNLOCK_TYPE_DISCOVERY},
+    },
+
+    # =========================================================================
+    # MAINS (5) - Difficulty 2-4
+    # =========================================================================
+    'herb_stew': {
+        'name': 'Garden Herb Stew',
+        'description': 'A warm, comforting stew with fresh herbs and root vegetables.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 2,
+        'base_price': 60,
+        'ingredients': [
+            ('garden_herb', 2, 1),
+            ('wild_herb', 1, 1),
+            ('buried_root', 1, 1),
+        ],
+        'color_influence': (0.4, 0.6, 0.3),  # Herby green
+        'unlock': {'type': UNLOCK_TYPE_DEFAULT},
+    },
+    'forest_fish_plate': {
+        'name': 'Forest Stream Fish',
+        'description': 'Pan-seared fish from the forest streams.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 3,
+        'base_price': 85,
+        'ingredients': [
+            ('forest_fish', 1, 2),
+            ('forest_herb', 1, 1),
+            ('wild_herb', 1, 1),
+        ],
+        'color_influence': (0.3, 0.5, 0.7),  # Bluish
+        'unlock': {'type': UNLOCK_TYPE_REPUTATION, 'requirement': 30},
+    },
+    'game_roast': {
+        'name': 'Roasted Wild Game',
+        'description': 'Tender wild game roasted with forest herbs.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 4,
+        'base_price': 120,
+        'ingredients': [
+            ('wild_game', 1, 3),
+            ('forest_herb', 2, 2),
+            ('buried_root', 1, 2),
+        ],
+        'color_influence': (0.7, 0.4, 0.3),  # Meaty red-brown
+        'unlock': {'type': UNLOCK_TYPE_REPUTATION, 'requirement': 50},
+    },
+    'mushroom_risotto': {
+        'name': 'Rare Mushroom Risotto',
+        'description': 'Creamy risotto with rare forest mushrooms.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 3,
+        'base_price': 95,
+        'ingredients': [
+            ('rare_mushroom', 2, 2),
+            ('field_mushroom', 1, 1),
+            ('wild_herb', 1, 1),
+        ],
+        'color_influence': (0.5, 0.4, 0.5),  # Purple-brown
+        'unlock': {'type': UNLOCK_TYPE_DISCOVERY},
+    },
+    'truffle_special': {
+        'name': 'Truffle Special',
+        'description': 'The cafe signature dish featuring hidden truffles.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 4,
+        'base_price': 150,
+        'ingredients': [
+            ('hidden_truffle', 1, 3),
+            ('rare_mushroom', 1, 2),
+            ('golden_honey', 1, 2),
+        ],
+        'color_influence': (0.5, 0.4, 0.3),  # Earthy luxury
+        'unlock': {'type': UNLOCK_TYPE_STORY, 'requirement': 'chapter_2'},
+    },
+
+    # =========================================================================
+    # DESSERTS (4) - Difficulty 2-3
+    # =========================================================================
+    'berry_tart': {
+        'name': 'Wild Berry Tart',
+        'description': 'Sweet tart filled with fresh wild berries.',
+        'category': RECIPE_CATEGORY_DESSERT,
+        'difficulty': 2,
+        'base_price': 45,
+        'ingredients': [
+            ('wild_berry', 2, 2),
+            ('meadow_berry', 1, 1),
+        ],
+        'color_influence': (0.7, 0.2, 0.5),  # Berry purple-red
+        'unlock': {'type': UNLOCK_TYPE_DEFAULT},
+    },
+    'honey_cake': {
+        'name': 'Golden Honey Cake',
+        'description': 'Moist cake drizzled with golden honey.',
+        'category': RECIPE_CATEGORY_DESSERT,
+        'difficulty': 2,
+        'base_price': 55,
+        'ingredients': [
+            ('golden_honey', 1, 2),
+            ('edible_flower', 1, 1),
+        ],
+        'color_influence': (0.9, 0.7, 0.3),  # Golden yellow
+        'unlock': {'type': UNLOCK_TYPE_REPUTATION, 'requirement': 25},
+    },
+    'flower_pudding': {
+        'name': 'Flower Petal Pudding',
+        'description': 'Delicate pudding with edible flower petals.',
+        'category': RECIPE_CATEGORY_DESSERT,
+        'difficulty': 3,
+        'base_price': 65,
+        'ingredients': [
+            ('edible_flower', 3, 2),
+            ('golden_honey', 1, 1),
+        ],
+        'color_influence': (0.6, 0.5, 0.7),  # Floral purple
+        'unlock': {'type': UNLOCK_TYPE_DISCOVERY},
+    },
+    'crystal_sorbet': {
+        'name': 'Crystal Sorbet',
+        'description': 'Magical sorbet infused with crystal essence.',
+        'category': RECIPE_CATEGORY_DESSERT,
+        'difficulty': 3,
+        'base_price': 100,
+        'ingredients': [
+            ('crystal_shard', 1, 2),
+            ('meadow_berry', 2, 2),
+            ('golden_honey', 1, 1),
+        ],
+        'color_influence': (0.5, 0.6, 0.9),  # Crystal blue
+        'unlock': {'type': UNLOCK_TYPE_STORY, 'requirement': 'chapter_1'},
+    },
+
+    # =========================================================================
+    # BEVERAGES (2) - Difficulty 1
+    # =========================================================================
+    'herb_tea': {
+        'name': 'Herbal Tea',
+        'description': 'Soothing tea brewed from fresh garden herbs.',
+        'category': RECIPE_CATEGORY_BEVERAGE,
+        'difficulty': 1,
+        'base_price': 15,
+        'ingredients': [
+            ('garden_herb', 1, 1),
+        ],
+        'color_influence': (0.3, 0.6, 0.3),  # Green
+        'unlock': {'type': UNLOCK_TYPE_DEFAULT},
+    },
+    'berry_juice': {
+        'name': 'Fresh Berry Juice',
+        'description': 'Refreshing juice made from wild berries.',
+        'category': RECIPE_CATEGORY_BEVERAGE,
+        'difficulty': 1,
+        'base_price': 20,
+        'ingredients': [
+            ('wild_berry', 2, 1),
+            ('meadow_berry', 1, 1),
+        ],
+        'color_influence': (0.7, 0.3, 0.4),  # Berry red
+        'unlock': {'type': UNLOCK_TYPE_REPUTATION, 'requirement': 10},
+    },
+}
+
+# Default unlocked recipes (available from game start)
+DEFAULT_UNLOCKED_RECIPES = [
+    'herb_salad',
+    'berry_toast',
+    'herb_stew',
+    'berry_tart',
+    'herb_tea',
+]
+
+# =============================================================================
 # GAME VERSION
 # =============================================================================
 VERSION = "0.1.0"
