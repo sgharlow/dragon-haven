@@ -1,10 +1,10 @@
 # Tasks
 
 > Last updated: 2026-01-17
-> Progress: 9/35 complete
+> Progress: 10/35 complete
 
 ## Ready
-- [ ] `010` World/zone system
+- [ ] `011` Resource spawning
 - [ ] `012` Economy system
 - [ ] `016` Recipe system
 - [ ] `019` Main menu screen
@@ -25,9 +25,9 @@
 - [x] `007` Time system ✓
 - [x] `008` Dragon system ✓
 - [x] `009` Inventory system ✓
+- [x] `010` World/zone system ✓
 
 ## Blocked
-- [ ] `011` Resource spawning (depends: 009, 010)
 - [ ] `013` Cafe system (depends: 007, 012)
 - [ ] `014` Staff system (depends: 013)
 - [ ] `015` Customer system (depends: 013)

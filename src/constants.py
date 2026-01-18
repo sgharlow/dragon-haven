@@ -190,6 +190,56 @@ ITEM_DEFAULT_SPOIL_DAYS = 3  # Days until item spoils (0 = never)
 STARTING_GOLD = 100
 
 # =============================================================================
+# WORLD/ZONE SYSTEM
+# =============================================================================
+# Zone IDs
+ZONE_CAFE_GROUNDS = 'cafe_grounds'
+ZONE_MEADOW_FIELDS = 'meadow_fields'
+ZONE_FOREST_DEPTHS = 'forest_depths'
+
+# All zones for iteration
+ALL_ZONES = [ZONE_CAFE_GROUNDS, ZONE_MEADOW_FIELDS, ZONE_FOREST_DEPTHS]
+
+# Zone unlock requirements (dragon stage)
+ZONE_UNLOCK_REQUIREMENTS = {
+    ZONE_CAFE_GROUNDS: None,  # Always unlocked
+    ZONE_MEADOW_FIELDS: DRAGON_STAGE_HATCHLING,
+    ZONE_FOREST_DEPTHS: DRAGON_STAGE_JUVENILE,
+}
+
+# Zone connections (which zones connect to which)
+ZONE_CONNECTIONS = {
+    ZONE_CAFE_GROUNDS: [ZONE_MEADOW_FIELDS],
+    ZONE_MEADOW_FIELDS: [ZONE_CAFE_GROUNDS, ZONE_FOREST_DEPTHS],
+    ZONE_FOREST_DEPTHS: [ZONE_MEADOW_FIELDS],
+}
+
+# Zone map sizes (tiles)
+ZONE_WIDTH = 20
+ZONE_HEIGHT = 15
+TILE_SIZE = 32
+
+# Weather types
+WEATHER_SUNNY = 'sunny'
+WEATHER_CLOUDY = 'cloudy'
+WEATHER_RAINY = 'rainy'
+
+ALL_WEATHER = [WEATHER_SUNNY, WEATHER_CLOUDY, WEATHER_RAINY]
+
+# Weather probabilities per season (must sum to 1.0)
+WEATHER_PROBABILITIES = {
+    'spring': {WEATHER_SUNNY: 0.4, WEATHER_CLOUDY: 0.35, WEATHER_RAINY: 0.25},
+    'summer': {WEATHER_SUNNY: 0.6, WEATHER_CLOUDY: 0.3, WEATHER_RAINY: 0.1},
+}
+
+# Weather effects on resource spawn rates
+WEATHER_RESOURCE_MULTIPLIER = {
+    WEATHER_SUNNY: 1.0,
+    WEATHER_CLOUDY: 1.1,  # Slightly more resources
+    WEATHER_RAINY: 1.3,   # Best for foraging
+}
+
+# =============================================================================
 # GAME VERSION
 # =============================================================================
 VERSION = "0.1.0"
