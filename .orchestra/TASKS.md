@@ -1,10 +1,9 @@
 # Tasks
 
 > Last updated: 2026-01-17
-> Progress: 13/35 complete
+> Progress: 14/35 complete
 
 ## Ready
-- [ ] `014` Staff system
 - [ ] `015` Customer system
 - [ ] `016` Recipe system
 - [ ] `019` Main menu screen
@@ -30,6 +29,7 @@
 - [x] `011` Resource spawning ✓
 - [x] `012` Economy system ✓
 - [x] `013` Cafe system ✓
+- [x] `014` Staff system ✓
 
 ## Blocked
 - [ ] `017` Cooking minigame (depends: 005, 016)

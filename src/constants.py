@@ -122,6 +122,59 @@ CAFE_MAX_MENU_ITEMS = 6    # Max dishes on menu at once
 CAFE_SKIP_REP_PENALTY = 10  # Reputation penalty for skipping a day
 
 # =============================================================================
+# STAFF SYSTEM
+# =============================================================================
+# Staff roles
+STAFF_ROLE_SERVER = 'server'
+STAFF_ROLE_CHEF = 'chef'
+STAFF_ROLE_BUSSER = 'busser'
+
+# Staff traits
+STAFF_TRAIT_ENTHUSIASTIC = 'enthusiastic'  # Works faster but makes mistakes
+STAFF_TRAIT_SKILLED = 'skilled'            # High quality but prideful
+STAFF_TRAIT_LAZY = 'lazy'                  # Slow but perceptive
+
+# Morale settings
+STAFF_MORALE_MAX = 100
+STAFF_MORALE_START = 70
+STAFF_MORALE_DECAY_PER_HOUR = 1.0  # Morale lost per game hour during service
+STAFF_TALK_MORALE_BOOST = 15       # Morale gained from talking
+STAFF_TALK_COOLDOWN = 2.0          # Hours between talks
+
+# Efficiency settings
+STAFF_MIN_EFFICIENCY = 0.5   # Minimum efficiency at 0 morale
+STAFF_MAX_EFFICIENCY = 1.2   # Maximum efficiency at 100 morale (with trait bonus)
+
+# Mistake probabilities (base, modified by trait/morale)
+STAFF_MISTAKE_BASE_CHANCE = 0.05  # 5% base chance
+STAFF_LOW_MORALE_THRESHOLD = 30   # Below this, mistakes more likely
+
+# Staff definitions: (id, name, role, trait, description)
+STAFF_DEFINITIONS = {
+    'melody': {
+        'name': 'Melody',
+        'role': STAFF_ROLE_SERVER,
+        'trait': STAFF_TRAIT_ENTHUSIASTIC,
+        'description': 'Enthusiastic but clumsy. Needs pep talks to stay focused.',
+        'mistake_type': 'drops items',
+    },
+    'bruno': {
+        'name': 'Bruno',
+        'role': STAFF_ROLE_CHEF,
+        'trait': STAFF_TRAIT_SKILLED,
+        'description': 'Skilled but prideful. Needs recipe guidance to try new things.',
+        'mistake_type': 'refuses unfamiliar recipes',
+    },
+    'sage': {
+        'name': 'Sage',
+        'role': STAFF_ROLE_BUSSER,
+        'trait': STAFF_TRAIT_LAZY,
+        'description': 'Lazy but perceptive. Needs frequent motivation to work.',
+        'mistake_type': 'slacks off',
+    },
+}
+
+# =============================================================================
 # DRAGON SYSTEM
 # =============================================================================
 # Life stages and their day ranges
