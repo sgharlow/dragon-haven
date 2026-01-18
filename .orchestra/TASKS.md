@@ -1,10 +1,11 @@
 # Tasks
 
 > Last updated: 2026-01-17
-> Progress: 20/35 complete
+> Progress: 21/35 complete
 
 ## Ready
-- [ ] `021` Gameplay HUD
+- [ ] `022` Cafe mode UI
+- [ ] `023` Exploration mode UI
 - [ ] `024` Inventory screen
 - [ ] `025` Recipe book screen
 - [ ] `026` Dragon status screen
@@ -13,6 +14,7 @@
 ## In Progress
 
 ## Done
+- [x] `021` Gameplay HUD ✓
 - [x] `020` Settings screen ✓
 - [x] `001` Project setup ✓
 - [x] `002` Game engine core ✓
@@ -35,8 +37,6 @@
 - [x] `019` Main menu screen ✓
 
 ## Blocked
-- [ ] `022` Cafe mode UI (depends: 013, 014, 015, 017, 021)
-- [ ] `023` Exploration mode UI (depends: 008, 010, 011, 021)
 - [ ] `028` Story event system (depends: 007, 013, 027)
 - [ ] `029` Character relationships (depends: 028)
 - [ ] `030` Story content (depends: 028, 029)

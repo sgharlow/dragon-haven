@@ -942,6 +942,91 @@ DEFAULT_SETTINGS = {
 }
 
 # =============================================================================
+# HUD SYSTEM
+# =============================================================================
+# HUD modes
+HUD_MODE_EXPLORATION = 'exploration'
+HUD_MODE_CAFE = 'cafe'
+
+# HUD layout positions (screen coordinates)
+HUD_MARGIN = 15  # Margin from screen edges
+
+# Top-left: Player info
+HUD_PLAYER_X = HUD_MARGIN
+HUD_PLAYER_Y = HUD_MARGIN
+
+# Top-right: Time/Date display
+HUD_TIME_X = SCREEN_WIDTH - HUD_MARGIN
+HUD_TIME_Y = HUD_MARGIN
+
+# Top-center: Notifications
+HUD_NOTIFICATION_X = SCREEN_WIDTH // 2
+HUD_NOTIFICATION_Y = HUD_MARGIN + 10
+HUD_NOTIFICATION_MAX = 3  # Max notifications shown
+HUD_NOTIFICATION_DURATION = 5.0  # Seconds to display
+
+# Bottom-left: Dragon status
+HUD_DRAGON_X = HUD_MARGIN
+HUD_DRAGON_Y = SCREEN_HEIGHT - HUD_MARGIN - 100
+
+# Bottom-right: Minimap placeholder
+HUD_MINIMAP_X = SCREEN_WIDTH - HUD_MARGIN - 100
+HUD_MINIMAP_Y = SCREEN_HEIGHT - HUD_MARGIN - 100
+HUD_MINIMAP_SIZE = 100
+
+# Bottom-center: Quick inventory
+HUD_QUICK_INV_Y = SCREEN_HEIGHT - HUD_MARGIN - 50
+HUD_QUICK_INV_SLOTS = 8
+HUD_QUICK_INV_SLOT_SIZE = 45
+HUD_QUICK_INV_SPACING = 5
+
+# Status bar dimensions
+STATUS_BAR_WIDTH = 120
+STATUS_BAR_HEIGHT = 12
+STATUS_BAR_SPACING = 8
+
+# HUD colors
+HUD_BG_ALPHA = 180  # Background transparency
+HUD_PANEL_COLOR = (30, 28, 40)
+HUD_BORDER_COLOR = (60, 55, 75)
+
+# Notification types and colors
+NOTIFICATION_INFO = 'info'
+NOTIFICATION_SUCCESS = 'success'
+NOTIFICATION_WARNING = 'warning'
+NOTIFICATION_ERROR = 'error'
+
+NOTIFICATION_COLORS = {
+    NOTIFICATION_INFO: (100, 140, 180),
+    NOTIFICATION_SUCCESS: (80, 180, 100),
+    NOTIFICATION_WARNING: (220, 180, 60),
+    NOTIFICATION_ERROR: (220, 80, 80),
+}
+
+# Season/Weather icons (unicode characters for procedural drawing)
+SEASON_ICONS = {
+    'spring': 'flower',
+    'summer': 'sun',
+}
+
+WEATHER_ICONS = {
+    WEATHER_SUNNY: 'sun',
+    WEATHER_CLOUDY: 'cloud',
+    WEATHER_RAINY: 'rain',
+}
+
+# Mood face icons
+MOOD_FACES = {
+    'happy': ':D',
+    'content': ':)',
+    'neutral': ':|',
+    'tired': ':/',
+    'hungry': ':(',
+    'sad': ':(',
+    'incubating': 'o',
+}
+
+# =============================================================================
 # GAME VERSION
 # =============================================================================
 VERSION = "0.1.0"
