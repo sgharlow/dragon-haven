@@ -4,7 +4,7 @@
 | Field | Value |
 |-------|-------|
 | **ID** | 016 |
-| **Status** | in_progress |
+| **Status** | done |
 | **Branch** | task/016 |
 | **Assigned** | task/016 |
 | **Depends** | 009 |

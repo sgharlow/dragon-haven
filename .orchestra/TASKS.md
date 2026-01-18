@@ -1,19 +1,20 @@
 # Tasks
 
 > Last updated: 2026-01-17
-> Progress: 15/35 complete
+> Progress: 16/35 complete
 
 ## Ready
+- [ ] `017` Cooking minigame
 - [ ] `018` Reputation system
 - [ ] `019` Main menu screen
 - [ ] `020` Settings screen
 - [ ] `021` Gameplay HUD
 - [ ] `024` Inventory screen
+- [ ] `025` Recipe book screen
 - [ ] `026` Dragon status screen
 - [ ] `027` Dialogue system
 
 ## In Progress
-- [ ] `016` Recipe system (task/016)
 
 ## Done
 - [x] `001` Project setup ✓
@@ -31,12 +32,11 @@
 - [x] `013` Cafe system ✓
 - [x] `014` Staff system ✓
 - [x] `015` Customer system ✓
+- [x] `016` Recipe system ✓
 
 ## Blocked
-- [ ] `017` Cooking minigame (depends: 005, 016)
 - [ ] `022` Cafe mode UI (depends: 013, 014, 015, 017, 021)
 - [ ] `023` Exploration mode UI (depends: 008, 010, 011, 021)
-- [ ] `025` Recipe book screen (depends: 004, 016)
 - [ ] `028` Story event system (depends: 007, 013, 027)
 - [ ] `029` Character relationships (depends: 028)
 - [ ] `030` Story content (depends: 028, 029)
