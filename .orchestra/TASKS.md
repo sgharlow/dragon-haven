@@ -1,10 +1,9 @@
 # Tasks
 
 > Last updated: 2026-01-17
-> Progress: 21/35 complete
+> Progress: 22/35 complete
 
 ## Ready
-- [ ] `022` Cafe mode UI
 - [ ] `023` Exploration mode UI
 - [ ] `024` Inventory screen
 - [ ] `025` Recipe book screen
@@ -14,6 +13,7 @@
 ## In Progress
 
 ## Done
+- [x] `022` Cafe mode UI ✓
 - [x] `021` Gameplay HUD ✓
 - [x] `020` Settings screen ✓
 - [x] `001` Project setup ✓
