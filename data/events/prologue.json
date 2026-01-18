@@ -1,0 +1,82 @@
+[
+  {
+    "id": "prologue_start",
+    "chapter": "prologue",
+    "sequence_order": 1,
+    "name": "A New Beginning",
+    "description": "The player arrives at Dragon Haven Cafe",
+    "conditions": [
+      {"type": "day_range", "value": [1, 1]}
+    ],
+    "dialogue_id": "intro",
+    "outcomes": [
+      {"type": "set_flag", "value": "prologue_started"},
+      {"type": "next_event", "value": "first_morning"}
+    ]
+  },
+  {
+    "id": "first_morning",
+    "chapter": "prologue",
+    "sequence_order": 2,
+    "name": "First Morning",
+    "description": "The cafe's first day of business",
+    "conditions": [
+      {"type": "events_completed", "value": ["prologue_start"]},
+      {"type": "time_of_day", "value": [6, 10]}
+    ],
+    "dialogue_id": "first_morning",
+    "outcomes": [
+      {"type": "set_flag", "value": "tutorial_cafe"},
+      {"type": "gold_reward", "value": 100}
+    ]
+  },
+  {
+    "id": "first_customer",
+    "chapter": "prologue",
+    "sequence_order": 3,
+    "name": "First Customer",
+    "description": "Your first customer arrives",
+    "conditions": [
+      {"type": "events_completed", "value": ["first_morning"]},
+      {"type": "location", "value": "cafe"}
+    ],
+    "dialogue_id": "first_customer",
+    "outcomes": [
+      {"type": "set_flag", "value": "served_first_customer"},
+      {"type": "reputation_change", "value": 5}
+    ]
+  },
+  {
+    "id": "dragon_hatches",
+    "chapter": "prologue",
+    "sequence_order": 4,
+    "name": "The Hatching",
+    "description": "Your dragon hatches from its egg",
+    "conditions": [
+      {"type": "dragon_stage", "value": "hatchling"},
+      {"type": "not_flag", "value": "dragon_hatched_event"}
+    ],
+    "dialogue_id": "dragon_hatches",
+    "outcomes": [
+      {"type": "set_flag", "value": "dragon_hatched_event"},
+      {"type": "unlock_recipe", "value": "dragon_treat"}
+    ]
+  },
+  {
+    "id": "prologue_complete",
+    "chapter": "prologue",
+    "sequence_order": 10,
+    "name": "Prologue Complete",
+    "description": "The prologue concludes",
+    "conditions": [
+      {"type": "events_completed", "value": ["first_customer", "dragon_hatches"]},
+      {"type": "day_min", "value": 3}
+    ],
+    "dialogue_id": "prologue_end",
+    "outcomes": [
+      {"type": "set_chapter", "value": "chapter1"},
+      {"type": "set_flag", "value": "chapter1_unlocked"},
+      {"type": "unlock_zone", "value": "meadow"}
+    ]
+  }
+]
