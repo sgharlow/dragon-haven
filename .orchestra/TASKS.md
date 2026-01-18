@@ -1,10 +1,9 @@
 # Tasks
 
 > Last updated: 2026-01-17
-> Progress: 22/35 complete
+> Progress: 23/35 complete
 
 ## Ready
-- [ ] `023` Exploration mode UI
 - [ ] `024` Inventory screen
 - [ ] `025` Recipe book screen
 - [ ] `026` Dragon status screen
@@ -13,6 +12,7 @@
 ## In Progress
 
 ## Done
+- [x] `023` Exploration mode UI ✓
 - [x] `022` Cafe mode UI ✓
 - [x] `021` Gameplay HUD ✓
 - [x] `020` Settings screen ✓
