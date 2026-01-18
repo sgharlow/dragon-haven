@@ -1,15 +1,16 @@
 # Tasks
 
 > Last updated: 2026-01-18
-> Progress: 28/35 complete
+> Progress: 29/35 complete
 
 ## Ready
-- [ ] `029` Character relationships
+- [ ] `030` Story content
 - [ ] `031` Screen integration
 
 ## In Progress
 
 ## Done
+- [x] `029` Character relationships ✓
 - [x] `028` Story event system ✓
 - [x] `027` Dialogue system ✓
 - [x] `026` Dragon status screen ✓
@@ -40,7 +41,6 @@
 - [x] `019` Main menu screen ✓
 
 ## Blocked
-- [ ] `030` Story content (depends: 028, 029)
 - [ ] `032` Balance tuning (depends: 031)
 - [ ] `033` Save/load full implementation (depends: 031)
 - [ ] `034` Final polish (depends: 030, 032, 033)

@@ -1,0 +1,76 @@
+[
+  {
+    "id": "mother",
+    "name": "Mother",
+    "portrait_id": "mother",
+    "description": "Your kind mother who entrusted you with Dragon Haven Cafe. She checks in from time to time.",
+    "chapter": "prologue",
+    "affinity": 50,
+    "favorite_recipes": ["comfort_stew", "honey_biscuits", "herbal_tea"],
+    "liked_recipes": ["herbed_bread", "garden_salad", "mushroom_soup"],
+    "disliked_recipes": ["spicy_curry", "fire_pepper_wrap"],
+    "gift_preferences": {
+      "rose": 10,
+      "honey": 8,
+      "herbal_bundle": 8,
+      "rare_flower": 15
+    },
+    "unlocked_dialogues": {
+      "mother_backstory_1": 25,
+      "mother_backstory_2": 50,
+      "mother_secret": 75,
+      "mother_epilogue": 100
+    },
+    "met": true
+  },
+  {
+    "id": "marcus",
+    "name": "Marcus the Wanderer",
+    "portrait_id": "marcus",
+    "description": "A mysterious traveler who visits the cafe seeking warmth and good food. He has stories from distant lands.",
+    "chapter": "chapter1",
+    "affinity": 0,
+    "favorite_recipes": ["traveler_stew", "campfire_bread", "adventure_ale"],
+    "liked_recipes": ["hearty_breakfast", "meat_pie", "trail_mix"],
+    "disliked_recipes": ["fancy_dessert", "delicate_pastry", "refined_tea"],
+    "gift_preferences": {
+      "ancient_map": 15,
+      "compass": 10,
+      "dried_meat": 5,
+      "adventure_journal": 12,
+      "rare_gem": 8
+    },
+    "unlocked_dialogues": {
+      "marcus_travels_1": 25,
+      "marcus_travels_2": 50,
+      "marcus_past": 75,
+      "marcus_treasure_hint": 100
+    },
+    "met": false
+  },
+  {
+    "id": "lily",
+    "name": "Lily the Perfectionist",
+    "portrait_id": "lily",
+    "description": "A talented chef who demands perfection. Initially critical, she warms up to those who share her passion.",
+    "chapter": "chapter2",
+    "affinity": 0,
+    "favorite_recipes": ["gourmet_special", "delicate_pastry", "refined_tea"],
+    "liked_recipes": ["herbed_bread", "garden_salad", "cream_puff"],
+    "disliked_recipes": ["burnt_toast", "simple_gruel", "overcooked_meat"],
+    "gift_preferences": {
+      "rare_spice": 12,
+      "cookbook": 15,
+      "quality_ingredient": 10,
+      "chef_knife": 15,
+      "exotic_fruit": 8
+    },
+    "unlocked_dialogues": {
+      "lily_criticism_1": 25,
+      "lily_respect": 50,
+      "lily_teacher": 75,
+      "lily_secret_recipe": 100
+    },
+    "met": false
+  }
+]
