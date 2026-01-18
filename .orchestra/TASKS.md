@@ -1,7 +1,7 @@
 # Tasks
 
 > Last updated: 2026-01-17
-> Progress: 18/35 complete
+> Progress: 19/35 complete
 
 ## Ready
 - [ ] `020` Settings screen
@@ -12,7 +12,6 @@
 - [ ] `027` Dialogue system
 
 ## In Progress
-- [ ] `019` Main menu screen (task/019)
 
 ## Done
 - [x] `001` Project setup ✓
@@ -33,6 +32,7 @@
 - [x] `016` Recipe system ✓
 - [x] `017` Cooking minigame ✓
 - [x] `018` Reputation system ✓
+- [x] `019` Main menu screen ✓
 
 ## Blocked
 - [ ] `022` Cafe mode UI (depends: 013, 014, 015, 017, 021)
