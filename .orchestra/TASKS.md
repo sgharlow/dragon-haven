@@ -1,13 +1,14 @@
 # Tasks
 
 > Last updated: 2026-01-17
-> Progress: 4/35 complete
+> Progress: 5/35 complete
 
 ## Ready
-- [ ] `005` Sound manager
 - [ ] `006` Save system foundation
 - [ ] `007` Time system
 - [ ] `009` Inventory system
+- [ ] `019` Main menu screen
+- [ ] `020` Settings screen
 - [ ] `027` Dialogue system
 
 ## In Progress
@@ -17,6 +18,7 @@
 - [x] `002` Game engine core ✓
 - [x] `003` State machine ✓
 - [x] `004` Asset generation system ✓
+- [x] `005` Sound manager ✓
 
 ## Blocked
 - [ ] `008` Dragon system (depends: 004, 007)
@@ -29,8 +31,6 @@
 - [ ] `016` Recipe system (depends: 009)
 - [ ] `017` Cooking minigame (depends: 005, 016)
 - [ ] `018` Reputation system (depends: 013, 015)
-- [ ] `019` Main menu screen (depends: 003, 004, 005)
-- [ ] `020` Settings screen (depends: 003, 005)
 - [ ] `021` Gameplay HUD (depends: 004, 007, 008, 012)
 - [ ] `022` Cafe mode UI (depends: 013, 014, 015, 017, 021)
 - [ ] `023` Exploration mode UI (depends: 008, 010, 011, 021)
