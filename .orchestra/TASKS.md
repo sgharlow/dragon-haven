@@ -1,7 +1,7 @@
 # Tasks
 
 > Last updated: 2026-01-17
-> Progress: 10/35 complete
+> Progress: 11/35 complete
 
 ## Ready
 - [ ] `012` Economy system
@@ -13,7 +13,6 @@
 - [ ] `027` Dialogue system
 
 ## In Progress
-- [ ] `011` Resource spawning (task/011)
 
 ## Done
 - [x] `001` Project setup ✓
@@ -26,6 +25,7 @@
 - [x] `008` Dragon system ✓
 - [x] `009` Inventory system ✓
 - [x] `010` World/zone system ✓
+- [x] `011` Resource spawning ✓
 
 ## Blocked
 - [ ] `013` Cafe system (depends: 007, 012)
