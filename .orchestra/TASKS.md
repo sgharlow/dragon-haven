@@ -1,10 +1,10 @@
 # Tasks
 
 > Last updated: 2026-01-17
-> Progress: 6/35 complete
+> Progress: 7/35 complete
 
 ## Ready
-- [ ] `007` Time system
+- [ ] `008` Dragon system
 - [ ] `009` Inventory system
 - [ ] `019` Main menu screen
 - [ ] `020` Settings screen
@@ -19,9 +19,9 @@
 - [x] `004` Asset generation system ✓
 - [x] `005` Sound manager ✓
 - [x] `006` Save system foundation ✓
+- [x] `007` Time system ✓
 
 ## Blocked
-- [ ] `008` Dragon system (depends: 004, 007)
 - [ ] `010` World/zone system (depends: 007, 008)
 - [ ] `011` Resource spawning (depends: 009, 010)
 - [ ] `012` Economy system (depends: 009)

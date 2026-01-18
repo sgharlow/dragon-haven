@@ -85,6 +85,27 @@ TERRAIN_FLOWER_YELLOW = (240, 220, 80)
 TERRAIN_FLOWER_BLUE = (100, 140, 220)
 
 # =============================================================================
+# TIME SYSTEM
+# =============================================================================
+# Time periods (24-hour format)
+TIME_MORNING_START = 6    # 6:00 AM
+TIME_AFTERNOON_START = 12  # 12:00 PM
+TIME_EVENING_START = 18   # 6:00 PM
+TIME_NIGHT_START = 0      # 12:00 AM (wraps around)
+
+# Day length: 24 in-game hours = 24 real minutes (1 minute per hour)
+REAL_SECONDS_PER_GAME_HOUR = 60.0  # 1 real minute = 1 game hour
+GAME_HOURS_PER_DAY = 24
+
+# Seasons (simplified)
+DAYS_PER_SEASON = 10
+SEASONS = ['spring', 'summer']
+
+# Cafe operating hours
+CAFE_OPEN_HOUR = 8   # Opens at 8 AM
+CAFE_CLOSE_HOUR = 22  # Closes at 10 PM
+
+# =============================================================================
 # GAME VERSION
 # =============================================================================
 VERSION = "0.1.0"
