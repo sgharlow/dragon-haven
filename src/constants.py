@@ -175,6 +175,57 @@ STAFF_DEFINITIONS = {
 }
 
 # =============================================================================
+# CUSTOMER SYSTEM
+# =============================================================================
+# Customer types
+CUSTOMER_TYPE_REGULAR = 'regular'
+CUSTOMER_TYPE_STORY = 'story'
+
+# Customer states
+CUSTOMER_STATE_WAITING = 'waiting'       # Waiting to be seated
+CUSTOMER_STATE_SEATED = 'seated'         # At table, waiting for service
+CUSTOMER_STATE_ORDERING = 'ordering'     # Placing order
+CUSTOMER_STATE_WAITING_FOOD = 'waiting_food'  # Order placed, waiting
+CUSTOMER_STATE_EATING = 'eating'         # Eating food
+CUSTOMER_STATE_LEAVING = 'leaving'       # About to leave
+
+# Patience settings (game hours)
+CUSTOMER_PATIENCE_BASE = 1.5             # Base patience (90 min real time equiv)
+CUSTOMER_PATIENCE_VARIATION = 0.5        # +/- 30 min variation
+CUSTOMER_EATING_TIME = 0.5               # Time spent eating
+
+# Spawn rates (customers per hour at different reputation levels)
+CUSTOMER_SPAWN_BASE = 2.0                # 2 per hour base
+CUSTOMER_SPAWN_REP_BONUS = 0.01          # +1% per reputation point
+
+# Quality expectations (0-5 stars)
+CUSTOMER_QUALITY_LOW = 2                 # Easy to please
+CUSTOMER_QUALITY_MEDIUM = 3              # Average expectations
+CUSTOMER_QUALITY_HIGH = 4                # Demanding
+
+# Satisfaction thresholds
+CUSTOMER_SATISFACTION_ANGRY = 2          # Below this = angry
+CUSTOMER_SATISFACTION_NEUTRAL = 3        # Below this = neutral
+CUSTOMER_SATISFACTION_HAPPY = 4          # At or above = happy
+
+# Satisfaction modifiers
+SATISFACTION_QUALITY_WEIGHT = 0.6        # 60% from dish quality
+SATISFACTION_SPEED_WEIGHT = 0.3          # 30% from service speed
+SATISFACTION_STAFF_WEIGHT = 0.1          # 10% from staff efficiency
+
+# Reputation change from customer feedback
+REP_CHANGE_ANGRY = -5
+REP_CHANGE_NEUTRAL = 0
+REP_CHANGE_HAPPY = 3
+REP_CHANGE_DELIGHTED = 5  # Satisfaction = 5
+
+# Order preferences (categories)
+ORDER_CATEGORY_APPETIZER = 'appetizer'
+ORDER_CATEGORY_MAIN = 'main'
+ORDER_CATEGORY_DESSERT = 'dessert'
+ORDER_CATEGORY_DRINK = 'drink'
+
+# =============================================================================
 # DRAGON SYSTEM
 # =============================================================================
 # Life stages and their day ranges

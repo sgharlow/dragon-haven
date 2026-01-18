@@ -1,11 +1,11 @@
 # Tasks
 
 > Last updated: 2026-01-17
-> Progress: 14/35 complete
+> Progress: 15/35 complete
 
 ## Ready
-- [ ] `015` Customer system
 - [ ] `016` Recipe system
+- [ ] `018` Reputation system
 - [ ] `019` Main menu screen
 - [ ] `020` Settings screen
 - [ ] `021` Gameplay HUD
@@ -30,10 +30,10 @@
 - [x] `012` Economy system ✓
 - [x] `013` Cafe system ✓
 - [x] `014` Staff system ✓
+- [x] `015` Customer system ✓
 
 ## Blocked
 - [ ] `017` Cooking minigame (depends: 005, 016)
-- [ ] `018` Reputation system (depends: 013, 015)
 - [ ] `022` Cafe mode UI (depends: 013, 014, 015, 017, 021)
 - [ ] `023` Exploration mode UI (depends: 008, 010, 011, 021)
 - [ ] `025` Recipe book screen (depends: 004, 016)
