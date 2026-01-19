@@ -1,0 +1,76 @@
+{
+  "id": "chapter2_end",
+  "name": "Chapter 2 Complete",
+  "start_id": "chapter_reflection",
+  "nodes": {
+    "chapter_reflection": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "As the evening winds down, you find yourself reflecting on how much has changed since Lily first walked through your door.",
+      "next_id": "lily_regular"
+    },
+    "lily_regular": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "She's become a regular presence in the cafe now - not as a critic, but as a friend. Sometimes she cooks, sometimes she simply enjoys the atmosphere. Her notebook has been replaced by conversations.",
+      "next_id": "lily_goodbye_temp"
+    },
+    "lily_goodbye_temp": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*Lily approaches as she prepares to leave for the evening* I've been thinking. It's time I faced my past. I'm going back to the capital - not to work in that restaurant, but to visit.",
+      "next_id": "lily_purpose"
+    },
+    "lily_purpose": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "I need to apologize to the head chef. Not for the mistake, but for running. For not trusting that he might have understood. For letting fear control me for so long.",
+      "next_id": "player_farewell"
+    },
+    "player_farewell": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You wish Lily well on her journey.",
+      "choices": [
+        {
+          "text": "You'll always have a place in this kitchen, Lily.",
+          "next_id": "lily_touched"
+        },
+        {
+          "text": "Bring back some capital recipes to share!",
+          "next_id": "lily_promise_return"
+        }
+      ]
+    },
+    "lily_touched": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*Her eyes glisten* I know. That's what gives me the courage to go. I have somewhere to return to - a kitchen where imperfection is just another ingredient.",
+      "next_id": "chapter_complete"
+    },
+    "lily_promise_return": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*She laughs* Only if I can deliberately alter them first. We can't have anything too perfect in Dragon Haven, can we?",
+      "next_id": "chapter_complete"
+    },
+    "chapter_complete": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Lily embraces you briefly, then steps out into the evening. Your dragon chirps a farewell, and you swear you see her wipe her eyes before she waves goodbye.",
+      "next_id": "reputation_boost"
+    },
+    "reputation_boost": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Word of Lily's transformation - and the cafe that inspired it - begins to spread. Your reputation grows, and whispers of Dragon Haven Cafe reach new ears...",
+      "set_flags": ["chapter2_complete"],
+      "next_id": "chapter_end"
+    },
+    "chapter_end": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Chapter 2 - Accepting Imperfection - Complete"
+    }
+  }
+}

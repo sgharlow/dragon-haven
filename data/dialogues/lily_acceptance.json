@@ -1,0 +1,87 @@
+{
+  "id": "lily_acceptance",
+  "name": "Beauty in Imperfection",
+  "start_id": "lily_reflection",
+  "nodes": {
+    "lily_reflection": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Several days have passed since the challenge. Lily sits at her usual table, but something has changed. Her notebook is closed, and she stares out the window with a contemplative expression.",
+      "next_id": "lily_changed"
+    },
+    "lily_changed": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*She notices you and gestures to the seat across from her* Sit. Please. I've been doing something I haven't done in years. Thinking. Really thinking.",
+      "next_id": "lily_confession"
+    },
+    "lily_confession": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "That night... the 'accident' at my old restaurant... I added too much salt to the head chef's signature dish. The same mistake. And I ran.",
+      "next_id": "lily_deeper"
+    },
+    "lily_deeper": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "I ran because I was certain it would be a disaster. But I never stayed to see. I never tasted. I never... gave myself a chance.",
+      "next_id": "lily_reframe"
+    },
+    "lily_reframe": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "You showed me something. Imperfection isn't failure. It's... possibility. A recipe is a starting point, not a prison.",
+      "next_id": "player_respond_acceptance"
+    },
+    "player_respond_acceptance": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "What do you say to Lily?",
+      "choices": [
+        {
+          "text": "Every great chef develops their own style through happy accidents.",
+          "next_id": "lily_agrees"
+        },
+        {
+          "text": "Your dragon thinks imperfection is what makes things interesting.",
+          "next_id": "lily_dragon_wisdom",
+          "set_flags": ["dragon_helped_lily"]
+        },
+        {
+          "text": "You're not the same chef who ran. You've grown.",
+          "next_id": "lily_growth"
+        }
+      ]
+    },
+    "lily_agrees": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*She nods slowly* I've read about legendary chefs who discovered their signatures through mistakes. I always thought they were just stories to comfort lesser cooks. I was wrong.",
+      "next_id": "lily_thanks"
+    },
+    "lily_dragon_wisdom": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*She looks at your dragon and actually laughs* The creature who ruined my perfect dish teaching me about imperfection. There's poetry in that, I suppose.",
+      "next_id": "lily_thanks"
+    },
+    "lily_growth": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*Her eyes glisten* I've spent years running from one failure. You're right. I'm not that frightened sous chef anymore. I'm... *she smiles* ...I'm someone who makes excellent accidental spice blends.",
+      "next_id": "lily_thanks"
+    },
+    "lily_thanks": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "Thank you. Not just for the lesson, but for creating a kitchen where imperfection is allowed. Where food can be made with... what did you call it? Heart.",
+      "set_flags": ["lily_acceptance"],
+      "next_id": "lily_future"
+    },
+    "lily_future": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "I want to cook again. Really cook. Not to prove anything, not for perfection, but... for the joy of it. Would you mind if I used your kitchen sometimes?"
+    }
+  }
+}

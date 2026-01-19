@@ -1,0 +1,114 @@
+[
+  {
+    "id": "ch2_lily_arrives",
+    "chapter": "chapter2",
+    "sequence_order": 1,
+    "name": "The Perfectionist Arrives",
+    "description": "Lily the Perfectionist visits the cafe",
+    "conditions": [
+      {"type": "chapter", "value": "chapter2"},
+      {"type": "reputation_min", "value": 100},
+      {"type": "not_flag", "value": "lily_met"}
+    ],
+    "dialogue_id": "lily_arrival",
+    "outcomes": [
+      {"type": "set_flag", "value": "lily_met"},
+      {"type": "set_flag", "value": "ch2_started"}
+    ]
+  },
+  {
+    "id": "ch2_lily_critique",
+    "chapter": "chapter2",
+    "sequence_order": 2,
+    "name": "High Standards",
+    "description": "Lily shares her exacting standards",
+    "conditions": [
+      {"type": "flag", "value": "lily_met"},
+      {"type": "day_min", "value": 16}
+    ],
+    "dialogue_id": "lily_standards",
+    "outcomes": [
+      {"type": "set_flag", "value": "lily_standards_known"}
+    ],
+    "repeatable": false
+  },
+  {
+    "id": "ch2_lily_challenge",
+    "chapter": "chapter2",
+    "sequence_order": 3,
+    "name": "A Chef's Challenge",
+    "description": "Lily challenges you to cook for her",
+    "conditions": [
+      {"type": "flag", "value": "lily_standards_known"},
+      {"type": "day_min", "value": 20}
+    ],
+    "dialogue_id": "lily_challenge",
+    "outcomes": [
+      {"type": "set_flag", "value": "lily_challenge_active"},
+      {"type": "unlock_recipe", "value": "gourmet_special"}
+    ]
+  },
+  {
+    "id": "ch2_lily_failure",
+    "chapter": "chapter2",
+    "sequence_order": 4,
+    "name": "The Imperfect Dish",
+    "description": "Lily faces her own imperfection",
+    "conditions": [
+      {"type": "flag", "value": "lily_challenge_active"},
+      {"type": "day_min", "value": 24}
+    ],
+    "dialogue_id": "lily_failure",
+    "outcomes": [
+      {"type": "set_flag", "value": "lily_failure_witnessed"}
+    ]
+  },
+  {
+    "id": "ch2_lily_acceptance",
+    "chapter": "chapter2",
+    "sequence_order": 5,
+    "name": "Beauty in Imperfection",
+    "description": "Lily begins to accept imperfection",
+    "conditions": [
+      {"type": "flag", "value": "lily_failure_witnessed"},
+      {"type": "day_min", "value": 26}
+    ],
+    "dialogue_id": "lily_acceptance",
+    "outcomes": [
+      {"type": "set_flag", "value": "lily_acceptance"},
+      {"type": "reputation_change", "value": 30}
+    ]
+  },
+  {
+    "id": "ch2_lily_resolution",
+    "chapter": "chapter2",
+    "sequence_order": 6,
+    "name": "A Shared Passion",
+    "description": "Lily shares her secret with you",
+    "conditions": [
+      {"type": "flag", "value": "lily_acceptance"},
+      {"type": "day_min", "value": 28}
+    ],
+    "dialogue_id": "lily_resolution",
+    "outcomes": [
+      {"type": "set_flag", "value": "lily_resolved"},
+      {"type": "reputation_change", "value": 25}
+    ]
+  },
+  {
+    "id": "ch2_complete",
+    "chapter": "chapter2",
+    "sequence_order": 10,
+    "name": "Chapter 2 Complete",
+    "description": "Chapter 2 concludes",
+    "conditions": [
+      {"type": "flag", "value": "lily_resolved"},
+      {"type": "reputation_min", "value": 150}
+    ],
+    "dialogue_id": "chapter2_end",
+    "outcomes": [
+      {"type": "set_chapter", "value": "chapter3"},
+      {"type": "set_flag", "value": "chapter3_unlocked"}
+    ]
+  }
+]
