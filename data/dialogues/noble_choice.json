@@ -1,0 +1,66 @@
+{
+  "id": "noble_choice",
+  "name": "To Be Oneself",
+  "start_id": "noble_decision_time",
+  "nodes": {
+    "noble_decision_time": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The Masked Noble enters the cafe with purpose. Something has shifted in their bearing - there's a new energy, a resolve being forged.",
+      "next_id": "noble_announcement"
+    },
+    "noble_announcement": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "I've reached a decision. *They take a deep breath* But first, I need to know... if I returned to my duties, would you think less of me?",
+      "next_id": "player_assure"
+    },
+    "player_assure": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "How do you respond?",
+      "choices": [
+        {
+          "text": "Following your heart is never something to be ashamed of, whatever path it takes.",
+          "next_id": "noble_reassured",
+          "set_flags": ["noble_supported"]
+        },
+        {
+          "text": "The person who sat in this cafe is real. That doesn't change based on where you go.",
+          "next_id": "noble_understood",
+          "set_flags": ["noble_identity_affirmed"]
+        }
+      ]
+    },
+    "noble_reassured": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "*They exhale slowly* Thank you. I needed to hear that. I've been so afraid of becoming what I was before... but I realize now that I can never truly go back.",
+      "next_id": "noble_plan"
+    },
+    "noble_understood": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "*They smile genuinely* You understand. The crown doesn't erase the commoner's heart that beat here. It adds to it. Gives it... purpose.",
+      "next_id": "noble_plan"
+    },
+    "noble_plan": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "I'm going to return. Not as I was, but as I've become. I'll wear the crown, but I'll remember what it felt like to sit in a simple cafe and be treated as a person.",
+      "next_id": "noble_promise"
+    },
+    "noble_promise": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "And I swear, by the warmth of this hearth, I will use whatever power I inherit to create more places like this. Sanctuaries where anyone can shed their masks.",
+      "set_flags": ["noble_chose_freedom"],
+      "next_id": "noble_choice_end"
+    },
+    "noble_choice_end": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "But before I go reclaim my crown, I want one more evening as just another visitor. Will you join me for dinner? I want to remember how this feels. How being myself feels."
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "id": "chapter4_end",
+  "name": "Chapter 4 Complete",
+  "start_id": "ch4_conclusion",
+  "nodes": {
+    "ch4_conclusion": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Captain Vera has found her way back from the storm. Her courage, once lost to grief and guilt, has returned stronger than ever.",
+      "next_id": "ch4_summary"
+    },
+    "ch4_summary": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Word of the cafe spreads. A place where even the most weathered souls can find renewal. New visitors begin to arrive, drawn by stories of warmth and acceptance.",
+      "next_id": "ch4_hint"
+    },
+    "ch4_hint": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Among them, whispers of a mysterious masked visitor who seeks a place where they can be... themselves.",
+      "next_id": "ch4_end"
+    },
+    "ch4_end": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Chapter 4 Complete: The Captain Docks\n\nVera has found peace with her past and a new home at Dragon Haven. The sea no longer haunts her dreams."
+    }
+  }
+}

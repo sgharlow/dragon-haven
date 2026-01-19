@@ -1,0 +1,30 @@
+{
+  "id": "chapter5_end",
+  "name": "Chapter 5 Complete",
+  "start_id": "ch5_conclusion",
+  "nodes": {
+    "ch5_conclusion": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The Masked Noble has found their true self. Beneath the ornate disguise was not a runaway, but a person searching for authenticity in a world of facades.",
+      "next_id": "ch5_summary"
+    },
+    "ch5_summary": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Dragon Haven Cafe has become more than a place to eat. It's become a sanctuary where souls from all walks of life can shed their masks and discover who they truly are.",
+      "next_id": "ch5_reflection"
+    },
+    "ch5_reflection": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "From wanderers to captains, from nobles to common folk, each visitor has left changed. And through it all, your dragon has grown alongside you, witnessing every transformation.",
+      "next_id": "ch5_end"
+    },
+    "ch5_end": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Chapter 5 Complete: Unmasked\n\nThe noble has returned to their duties, changed forever by their time at Dragon Haven. The cafe's reputation now reaches even royal ears."
+    }
+  }
+}

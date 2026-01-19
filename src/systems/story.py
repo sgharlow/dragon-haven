@@ -8,6 +8,7 @@ from typing import Dict, List, Optional, Any, Callable
 from dataclasses import dataclass, field
 from pathlib import Path
 from systems.dialogue import get_dialogue_manager
+from constants import DRAGON_STAGES
 
 
 @dataclass
@@ -128,8 +129,8 @@ class StoryManager:
         manager.complete_current_event()
     """
 
-    # Chapter order
-    CHAPTERS = ['prologue', 'chapter1', 'chapter2', 'chapter3', 'epilogue']
+    # Chapter order (5 main chapters + prologue and epilogue)
+    CHAPTERS = ['prologue', 'chapter1', 'chapter2', 'chapter3', 'chapter4', 'chapter5', 'epilogue']
 
     def __init__(self):
         """Initialize the story manager."""
@@ -318,9 +319,9 @@ class StoryManager:
         elif ctype == 'dragon_stage':
             # Value is required stage
             dragon_stage = game_state.get('dragon_stage', '')
-            stages = ['egg', 'hatchling', 'juvenile']
-            if dragon_stage in stages and value in stages:
-                return stages.index(dragon_stage) >= stages.index(value)
+            # Use DRAGON_STAGES from constants for all 5 stages
+            if dragon_stage in DRAGON_STAGES and value in DRAGON_STAGES:
+                return DRAGON_STAGES.index(dragon_stage) >= DRAGON_STAGES.index(value)
             return dragon_stage == value
 
         elif ctype == 'events_completed':

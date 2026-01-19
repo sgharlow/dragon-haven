@@ -1,0 +1,65 @@
+{
+  "id": "noble_arrival",
+  "name": "Chapter 5 - The Masked Visitor",
+  "start_id": "stranger_masked",
+  "nodes": {
+    "stranger_masked": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "A figure enters the cafe, cloaked in fine fabrics. Most striking is the ornate half-mask covering the upper portion of their face, decorated with silver filigree.",
+      "next_id": "noble_intro"
+    },
+    "noble_intro": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "*They survey the room with practiced poise* So this is the Dragon Haven I've heard whispered about in certain... circles. Charming. Delightfully provincial.",
+      "next_id": "player_greet_noble"
+    },
+    "player_greet_noble": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "How do you greet this unusual visitor?",
+      "choices": [
+        {
+          "text": "Welcome. We don't often see such refined guests here.",
+          "next_id": "noble_flattered"
+        },
+        {
+          "text": "That's quite the mask. Running from something?",
+          "next_id": "noble_defensive",
+          "set_flags": ["noble_questioned"]
+        }
+      ]
+    },
+    "noble_flattered": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "*A slight incline of the head* Your reputation for hospitality precedes you. I confess, I grew weary of establishments where everyone knows my... where everyone recognizes me.",
+      "next_id": "noble_seated"
+    },
+    "noble_defensive": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "*They stiffen almost imperceptibly* Running? How... direct. Let's say I'm seeking a place where I can simply... be. Without expectation. Is that so unusual?",
+      "next_id": "noble_seated"
+    },
+    "noble_seated": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The noble selects a corner table with a view of both the door and the kitchen. A strategic position. Their posture speaks of years of etiquette training.",
+      "next_id": "noble_notices_dragon"
+    },
+    "noble_notices_dragon": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "*Their composure falters slightly at seeing your dragon* Remarkable. I've only seen dragons in ancient tapestries. To think they still exist... *They seem genuinely moved*",
+      "set_flags": ["noble_met"],
+      "next_id": "noble_end"
+    },
+    "noble_end": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "I believe I shall make this establishment my... retreat. A place apart from the world's demands. If you'll have me, of course. *There's a hint of vulnerability beneath the formal words*"
+    }
+  }
+}

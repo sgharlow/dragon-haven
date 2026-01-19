@@ -1,0 +1,59 @@
+{
+  "id": "vera_memories",
+  "name": "Tales of the Sea",
+  "start_id": "vera_returns",
+  "nodes": {
+    "vera_returns": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Captain Vera has become a regular presence at the cafe. Today, she seems more talkative than usual, her eyes distant with memory.",
+      "next_id": "vera_reminisce"
+    },
+    "vera_reminisce": {
+      "speaker": "Captain Vera",
+      "portrait": "vera",
+      "text": "Twenty-three years I sailed. The Stormchaser was my home, my crew my family. We weathered things that would make seasoned sailors weep.",
+      "next_id": "player_curious"
+    },
+    "player_curious": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Do you ask about her adventures?",
+      "choices": [
+        {
+          "text": "You must have incredible stories. I'd love to hear one.",
+          "next_id": "vera_story",
+          "set_flags": ["vera_story_requested"]
+        },
+        {
+          "text": "What made you stop sailing?",
+          "next_id": "vera_hesitates"
+        }
+      ]
+    },
+    "vera_story": {
+      "speaker": "Captain Vera",
+      "portrait": "vera",
+      "text": "*Her eyes light up* There was the time we discovered a sea cavern filled with bioluminescent fish. Or when we outran pirates through a fog bank. Those were the good days...",
+      "next_id": "vera_trails_off"
+    },
+    "vera_hesitates": {
+      "speaker": "Captain Vera",
+      "portrait": "vera",
+      "text": "*Her expression darkens* That's... a story for another time. Some waves are harder to navigate than others.",
+      "next_id": "vera_trails_off"
+    },
+    "vera_trails_off": {
+      "speaker": "Captain Vera",
+      "portrait": "vera",
+      "text": "*She stares into her cup* Courage isn't about not being afraid. It's about sailing forward anyway. I used to know that. Somewhere along the way, I forgot.",
+      "set_flags": ["vera_stories_heard"],
+      "next_id": "vera_memory_end"
+    },
+    "vera_memory_end": {
+      "speaker": "Captain Vera",
+      "portrait": "vera",
+      "text": "Thank you for listening. It's been... a long time since anyone wanted to hear an old captain's tales."
+    }
+  }
+}

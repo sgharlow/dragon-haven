@@ -1,0 +1,84 @@
+{
+  "id": "noble_slip",
+  "name": "A Glimpse Behind the Mask",
+  "start_id": "noble_distressed",
+  "nodes": {
+    "noble_distressed": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Today the Masked Noble arrives later than usual, their composure noticeably strained. Their hands tremble slightly as they reach for their cup.",
+      "next_id": "noble_troubled"
+    },
+    "noble_troubled": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "*Their voice is barely above a whisper* I received word today. They're searching for me. The Royal Guard. My absence has been noticed.",
+      "next_id": "player_royal"
+    },
+    "player_royal": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You process this information quietly.",
+      "next_id": "noble_reveal"
+    },
+    "noble_reveal": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "*They laugh bitterly* The mask was meant to hide who I am, not what I am. But here, in this place... *They touch the mask* I forget sometimes that I'm supposed to be someone else.",
+      "next_id": "noble_truth"
+    },
+    "noble_truth": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "You've probably guessed by now. I am... I was... next in line for a throne I never wanted. Born to a role that fits like ill-made armor.",
+      "next_id": "player_react"
+    },
+    "player_react": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "How do you react to this revelation?",
+      "choices": [
+        {
+          "text": "Your secret is safe here. This cafe is a sanctuary for all.",
+          "next_id": "noble_grateful",
+          "set_flags": ["noble_trusted"]
+        },
+        {
+          "text": "Running from responsibility isn't freedom. What are you really afraid of?",
+          "next_id": "noble_challenged",
+          "set_flags": ["noble_challenged_deeply"]
+        }
+      ]
+    },
+    "noble_grateful": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "*Relief floods their voice* Thank you. You cannot know what it means to hear those words. To be treated as a person, not a position.",
+      "next_id": "noble_confession"
+    },
+    "noble_challenged": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "*They flinch as if struck, then slowly nod* You see through me too clearly. What am I afraid of? Becoming what they want me to be. Losing myself entirely.",
+      "next_id": "noble_confession"
+    },
+    "noble_confession": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "At court, every word is weighed. Every gesture judged. Every choice made for appearances. Here, when I taste your food... *They smile beneath the mask* I feel things again. Real things.",
+      "set_flags": ["noble_slip_seen"],
+      "next_id": "noble_gift"
+    },
+    "noble_gift": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "*They produce an elegant scroll* A recipe from the royal archives. Crystal-infused dessert. Take it. In my old life, I had everything except the freedom to share what mattered.",
+      "next_id": "noble_slip_end"
+    },
+    "noble_slip_end": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The noble presses the recipe into your hands. For a moment, their mask shifts, and you glimpse eyes that hold both fear and hope in equal measure."
+    }
+  }
+}

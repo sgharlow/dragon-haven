@@ -1,0 +1,59 @@
+{
+  "id": "vera_arrival",
+  "name": "Chapter 4 - The Captain Docks",
+  "start_id": "captain_enters",
+  "nodes": {
+    "captain_enters": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The door opens with a creak. A woman with weathered skin and salt-streaked gray hair steps inside. Her posture speaks of years commanding a ship, though now she moves with hesitation.",
+      "next_id": "vera_intro"
+    },
+    "vera_intro": {
+      "speaker": "Captain Vera",
+      "portrait": "vera",
+      "text": "Dragon Haven Cafe... *She glances around, eyes lingering on the warm interior* They said this place had the best seafood inland. Hard to believe, but the sea taught me stranger things.",
+      "next_id": "player_greet_vera"
+    },
+    "player_greet_vera": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "How do you welcome the captain?",
+      "choices": [
+        {
+          "text": "Welcome aboard! Please, find a seat.",
+          "next_id": "vera_amused",
+          "set_flags": ["vera_nautical_greeting"]
+        },
+        {
+          "text": "Our seafood is fresh. What brings a sailor this far from the coast?",
+          "next_id": "vera_direct"
+        }
+      ]
+    },
+    "vera_amused": {
+      "speaker": "Captain Vera",
+      "portrait": "vera",
+      "text": "*A rare smile crosses her face* 'Welcome aboard,' they say. It's been too long since I heard those words from anyone but myself. Captain Vera, retired. Pleasure to meet you.",
+      "next_id": "vera_notices_dragon"
+    },
+    "vera_direct": {
+      "speaker": "Captain Vera",
+      "portrait": "vera",
+      "text": "Straight to business. I respect that. *She settles into a seat* Captain Vera. As for what brings me here... let's say the sea and I needed some distance.",
+      "next_id": "vera_notices_dragon"
+    },
+    "vera_notices_dragon": {
+      "speaker": "Captain Vera",
+      "portrait": "vera",
+      "text": "*Her eyes widen at your dragon companion* Tide's mercy... A dragon. I saw one once, years ago, flying over my ship during a storm. Thought it was a sign. Maybe it was.",
+      "set_flags": ["vera_met"],
+      "next_id": "vera_end"
+    },
+    "vera_end": {
+      "speaker": "Captain Vera",
+      "portrait": "vera",
+      "text": "I think I'll anchor here for a while. The road has been long, and... I'm tired of running from the horizon."
+    }
+  }
+}

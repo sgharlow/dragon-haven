@@ -1,0 +1,97 @@
+[
+  {
+    "id": "ch4_vera_arrives",
+    "chapter": "chapter4",
+    "sequence_order": 1,
+    "name": "The Captain Docks",
+    "description": "A retired sea captain visits the cafe",
+    "conditions": [
+      {"type": "dragon_stage", "value": "adolescent"},
+      {"type": "not_flag", "value": "vera_met"}
+    ],
+    "dialogue_id": "vera_arrival",
+    "outcomes": [
+      {"type": "set_flag", "value": "vera_met"},
+      {"type": "set_flag", "value": "ch4_started"}
+    ]
+  },
+  {
+    "id": "ch4_vera_memories",
+    "chapter": "chapter4",
+    "sequence_order": 2,
+    "name": "Tales of the Sea",
+    "description": "Vera shares stories of her sailing days",
+    "conditions": [
+      {"type": "flag", "value": "vera_met"},
+      {"type": "day_min", "value": 12}
+    ],
+    "dialogue_id": "vera_memories",
+    "outcomes": [
+      {"type": "set_flag", "value": "vera_stories_heard"}
+    ]
+  },
+  {
+    "id": "ch4_vera_storm",
+    "chapter": "chapter4",
+    "sequence_order": 3,
+    "name": "The Storm Within",
+    "description": "Vera reveals her greatest regret",
+    "conditions": [
+      {"type": "flag", "value": "vera_stories_heard"},
+      {"type": "day_min", "value": 15}
+    ],
+    "dialogue_id": "vera_storm",
+    "outcomes": [
+      {"type": "set_flag", "value": "vera_regret_revealed"},
+      {"type": "unlock_recipe", "value": "coastal_chowder"}
+    ]
+  },
+  {
+    "id": "ch4_vera_courage",
+    "chapter": "chapter4",
+    "sequence_order": 4,
+    "name": "Finding Courage",
+    "description": "Help Vera face her fears",
+    "conditions": [
+      {"type": "flag", "value": "vera_regret_revealed"},
+      {"type": "reputation_min", "value": 100}
+    ],
+    "dialogue_id": "vera_courage",
+    "outcomes": [
+      {"type": "set_flag", "value": "vera_confronted_fear"}
+    ]
+  },
+  {
+    "id": "ch4_vera_resolution",
+    "chapter": "chapter4",
+    "sequence_order": 5,
+    "name": "New Horizons",
+    "description": "Vera makes peace with her past",
+    "conditions": [
+      {"type": "flag", "value": "vera_confronted_fear"},
+      {"type": "day_min", "value": 18}
+    ],
+    "dialogue_id": "vera_resolution",
+    "outcomes": [
+      {"type": "set_flag", "value": "vera_resolved"},
+      {"type": "reputation_change", "value": 30},
+      {"type": "unlock_recipe", "value": "crab_cakes"}
+    ]
+  },
+  {
+    "id": "ch4_complete",
+    "chapter": "chapter4",
+    "sequence_order": 10,
+    "name": "Chapter 4 Complete",
+    "description": "Chapter 4 concludes",
+    "conditions": [
+      {"type": "flag", "value": "vera_resolved"},
+      {"type": "reputation_min", "value": 150}
+    ],
+    "dialogue_id": "chapter4_end",
+    "outcomes": [
+      {"type": "set_chapter", "value": "chapter5"},
+      {"type": "set_flag", "value": "chapter5_unlocked"}
+    ]
+  }
+]

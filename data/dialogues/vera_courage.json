@@ -1,0 +1,66 @@
+{
+  "id": "vera_courage",
+  "name": "Finding Courage",
+  "start_id": "vera_determined",
+  "nodes": {
+    "vera_determined": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Captain Vera enters the cafe with a different energy today. There's a resolve in her eyes that wasn't there before.",
+      "next_id": "vera_decision"
+    },
+    "vera_decision": {
+      "speaker": "Captain Vera",
+      "portrait": "vera",
+      "text": "I've been thinking about what you said. About courage. About running. *She stands straighter* I received word that Jonas's daughter is getting married at the coastal village.",
+      "next_id": "vera_conflict"
+    },
+    "vera_conflict": {
+      "speaker": "Captain Vera",
+      "portrait": "vera",
+      "text": "She invited me. Me! After I let her father... *She pauses* She says he would have wanted me there. That he knew the choice I faced.",
+      "next_id": "player_encourage"
+    },
+    "player_encourage": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "What do you say?",
+      "choices": [
+        {
+          "text": "This is your chance to find peace. Jonas would want you to go.",
+          "next_id": "vera_uncertain",
+          "set_flags": ["vera_encouraged_peace"]
+        },
+        {
+          "text": "Running from the sea was never the answer. Face it, Captain.",
+          "next_id": "vera_challenged",
+          "set_flags": ["vera_challenged"]
+        }
+      ]
+    },
+    "vera_uncertain": {
+      "speaker": "Captain Vera",
+      "portrait": "vera",
+      "text": "Peace. *She tests the word* It's been so long since I believed that was possible. But you're right. Running hasn't brought me peace. Maybe... facing it will.",
+      "next_id": "vera_resolve"
+    },
+    "vera_challenged": {
+      "speaker": "Captain Vera",
+      "portrait": "vera",
+      "text": "*She straightens* You don't mince words. *A ghost of a smile* That's exactly what a captain needs to hear. I've been ashore too long. It's time I remembered who I am.",
+      "next_id": "vera_resolve"
+    },
+    "vera_resolve": {
+      "speaker": "Captain Vera",
+      "portrait": "vera",
+      "text": "I'm going. To the wedding. To the sea. To face what I've been hiding from. Courage isn't the absence of fear, after all. It's sailing forward anyway.",
+      "set_flags": ["vera_confronted_fear"],
+      "next_id": "vera_courage_end"
+    },
+    "vera_courage_end": {
+      "speaker": "Captain Vera",
+      "portrait": "vera",
+      "text": "Thank you. For this place. For listening. For reminding me what a captain is supposed to be. I'll return when I've made my peace with the tides."
+    }
+  }
+}

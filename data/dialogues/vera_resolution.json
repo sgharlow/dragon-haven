@@ -1,0 +1,67 @@
+{
+  "id": "vera_resolution",
+  "name": "New Horizons",
+  "start_id": "vera_returns_changed",
+  "nodes": {
+    "vera_returns_changed": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The door opens, and Captain Vera steps in. But she's transformed. There's color in her cheeks, and the weight that bowed her shoulders seems lifted.",
+      "next_id": "vera_greeting"
+    },
+    "vera_greeting": {
+      "speaker": "Captain Vera",
+      "portrait": "vera",
+      "text": "*She spreads her arms wide* Look at this old sea dog! I did it. I went back. I faced the tides, the memories, all of it.",
+      "next_id": "player_welcome_back"
+    },
+    "player_welcome_back": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You welcome her back warmly.",
+      "next_id": "vera_wedding"
+    },
+    "vera_wedding": {
+      "speaker": "Captain Vera",
+      "portrait": "vera",
+      "text": "The wedding was beautiful. Jonas's daughter... *Her voice catches but she smiles* She has his eyes. She told me stories about him I never knew. He used to talk about me, about our adventures.",
+      "next_id": "vera_peace"
+    },
+    "vera_peace": {
+      "speaker": "Captain Vera",
+      "portrait": "vera",
+      "text": "She said he would have made the same choice. That he knew, in that moment, what I would decide. And he was proud to sail under my command.",
+      "next_id": "vera_tears"
+    },
+    "vera_tears": {
+      "speaker": "Captain Vera",
+      "portrait": "vera",
+      "text": "*Tears stream down her face, but she's smiling* I stood on the shore at sunset. First time in five years I let the saltwater touch my boots. And do you know what I felt?",
+      "next_id": "player_ask"
+    },
+    "player_ask": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You ask what she felt.",
+      "next_id": "vera_answer"
+    },
+    "vera_answer": {
+      "speaker": "Captain Vera",
+      "portrait": "vera",
+      "text": "Home. After all this time. The sea... it's part of me. I can't change what happened, but I can honor Jonas by living. Really living.",
+      "set_flags": ["vera_resolved"],
+      "next_id": "vera_gift"
+    },
+    "vera_gift": {
+      "speaker": "Captain Vera",
+      "portrait": "vera",
+      "text": "*She hands you another recipe* Crab cakes. Jonas's daughter shared it with me. A family recipe, now yours. And listen... I've decided to stay. Not running this time. Choosing.",
+      "next_id": "vera_final"
+    },
+    "vera_final": {
+      "speaker": "Captain Vera",
+      "portrait": "vera",
+      "text": "Dragon Haven isn't just a cafe. It's a harbor. A place where storm-battered souls can find safe passage. Thank you for being my lighthouse when I was lost."
+    }
+  }
+}

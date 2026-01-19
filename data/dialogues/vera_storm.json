@@ -1,0 +1,83 @@
+{
+  "id": "vera_storm",
+  "name": "The Storm Within",
+  "start_id": "vera_troubled",
+  "nodes": {
+    "vera_troubled": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Captain Vera sits in her usual spot, but something is different. Her hands tremble slightly as she holds her cup.",
+      "next_id": "vera_confession_start"
+    },
+    "vera_confession_start": {
+      "speaker": "Captain Vera",
+      "portrait": "vera",
+      "text": "I've been carrying something for years. A weight that no amount of sailing could outrun. *She takes a deep breath* I need to tell someone.",
+      "next_id": "player_listen"
+    },
+    "player_listen": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You sit down across from her, giving her your full attention.",
+      "next_id": "vera_the_storm"
+    },
+    "vera_the_storm": {
+      "speaker": "Captain Vera",
+      "portrait": "vera",
+      "text": "Five years ago, we were caught in the worst storm I'd ever seen. The Crimson Tempest, they called it later. I had to make a choice... save the cargo, or save my first mate.",
+      "next_id": "vera_choice"
+    },
+    "vera_choice": {
+      "speaker": "Captain Vera",
+      "portrait": "vera",
+      "text": "I chose the cargo. Medicines bound for a plague-struck village. Hundreds of lives depended on it. But Jonas... *Her voice breaks* He went overboard trying to secure it.",
+      "next_id": "player_respond"
+    },
+    "player_respond": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "How do you respond?",
+      "choices": [
+        {
+          "text": "You made an impossible choice. You saved many lives.",
+          "next_id": "vera_comfort",
+          "set_flags": ["vera_comforted"]
+        },
+        {
+          "text": "That must be incredibly hard to carry. Have you ever gone back?",
+          "next_id": "vera_admission"
+        }
+      ]
+    },
+    "vera_comfort": {
+      "speaker": "Captain Vera",
+      "portrait": "vera",
+      "text": "*Tears form in her eyes* Everyone says that. But I was the captain. I should have found another way. I was supposed to be the one with courage.",
+      "next_id": "vera_regret"
+    },
+    "vera_admission": {
+      "speaker": "Captain Vera",
+      "portrait": "vera",
+      "text": "Go back? *She laughs bitterly* I haven't touched saltwater since that day. I sold the Stormchaser. Couldn't bear to look at the sea.",
+      "next_id": "vera_regret"
+    },
+    "vera_regret": {
+      "speaker": "Captain Vera",
+      "portrait": "vera",
+      "text": "I've spent five years running from that moment. From the sea. From myself. That's not courage. That's cowardice with better excuses.",
+      "set_flags": ["vera_regret_revealed"],
+      "next_id": "vera_recipe_gift"
+    },
+    "vera_recipe_gift": {
+      "speaker": "Captain Vera",
+      "portrait": "vera",
+      "text": "*She pulls out a weathered paper* Jonas's recipe. Coastal chowder, just like his mother made. He always said food could heal any wound. Take it. Maybe... maybe it can do some good here.",
+      "next_id": "vera_storm_end"
+    },
+    "vera_storm_end": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Vera hands you Jonas's recipe for Coastal Chowder. The paper is worn from being carried for years. A precious gift from a heavy heart."
+    }
+  }
+}
