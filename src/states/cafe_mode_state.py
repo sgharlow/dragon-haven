@@ -25,6 +25,7 @@ from constants import (
     CUSTOMER_STATE_SEATED, CUSTOMER_STATE_WAITING_FOOD, CUSTOMER_STATE_EATING,
     REAL_SECONDS_PER_GAME_HOUR,
     RECIPES, DEFAULT_UNLOCKED_RECIPES,
+    SERVICE_PERIOD_MORNING, SERVICE_PERIOD_EVENING,
 )
 
 
@@ -258,7 +259,8 @@ class CafeModeState(BaseScreen):
 
         # Take order if customer is seated
         if customer.state == CUSTOMER_STATE_SEATED:
-            order = customer.take_order(self.cafe.get_menu())
+            service_period = self.cafe.get_current_service_period()
+            order = customer.take_order(self.cafe.get_menu(), service_period)
             sprite = self.cafe_floor.get_customer_sprite(customer_id)
             if sprite and order:
                 sprite.set_order(order.category, order.recipe_id)
@@ -667,39 +669,125 @@ class CafeModeState(BaseScreen):
         screen.blit(hint, (panel_rect.x + 20, panel_rect.y + panel_rect.height - 30))
 
     def _draw_service_summary(self, screen):
-        """Draw end of service summary."""
+        """Draw end of service summary with both service periods."""
         # Overlay
         overlay = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
         overlay.fill((0, 0, 0, 180))
         screen.blit(overlay, (0, 0))
 
-        # Summary panel
-        panel_rect = pygame.Rect(300, 150, 400, 350)
+        # Summary panel (wider to show both periods)
+        panel_rect = pygame.Rect(200, 100, 600, 450)
         pygame.draw.rect(screen, UI_PANEL, panel_rect, border_radius=8)
         pygame.draw.rect(screen, UI_BORDER, panel_rect, 2, border_radius=8)
 
-        # Title
-        title = self.title_font.render("Service Complete!", True, CAFE_CREAM)
+        # Title - determine which service just ended
+        current_period = self.cafe.get_current_service_period()
+        if self._service_summary:
+            if self.cafe.is_morning_completed() and not self.cafe.is_evening_completed():
+                title_text = "Morning Service Complete!"
+            elif self.cafe.is_evening_completed():
+                title_text = "Evening Service Complete!"
+            else:
+                title_text = "Service Complete!"
+        else:
+            title_text = "Day Summary"
+
+        title = self.title_font.render(title_text, True, CAFE_CREAM)
         title_rect = title.get_rect(centerx=panel_rect.centerx, y=panel_rect.y + 20)
         screen.blit(title, title_rect)
 
-        # Stats
-        if self._service_summary:
-            stats = self._service_summary
-            lines = [
-                f"Customers Served: {stats.customers_served}",
-                f"Dishes Sold: {stats.dishes_sold}",
-                f"Revenue: {stats.revenue}g",
-                f"Tips: {stats.tips}g",
-                f"Total: {stats.revenue + stats.tips}g",
-                f"Avg Satisfaction: {stats.average_satisfaction:.1f}/5",
-            ]
+        # Get all stats
+        morning_stats = self.cafe.get_morning_stats()
+        evening_stats = self.cafe.get_evening_stats()
+        total_stats = self.cafe.get_today_stats()
 
-            y = panel_rect.y + 80
-            for line in lines:
-                text = self.text_font.render(line, True, UI_TEXT)
-                screen.blit(text, (panel_rect.x + 40, y))
-                y += 35
+        # Column layout
+        col_width = 180
+        col_x_morning = panel_rect.x + 40
+        col_x_evening = panel_rect.x + 220
+        col_x_total = panel_rect.x + 400
+
+        # Column headers
+        header_y = panel_rect.y + 60
+        morning_header = self.text_font.render("Morning", True, (200, 180, 100))
+        evening_header = self.text_font.render("Evening", True, (100, 150, 200))
+        total_header = self.text_font.render("Total", True, CAFE_CREAM)
+
+        screen.blit(morning_header, (col_x_morning, header_y))
+        screen.blit(evening_header, (col_x_evening, header_y))
+        screen.blit(total_header, (col_x_total, header_y))
+
+        # Status indicators
+        status_y = header_y + 25
+        if self.cafe.is_morning_completed():
+            morning_status = self.small_font.render("✓ Completed", True, (100, 200, 100))
+        elif self.cafe.is_morning_skipped():
+            morning_status = self.small_font.render("✗ Skipped", True, (200, 100, 100))
+        else:
+            morning_status = self.small_font.render("- Pending", True, UI_TEXT_DIM)
+        screen.blit(morning_status, (col_x_morning, status_y))
+
+        if self.cafe.is_evening_completed():
+            evening_status = self.small_font.render("✓ Completed", True, (100, 200, 100))
+        elif self.cafe.is_evening_skipped():
+            evening_status = self.small_font.render("✗ Skipped", True, (200, 100, 100))
+        else:
+            evening_status = self.small_font.render("- Pending", True, UI_TEXT_DIM)
+        screen.blit(evening_status, (col_x_evening, status_y))
+
+        # Stats labels and values
+        labels = ["Customers:", "Dishes:", "Revenue:", "Tips:", "Total:", "Satisfaction:"]
+        y = header_y + 60
+
+        for i, label in enumerate(labels):
+            # Label
+            label_surface = self.small_font.render(label, True, UI_TEXT_DIM)
+            screen.blit(label_surface, (panel_rect.x + 10, y))
+
+            # Morning value
+            if i == 0:
+                morning_val = str(morning_stats.customers_served)
+                evening_val = str(evening_stats.customers_served)
+                total_val = str(total_stats.customers_served)
+            elif i == 1:
+                morning_val = str(morning_stats.dishes_sold)
+                evening_val = str(evening_stats.dishes_sold)
+                total_val = str(total_stats.dishes_sold)
+            elif i == 2:
+                morning_val = f"{morning_stats.revenue}g"
+                evening_val = f"{evening_stats.revenue}g"
+                total_val = f"{total_stats.revenue}g"
+            elif i == 3:
+                morning_val = f"{morning_stats.tips}g"
+                evening_val = f"{evening_stats.tips}g"
+                total_val = f"{total_stats.tips}g"
+            elif i == 4:
+                morning_val = f"{morning_stats.revenue + morning_stats.tips}g"
+                evening_val = f"{evening_stats.revenue + evening_stats.tips}g"
+                total_val = f"{total_stats.revenue + total_stats.tips}g"
+            else:  # Satisfaction
+                morning_val = f"{morning_stats.average_satisfaction:.1f}/5"
+                evening_val = f"{evening_stats.average_satisfaction:.1f}/5"
+                total_val = f"{total_stats.average_satisfaction:.1f}/5"
+
+            morning_surface = self.text_font.render(morning_val, True, UI_TEXT)
+            evening_surface = self.text_font.render(evening_val, True, UI_TEXT)
+            total_surface = self.text_font.render(total_val, True, CAFE_CREAM)
+
+            screen.blit(morning_surface, (col_x_morning, y))
+            screen.blit(evening_surface, (col_x_evening, y))
+            screen.blit(total_surface, (col_x_total, y))
+
+            y += 30
+
+        # Reputation
+        rep_y = y + 20
+        rep = self.cafe.get_reputation()
+        rep_name = self.cafe.get_reputation_level_name()
+        rep_text = f"Reputation: {rep} ({rep_name})"
+        rep_surface = self.text_font.render(rep_text, True, CAFE_WARM)
+        rep_rect = rep_surface.get_rect(centerx=panel_rect.centerx, y=rep_y)
+        screen.blit(rep_surface, rep_rect)
 
         # Continue prompt
         prompt = self.text_font.render("Click or press any key to continue", True, CAFE_WARM)

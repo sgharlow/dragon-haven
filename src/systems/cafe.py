@@ -11,6 +11,13 @@ from constants import (
     CAFE_SERVICE_START, CAFE_SERVICE_END,
     CAFE_PREP_DURATION, CAFE_CLEANUP_DURATION,
     CAFE_MAX_MENU_ITEMS, CAFE_SKIP_REP_PENALTY,
+    CAFE_SKIP_SERVICE_PENALTY, CAFE_SKIP_DAY_PENALTY,
+    SERVICE_PERIOD_MORNING, SERVICE_PERIOD_EVENING,
+    CAFE_MORNING_SERVICE_START, CAFE_MORNING_SERVICE_END,
+    CAFE_MORNING_PREP_START, CAFE_MORNING_CLEANUP_END,
+    CAFE_EVENING_SERVICE_START, CAFE_EVENING_SERVICE_END,
+    CAFE_EVENING_PREP_START, CAFE_EVENING_CLEANUP_END,
+    SERVICE_VOLUME_MULTIPLIER, SERVICE_CATEGORY_PREFERENCE,
     REPUTATION_MIN, REPUTATION_MAX,
     REPUTATION_LEVEL_UNKNOWN, REPUTATION_LEVEL_LOCAL,
     REPUTATION_LEVEL_TOWN, REPUTATION_LEVEL_REGIONAL,
@@ -79,10 +86,19 @@ class CafeManager:
         """Initialize the cafe manager."""
         self._state: str = CAFE_STATE_CLOSED
         self._current_menu: List[str] = []  # Recipe IDs
-        self._today_stats: ServiceStats = ServiceStats()
         self._reputation: int = 0
 
-        # Day tracking
+        # Service period tracking
+        self._current_service_period: Optional[str] = None
+        self._morning_stats: ServiceStats = ServiceStats()
+        self._evening_stats: ServiceStats = ServiceStats()
+        self._morning_completed: bool = False
+        self._evening_completed: bool = False
+        self._morning_skipped: bool = False
+        self._evening_skipped: bool = False
+
+        # Backwards compatibility
+        self._today_stats: ServiceStats = ServiceStats()  # Combined stats
         self._day_skipped: bool = False
         self._service_completed: bool = False
 
@@ -119,31 +135,50 @@ class CafeManager:
         Args:
             current_hour: Current game hour (0-24)
         """
-        # Calculate state transitions based on time
-        prep_start = CAFE_SERVICE_START - CAFE_PREP_DURATION
-        service_start = CAFE_SERVICE_START
-        service_end = CAFE_SERVICE_END
-        cleanup_end = CAFE_SERVICE_END + CAFE_CLEANUP_DURATION
-
         old_state = self._state
+        old_period = self._current_service_period
 
-        if self._day_skipped:
-            # If day was skipped, stay closed
-            self._state = CAFE_STATE_CLOSED
-        elif prep_start <= current_hour < service_start:
-            self._state = CAFE_STATE_PREP
-        elif service_start <= current_hour < service_end:
-            self._state = CAFE_STATE_SERVICE
-        elif service_end <= current_hour < cleanup_end:
-            self._state = CAFE_STATE_CLEANUP
-        else:
-            self._state = CAFE_STATE_CLOSED
+        # Determine which service period we're in (or between)
+        new_state = CAFE_STATE_CLOSED
+        new_period = None
+
+        # Check morning service
+        if not self._morning_skipped and not self._morning_completed:
+            if CAFE_MORNING_PREP_START <= current_hour < CAFE_MORNING_SERVICE_START:
+                new_state = CAFE_STATE_PREP
+                new_period = SERVICE_PERIOD_MORNING
+            elif CAFE_MORNING_SERVICE_START <= current_hour < CAFE_MORNING_SERVICE_END:
+                new_state = CAFE_STATE_SERVICE
+                new_period = SERVICE_PERIOD_MORNING
+            elif CAFE_MORNING_SERVICE_END <= current_hour < CAFE_MORNING_CLEANUP_END:
+                new_state = CAFE_STATE_CLEANUP
+                new_period = SERVICE_PERIOD_MORNING
+
+        # Check evening service (only if not in morning service)
+        if new_state == CAFE_STATE_CLOSED and not self._evening_skipped and not self._evening_completed:
+            if CAFE_EVENING_PREP_START <= current_hour < CAFE_EVENING_SERVICE_START:
+                new_state = CAFE_STATE_PREP
+                new_period = SERVICE_PERIOD_EVENING
+            elif CAFE_EVENING_SERVICE_START <= current_hour < CAFE_EVENING_SERVICE_END:
+                new_state = CAFE_STATE_SERVICE
+                new_period = SERVICE_PERIOD_EVENING
+            elif CAFE_EVENING_SERVICE_END <= current_hour < CAFE_EVENING_CLEANUP_END:
+                new_state = CAFE_STATE_CLEANUP
+                new_period = SERVICE_PERIOD_EVENING
+
+        self._state = new_state
+        self._current_service_period = new_period
+
+        # Update backwards compatibility flags
+        self._service_completed = self._morning_completed or self._evening_completed
+        self._day_skipped = self._morning_skipped and self._evening_skipped
 
         # Fire callbacks on state changes
-        if old_state != self._state:
-            self._on_state_change(old_state, self._state)
+        if old_state != self._state or old_period != new_period:
+            self._on_state_change(old_state, self._state, old_period, new_period)
 
-    def _on_state_change(self, old_state: str, new_state: str):
+    def _on_state_change(self, old_state: str, new_state: str,
+                         old_period: Optional[str] = None, new_period: Optional[str] = None):
         """Handle state transitions."""
         if new_state == CAFE_STATE_PREP:
             for cb in self._on_prep_start:
@@ -154,9 +189,19 @@ class CafeManager:
                 cb()
 
         elif new_state == CAFE_STATE_CLEANUP and old_state == CAFE_STATE_SERVICE:
+            # Mark the appropriate service as completed
+            if old_period == SERVICE_PERIOD_MORNING:
+                self._morning_completed = True
+                stats = self._morning_stats
+            elif old_period == SERVICE_PERIOD_EVENING:
+                self._evening_completed = True
+                stats = self._evening_stats
+            else:
+                stats = self._today_stats
+
             self._service_completed = True
             for cb in self._on_service_end:
-                cb(self._today_stats)
+                cb(stats)
 
         elif new_state == CAFE_STATE_CLOSED and old_state == CAFE_STATE_CLEANUP:
             for cb in self._on_cleanup_end:
@@ -239,8 +284,53 @@ class CafeManager:
         self._current_menu = []
 
     # =========================================================================
+    # SERVICE PERIOD INFO
+    # =========================================================================
+
+    def get_current_service_period(self) -> Optional[str]:
+        """Get the current service period (morning/evening) or None if closed."""
+        return self._current_service_period
+
+    def get_service_volume_multiplier(self) -> float:
+        """Get customer volume multiplier for current service period."""
+        if self._current_service_period:
+            return SERVICE_VOLUME_MULTIPLIER.get(self._current_service_period, 1.0)
+        return 1.0
+
+    def get_service_category_preference(self, category: str) -> float:
+        """Get category preference multiplier for current service period."""
+        if self._current_service_period:
+            prefs = SERVICE_CATEGORY_PREFERENCE.get(self._current_service_period, {})
+            return prefs.get(category, 1.0)
+        return 1.0
+
+    def is_morning_completed(self) -> bool:
+        """Check if morning service was completed."""
+        return self._morning_completed
+
+    def is_evening_completed(self) -> bool:
+        """Check if evening service was completed."""
+        return self._evening_completed
+
+    def is_morning_skipped(self) -> bool:
+        """Check if morning service was skipped."""
+        return self._morning_skipped
+
+    def is_evening_skipped(self) -> bool:
+        """Check if evening service was skipped."""
+        return self._evening_skipped
+
+    # =========================================================================
     # SERVICE TRACKING
     # =========================================================================
+
+    def _get_current_stats(self) -> ServiceStats:
+        """Get the stats object for the current service period."""
+        if self._current_service_period == SERVICE_PERIOD_MORNING:
+            return self._morning_stats
+        elif self._current_service_period == SERVICE_PERIOD_EVENING:
+            return self._evening_stats
+        return self._today_stats
 
     def record_sale(self, recipe_id: str, price: int, tip: int = 0,
                     satisfaction: float = 3.0):
@@ -253,6 +343,14 @@ class CafeManager:
             tip: Tip received
             satisfaction: Customer satisfaction (1-5)
         """
+        stats = self._get_current_stats()
+        stats.dishes_sold += 1
+        stats.revenue += price
+        stats.tips += tip
+        stats.satisfaction_sum += satisfaction
+        stats.satisfaction_count += 1
+
+        # Also update combined today stats
         self._today_stats.dishes_sold += 1
         self._today_stats.revenue += price
         self._today_stats.tips += tip
@@ -267,11 +365,21 @@ class CafeManager:
 
     def record_customer_served(self):
         """Record a customer was served."""
+        stats = self._get_current_stats()
+        stats.customers_served += 1
         self._today_stats.customers_served += 1
 
     def get_today_stats(self) -> ServiceStats:
-        """Get today's service statistics."""
+        """Get today's combined service statistics."""
         return self._today_stats
+
+    def get_morning_stats(self) -> ServiceStats:
+        """Get morning service statistics."""
+        return self._morning_stats
+
+    def get_evening_stats(self) -> ServiceStats:
+        """Get evening service statistics."""
+        return self._evening_stats
 
     def get_today_revenue(self) -> int:
         """Get today's total revenue."""
@@ -388,29 +496,65 @@ class CafeManager:
         return self.add_reputation(-REPUTATION_DAILY_DECAY)
 
     # =========================================================================
-    # SKIP DAY
+    # SKIP SERVICE
     # =========================================================================
+
+    def skip_morning_service(self) -> bool:
+        """
+        Skip morning service (small reputation penalty).
+
+        Returns:
+            True if service was skipped
+        """
+        if self._morning_completed or self._morning_skipped:
+            return False  # Already done or skipped
+
+        if self._current_service_period == SERVICE_PERIOD_MORNING and self._state == CAFE_STATE_SERVICE:
+            return False  # Can't skip during service
+
+        self._morning_skipped = True
+        self.add_reputation(-CAFE_SKIP_SERVICE_PENALTY)
+        return True
+
+    def skip_evening_service(self) -> bool:
+        """
+        Skip evening service (small reputation penalty).
+
+        Returns:
+            True if service was skipped
+        """
+        if self._evening_completed or self._evening_skipped:
+            return False  # Already done or skipped
+
+        if self._current_service_period == SERVICE_PERIOD_EVENING and self._state == CAFE_STATE_SERVICE:
+            return False  # Can't skip during service
+
+        self._evening_skipped = True
+        self.add_reputation(-CAFE_SKIP_SERVICE_PENALTY)
+        return True
 
     def skip_day(self) -> bool:
         """
-        Skip today's service (reputation penalty).
+        Skip entire day's service (larger reputation penalty).
 
         Returns:
             True if day was skipped
         """
         if self._service_completed:
-            return False  # Already completed service
+            return False  # Already completed at least one service
 
         if self._state == CAFE_STATE_SERVICE:
             return False  # Can't skip during service
 
+        self._morning_skipped = True
+        self._evening_skipped = True
         self._day_skipped = True
-        self.add_reputation(-CAFE_SKIP_REP_PENALTY)
+        self.add_reputation(-CAFE_SKIP_DAY_PENALTY)
         return True
 
     def was_day_skipped(self) -> bool:
-        """Check if today was skipped."""
-        return self._day_skipped
+        """Check if entire day was skipped (both services)."""
+        return self._morning_skipped and self._evening_skipped
 
     # =========================================================================
     # DAY MANAGEMENT
@@ -418,38 +562,72 @@ class CafeManager:
 
     def advance_day(self):
         """Called at the start of a new day."""
-        # Reset daily state
+        # Reset all daily state
         self._today_stats = ServiceStats()
+        self._morning_stats = ServiceStats()
+        self._evening_stats = ServiceStats()
+        self._morning_completed = False
+        self._evening_completed = False
+        self._morning_skipped = False
+        self._evening_skipped = False
         self._day_skipped = False
         self._service_completed = False
+        self._current_service_period = None
         self._state = CAFE_STATE_CLOSED
 
-        # Reputation bonus for completing service
-        # (handled by end_service callback typically)
-
-    def get_time_until_service(self) -> float:
-        """Get hours until service starts."""
+    def get_next_service_period(self) -> Optional[str]:
+        """Get the next upcoming service period."""
         time_mgr = get_time_manager()
         current = time_mgr.current_hour
 
-        if current >= CAFE_SERVICE_END:
-            # Service already passed today
-            return (24 - current) + CAFE_SERVICE_START
+        # Check if morning service is still available
+        if not self._morning_completed and not self._morning_skipped:
+            if current < CAFE_MORNING_CLEANUP_END:
+                return SERVICE_PERIOD_MORNING
 
-        if current < CAFE_SERVICE_START:
-            return CAFE_SERVICE_START - current
+        # Check if evening service is still available
+        if not self._evening_completed and not self._evening_skipped:
+            if current < CAFE_EVENING_CLEANUP_END:
+                return SERVICE_PERIOD_EVENING
 
-        return 0  # Already in or past service
+        return None  # No more services today
+
+    def get_time_until_service(self) -> float:
+        """Get hours until next service starts."""
+        time_mgr = get_time_manager()
+        current = time_mgr.current_hour
+
+        # Check morning service
+        if not self._morning_completed and not self._morning_skipped:
+            if current < CAFE_MORNING_SERVICE_START:
+                return CAFE_MORNING_SERVICE_START - current
+            if current < CAFE_MORNING_SERVICE_END:
+                return 0  # In morning service
+
+        # Check evening service
+        if not self._evening_completed and not self._evening_skipped:
+            if current < CAFE_EVENING_SERVICE_START:
+                return CAFE_EVENING_SERVICE_START - current
+            if current < CAFE_EVENING_SERVICE_END:
+                return 0  # In evening service
+
+        # All services done, time until tomorrow's morning
+        return (24 - current) + CAFE_MORNING_SERVICE_START
 
     def get_time_until_close(self) -> float:
-        """Get hours until service ends (0 if not in service)."""
+        """Get hours until current service ends (0 if not in service)."""
         time_mgr = get_time_manager()
         current = time_mgr.current_hour
 
         if self._state != CAFE_STATE_SERVICE:
             return 0
 
-        return max(0, CAFE_SERVICE_END - current)
+        if self._current_service_period == SERVICE_PERIOD_MORNING:
+            return max(0, CAFE_MORNING_SERVICE_END - current)
+        elif self._current_service_period == SERVICE_PERIOD_EVENING:
+            return max(0, CAFE_EVENING_SERVICE_END - current)
+
+        return 0
 
     # =========================================================================
     # CALLBACKS
@@ -481,9 +659,16 @@ class CafeManager:
             'state': self._state,
             'current_menu': self._current_menu.copy(),
             'today_stats': self._today_stats.to_dict(),
+            'morning_stats': self._morning_stats.to_dict(),
+            'evening_stats': self._evening_stats.to_dict(),
             'reputation': self._reputation,
             'day_skipped': self._day_skipped,
-            'service_completed': self._service_completed
+            'service_completed': self._service_completed,
+            'current_service_period': self._current_service_period,
+            'morning_completed': self._morning_completed,
+            'evening_completed': self._evening_completed,
+            'morning_skipped': self._morning_skipped,
+            'evening_skipped': self._evening_skipped,
         }
 
     def load_state(self, state: Dict[str, Any]):
@@ -494,8 +679,22 @@ class CafeManager:
         self._day_skipped = state.get('day_skipped', False)
         self._service_completed = state.get('service_completed', False)
 
+        # Load combined stats
         stats_data = state.get('today_stats', {})
         self._today_stats = ServiceStats.from_dict(stats_data)
+
+        # Load service period stats
+        morning_data = state.get('morning_stats', {})
+        self._morning_stats = ServiceStats.from_dict(morning_data)
+        evening_data = state.get('evening_stats', {})
+        self._evening_stats = ServiceStats.from_dict(evening_data)
+
+        # Load service period state
+        self._current_service_period = state.get('current_service_period', None)
+        self._morning_completed = state.get('morning_completed', False)
+        self._evening_completed = state.get('evening_completed', False)
+        self._morning_skipped = state.get('morning_skipped', False)
+        self._evening_skipped = state.get('evening_skipped', False)
 
 
 # =============================================================================

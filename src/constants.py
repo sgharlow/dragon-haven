@@ -152,15 +152,55 @@ CAFE_STATE_PREP = 'prep'
 CAFE_STATE_SERVICE = 'service'
 CAFE_STATE_CLEANUP = 'cleanup'
 
-# Service period (simplified for prototype - single lunch service)
-CAFE_SERVICE_START = 10    # Service starts at 10 AM
-CAFE_SERVICE_END = 14      # Service ends at 2 PM
+# Service periods
+SERVICE_PERIOD_MORNING = 'morning'
+SERVICE_PERIOD_EVENING = 'evening'
+
+# Morning service (breakfast/lunch)
+CAFE_MORNING_SERVICE_START = 10   # Service starts at 10 AM
+CAFE_MORNING_SERVICE_END = 14     # Service ends at 2 PM
+CAFE_MORNING_PREP_START = 9       # Prep starts at 9 AM
+CAFE_MORNING_CLEANUP_END = 15     # Cleanup ends at 3 PM
+
+# Evening service (dinner)
+CAFE_EVENING_SERVICE_START = 17   # Service starts at 5 PM
+CAFE_EVENING_SERVICE_END = 21     # Service ends at 9 PM
+CAFE_EVENING_PREP_START = 16      # Prep starts at 4 PM
+CAFE_EVENING_CLEANUP_END = 22     # Cleanup ends at 10 PM
+
+# Backwards compatibility aliases
+CAFE_SERVICE_START = CAFE_MORNING_SERVICE_START
+CAFE_SERVICE_END = CAFE_MORNING_SERVICE_END
 CAFE_PREP_DURATION = 1     # 1 hour prep before service
 CAFE_CLEANUP_DURATION = 1  # 1 hour cleanup after service
 
+# Service period customer volume multipliers
+SERVICE_VOLUME_MULTIPLIER = {
+    SERVICE_PERIOD_MORNING: 0.6,   # Lighter morning crowd
+    SERVICE_PERIOD_EVENING: 1.0,   # Full evening crowd
+}
+
+# Service period category preferences (multiplier for customer wanting that category)
+SERVICE_CATEGORY_PREFERENCE = {
+    SERVICE_PERIOD_MORNING: {
+        'beverage': 1.5,    # Coffee/tea popular in morning
+        'appetizer': 1.3,   # Light bites for brunch
+        'main': 0.8,        # Less demand for heavy meals
+        'dessert': 0.9,     # Moderate dessert demand
+    },
+    SERVICE_PERIOD_EVENING: {
+        'beverage': 0.8,    # Less beverage focus
+        'appetizer': 1.0,   # Normal appetizer demand
+        'main': 1.4,        # Dinner mains very popular
+        'dessert': 1.3,     # Desserts popular after dinner
+    },
+}
+
 # Menu settings
 CAFE_MAX_MENU_ITEMS = 6    # Max dishes on menu at once
-CAFE_SKIP_REP_PENALTY = 10  # Reputation penalty for skipping a day
+CAFE_SKIP_SERVICE_PENALTY = 5   # Reputation penalty for skipping a single service
+CAFE_SKIP_DAY_PENALTY = 15      # Reputation penalty for skipping entire day
+CAFE_SKIP_REP_PENALTY = 10      # Backwards compatibility
 
 # =============================================================================
 # REPUTATION SYSTEM

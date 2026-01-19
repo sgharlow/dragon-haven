@@ -19,7 +19,8 @@ from constants import (
     SATISFACTION_QUALITY_WEIGHT, SATISFACTION_SPEED_WEIGHT, SATISFACTION_STAFF_WEIGHT,
     REP_CHANGE_ANGRY, REP_CHANGE_NEUTRAL, REP_CHANGE_HAPPY, REP_CHANGE_DELIGHTED,
     ORDER_CATEGORY_APPETIZER, ORDER_CATEGORY_MAIN, ORDER_CATEGORY_DESSERT, ORDER_CATEGORY_DRINK,
-    TIP_BASE_PERCENT, TIP_SATISFACTION_BONUS, TIP_MAX_PERCENT
+    TIP_BASE_PERCENT, TIP_SATISFACTION_BONUS, TIP_MAX_PERCENT,
+    SERVICE_CATEGORY_PREFERENCE, SERVICE_PERIOD_MORNING, SERVICE_PERIOD_EVENING,
 )
 
 
@@ -147,22 +148,37 @@ class Customer:
         self._state = CUSTOMER_STATE_SEATED
         self._time_waiting = 0
 
-    def take_order(self, available_recipes: List[str] = None) -> Order:
+    def take_order(self, available_recipes: List[str] = None,
+                   service_period: Optional[str] = None) -> Order:
         """
         Customer places their order.
 
         Args:
             available_recipes: Menu items available
+            service_period: Current service period (morning/evening) for preferences
 
         Returns:
             The order
         """
         self._state = CUSTOMER_STATE_ORDERING
 
-        # Choose order category (weighted towards mains)
+        # Base category weights
         categories = [ORDER_CATEGORY_MAIN, ORDER_CATEGORY_APPETIZER,
                       ORDER_CATEGORY_DESSERT, ORDER_CATEGORY_DRINK]
-        weights = [0.5, 0.2, 0.2, 0.1]
+        base_weights = [0.5, 0.2, 0.2, 0.1]
+
+        # Adjust weights based on service period preferences
+        if service_period and service_period in SERVICE_CATEGORY_PREFERENCE:
+            period_prefs = SERVICE_CATEGORY_PREFERENCE[service_period]
+            weights = [
+                base_weights[0] * period_prefs.get('main', 1.0),
+                base_weights[1] * period_prefs.get('appetizer', 1.0),
+                base_weights[2] * period_prefs.get('dessert', 1.0),
+                base_weights[3] * period_prefs.get('beverage', 1.0),
+            ]
+        else:
+            weights = base_weights
+
         category = random.choices(categories, weights=weights)[0]
 
         # Pick a specific recipe if menu is available
