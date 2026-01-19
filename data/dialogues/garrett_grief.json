@@ -1,0 +1,94 @@
+{
+  "id": "garrett_grief",
+  "name": "Holding On",
+  "start_id": "garrett_struggling",
+  "nodes": {
+    "garrett_struggling": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You find Garrett at his table, but today something is different. His hands shake as they grip a worn piece of paper. Tears streak his weathered face.",
+      "next_id": "garrett_crying"
+    },
+    "garrett_crying": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*He doesn't try to hide his tears* Today would have been her birthday. Seventy-eight. We were going to travel. See the ocean. She always wanted to see the ocean.",
+      "next_id": "garrett_regret"
+    },
+    "garrett_regret": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "We kept saying 'next year.' There was always a reason to wait. And then there was no more time. No more 'next years.'",
+      "next_id": "garrett_angry"
+    },
+    "garrett_angry": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*His voice rises* I'm angry. Do you know that? Angry at her for leaving. Angry at myself for not taking her to see that damned ocean. Angry that I'm still here and she's not.",
+      "next_id": "garrett_breaks"
+    },
+    "garrett_breaks": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*He puts his head in his hands* Everyone says time heals. Three years. Three years and it still feels like yesterday. How much time do I need?",
+      "next_id": "player_comfort_garrett"
+    },
+    "player_comfort_garrett": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Garrett is in deep pain. What do you do?",
+      "choices": [
+        {
+          "text": "Sit with him in silence, offering presence instead of words.",
+          "next_id": "garrett_silence",
+          "set_flags": ["garrett_silent_comfort"]
+        },
+        {
+          "text": "Maybe healing isn't about forgetting. It's about carrying them differently.",
+          "next_id": "garrett_considers"
+        },
+        {
+          "text": "Your dragon gently nuzzles Garrett's hand.",
+          "next_id": "garrett_dragon_comfort",
+          "set_flags": ["dragon_comforted_garrett"]
+        }
+      ]
+    },
+    "garrett_silence": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You sit beside him. Minutes pass. The cafe grows quiet around you. Eventually, his breathing steadies.",
+      "next_id": "garrett_grateful_silence"
+    },
+    "garrett_grateful_silence": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*Finally looking up* Thank you. For not trying to fix it. Some things can't be fixed. They can only be... witnessed.",
+      "next_id": "garrett_realization"
+    },
+    "garrett_considers": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*He looks at you through tears* Carrying them differently? I... I've been trying to hold on so tight. As if loosening my grip means losing her.",
+      "next_id": "garrett_realization"
+    },
+    "garrett_dragon_comfort": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*He startles, then laughs through his tears as your dragon nuzzles him* You strange, wonderful creature. Eleanor would have adored you. She always said animals know things we've forgotten.",
+      "next_id": "garrett_realization"
+    },
+    "garrett_realization": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "Maybe... maybe holding on isn't the same as honoring her. Maybe I've been so busy missing her that I forgot how to remember her. The real her. The laughing, living her.",
+      "set_flags": ["garrett_grief_witnessed"],
+      "next_id": "garrett_small_step"
+    },
+    "garrett_small_step": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*He looks at the recipe in his hands* She wrote this with such joy. Not so I could mourn over it. So I could... *his voice trails off, but there's something new in his eyes*"
+    }
+  }
+}

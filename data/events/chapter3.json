@@ -1,0 +1,113 @@
+[
+  {
+    "id": "ch3_garrett_arrives",
+    "chapter": "chapter3",
+    "sequence_order": 1,
+    "name": "The Old Timer",
+    "description": "Old Man Garrett visits the cafe",
+    "conditions": [
+      {"type": "chapter", "value": "chapter3"},
+      {"type": "dragon_stage_min", "value": "juvenile"},
+      {"type": "not_flag", "value": "garrett_met"}
+    ],
+    "dialogue_id": "garrett_arrival",
+    "outcomes": [
+      {"type": "set_flag", "value": "garrett_met"},
+      {"type": "set_flag", "value": "ch3_started"}
+    ]
+  },
+  {
+    "id": "ch3_garrett_memories",
+    "chapter": "chapter3",
+    "sequence_order": 2,
+    "name": "Echoes of the Past",
+    "description": "Garrett shares memories of his late wife",
+    "conditions": [
+      {"type": "flag", "value": "garrett_met"},
+      {"type": "day_min", "value": 30}
+    ],
+    "dialogue_id": "garrett_memories",
+    "outcomes": [
+      {"type": "set_flag", "value": "garrett_memories_shared"}
+    ],
+    "repeatable": false
+  },
+  {
+    "id": "ch3_garrett_recipe",
+    "chapter": "chapter3",
+    "sequence_order": 3,
+    "name": "Her Recipe",
+    "description": "Garrett mentions his wife's special recipe",
+    "conditions": [
+      {"type": "flag", "value": "garrett_memories_shared"},
+      {"type": "day_min", "value": 34}
+    ],
+    "dialogue_id": "garrett_recipe_mention",
+    "outcomes": [
+      {"type": "set_flag", "value": "garrett_recipe_mentioned"}
+    ]
+  },
+  {
+    "id": "ch3_garrett_grief",
+    "chapter": "chapter3",
+    "sequence_order": 4,
+    "name": "Holding On",
+    "description": "Garrett struggles with letting go",
+    "conditions": [
+      {"type": "flag", "value": "garrett_recipe_mentioned"},
+      {"type": "day_min", "value": 38}
+    ],
+    "dialogue_id": "garrett_grief",
+    "outcomes": [
+      {"type": "set_flag", "value": "garrett_grief_witnessed"}
+    ]
+  },
+  {
+    "id": "ch3_garrett_letting_go",
+    "chapter": "chapter3",
+    "sequence_order": 5,
+    "name": "Moving Forward",
+    "description": "Garrett begins to let go",
+    "conditions": [
+      {"type": "flag", "value": "garrett_grief_witnessed"},
+      {"type": "day_min", "value": 42}
+    ],
+    "dialogue_id": "garrett_letting_go",
+    "outcomes": [
+      {"type": "set_flag", "value": "garrett_letting_go"},
+      {"type": "reputation_change", "value": 30}
+    ]
+  },
+  {
+    "id": "ch3_garrett_resolution",
+    "chapter": "chapter3",
+    "sequence_order": 6,
+    "name": "New Beginnings",
+    "description": "Garrett shares his wife's recipe",
+    "conditions": [
+      {"type": "flag", "value": "garrett_letting_go"},
+      {"type": "day_min", "value": 45}
+    ],
+    "dialogue_id": "garrett_resolution",
+    "outcomes": [
+      {"type": "set_flag", "value": "garrett_resolved"},
+      {"type": "reputation_change", "value": 25}
+    ]
+  },
+  {
+    "id": "ch3_complete",
+    "chapter": "chapter3",
+    "sequence_order": 10,
+    "name": "Chapter 3 Complete",
+    "description": "Chapter 3 concludes",
+    "conditions": [
+      {"type": "flag", "value": "garrett_resolved"},
+      {"type": "reputation_min", "value": 200}
+    ],
+    "dialogue_id": "chapter3_end",
+    "outcomes": [
+      {"type": "set_chapter", "value": "chapter4"},
+      {"type": "set_flag", "value": "chapter4_unlocked"}
+    ]
+  }
+]

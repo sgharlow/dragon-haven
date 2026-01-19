@@ -1,0 +1,65 @@
+{
+  "id": "garrett_arrival",
+  "name": "Chapter 3 - The Old Timer",
+  "start_id": "garrett_enters",
+  "nodes": {
+    "garrett_enters": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The door opens slowly. An elderly man shuffles in, his movements careful and deliberate. He pauses at the threshold, looking around with eyes that seem to see beyond the present moment.",
+      "next_id": "garrett_looks"
+    },
+    "garrett_looks": {
+      "speaker": "???",
+      "portrait": "garrett",
+      "text": "*His gaze lingers on the kitchen, then drifts to the window* This place... it reminds me of somewhere. Somewhere warm.",
+      "next_id": "garrett_intro"
+    },
+    "garrett_intro": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "Forgive an old man's wandering mind. I'm Garrett. I heard there was a cafe here where the food has... soul. My Eleanor used to say that about food. 'Soul,' she'd say.",
+      "next_id": "player_greet_garrett"
+    },
+    "player_greet_garrett": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "How do you welcome Garrett?",
+      "choices": [
+        {
+          "text": "Please, sit anywhere you like. I'll bring you something warm.",
+          "next_id": "garrett_grateful",
+          "set_flags": ["garrett_warm_greeting"]
+        },
+        {
+          "text": "Eleanor? Is she joining you today?",
+          "next_id": "garrett_pause"
+        }
+      ]
+    },
+    "garrett_grateful": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*His eyes glisten* Kind. You're very kind. Eleanor would have liked this place. She would have liked you.",
+      "next_id": "garrett_notices_dragon"
+    },
+    "garrett_pause": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*A shadow passes over his face* No... no, she won't be joining me. Not today. Not any day. She's... been gone these three years now.",
+      "next_id": "garrett_notices_dragon"
+    },
+    "garrett_notices_dragon": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*He notices your dragon and a genuine smile breaks through* Well, well. A dragon. Eleanor always said we'd see wonders if we just looked for them. She'd have loved you, little one.",
+      "set_flags": ["garrett_met"],
+      "next_id": "garrett_sits"
+    },
+    "garrett_sits": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*He settles into a chair with a soft sigh* I think I'll be coming here often, if you'll have me. It's... peaceful. Like the quiet after a long storm."
+    }
+  }
+}

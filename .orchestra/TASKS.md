@@ -1,7 +1,7 @@
 # Tasks
 
 > Last updated: 2026-01-18
-> Progress: 46/51 complete (Phase 1 done, Phase 2 done, Phase 3 in progress)
+> Progress: 47/51 complete (Phase 1 done, Phase 2 done, Phase 3 in progress)
 
 ## Ready
 - [ ] `048` Chapter 6 - Estranged Siblings
@@ -10,11 +10,11 @@
 - [ ] `051` Finale - Mother's Secret
 
 ## In Progress
-- [ ] `047` Chapter 3 - Old Man Garrett
 
 ## Blocked
 
 ## Done (Phase 3)
+- [x] `047` Chapter 3 - Old Man Garrett ✓
 - [x] `046` Chapter 2 - Lily the Perfectionist ✓
 
 ## Done (Phase 2)

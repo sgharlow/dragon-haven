@@ -1,0 +1,71 @@
+{
+  "id": "garrett_memories",
+  "name": "Echoes of the Past",
+  "start_id": "garrett_reminiscing",
+  "nodes": {
+    "garrett_reminiscing": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Garrett sits at his usual table, a cup of tea growing cold before him. He stares at something only he can see.",
+      "next_id": "garrett_starts"
+    },
+    "garrett_starts": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*He notices you approaching and smiles sadly* Forgive me. I was somewhere else. Fifty years ago, to be precise. Our first home.",
+      "next_id": "garrett_story"
+    },
+    "garrett_story": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "Eleanor and I... we met when we were young. She was a baker's daughter. Could make bread that tasted like sunshine. We had nothing, but we had everything.",
+      "next_id": "garrett_young"
+    },
+    "garrett_young": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*His voice grows distant* Fifty-two years we had together. She made our little house a home. Every meal was a celebration, she said. Even the simple ones.",
+      "next_id": "player_respond_memories"
+    },
+    "player_respond_memories": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "What do you say to Garrett?",
+      "choices": [
+        {
+          "text": "She sounds wonderful. Thank you for sharing her with me.",
+          "next_id": "garrett_appreciative"
+        },
+        {
+          "text": "Do you still cook her recipes?",
+          "next_id": "garrett_hesitant",
+          "set_flags": ["asked_about_recipes"]
+        }
+      ]
+    },
+    "garrett_appreciative": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*He pats your hand* She was wonderful. And she's not truly gone, you know. Every time I taste honey in bread, I remember her laugh. That's a kind of living on.",
+      "next_id": "garrett_photo"
+    },
+    "garrett_hesitant": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*His hands tremble slightly* Cook them? No. No, I... I can't. I've tried. But every time I start, I hear her voice guiding me, and I... *he trails off*",
+      "next_id": "garrett_photo"
+    },
+    "garrett_photo": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*He pulls a worn photograph from his pocket* This is her. Taken on our anniversary, year forty-five. She said she finally liked how she looked in pictures.",
+      "set_flags": ["garrett_memories_shared"],
+      "next_id": "garrett_tearful"
+    },
+    "garrett_tearful": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*His voice catches* I still set two places at the table every night. Foolish, I know. But I'm not ready to set just one."
+    }
+  }
+}
