@@ -3,8 +3,17 @@ Dragon Haven Cafe - Entry Point
 A dragon-raising cafe management simulation game.
 """
 
+import os
+
 from game import Game
 from state_manager import StateManager
+
+# Get the directory containing this script (src/)
+_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+# Get the project root (parent of src/)
+_PROJECT_ROOT = os.path.dirname(_SCRIPT_DIR)
+# Data directory
+_DATA_DIR = os.path.join(_PROJECT_ROOT, 'data')
 
 # Import all states
 from states.main_menu_state import MainMenuState
@@ -56,15 +65,15 @@ def initialize_systems():
 
     # Initialize dialogue system
     dialogue_mgr = get_dialogue_manager()
-    dialogue_mgr.load_dialogues_from_directory('../data/dialogues/')
+    dialogue_mgr.load_dialogues_from_directory(os.path.join(_DATA_DIR, 'dialogues'))
 
     # Initialize story system
     story_mgr = get_story_manager()
-    story_mgr.load_events_from_directory('../data/events/')
+    story_mgr.load_events_from_directory(os.path.join(_DATA_DIR, 'events'))
 
     # Initialize character system
     char_mgr = get_character_manager()
-    char_mgr.load_characters_file('../data/characters/story_characters.json')
+    char_mgr.load_characters_file(os.path.join(_DATA_DIR, 'characters', 'story_characters.json'))
 
     # Initialize game state manager and enable auto-save
     game_state_mgr = get_game_state_manager()
