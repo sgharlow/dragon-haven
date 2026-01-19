@@ -96,7 +96,7 @@ class GameStateManager:
 
         # Cafe
         cafe_mgr = get_cafe_manager()
-        cafe_state = cafe_mgr.get_state()
+        cafe_state = cafe_mgr.get_save_state()
 
         # Story and characters
         story_mgr = get_story_manager()
