@@ -102,11 +102,12 @@ class DragonStatusState(BaseScreen):
         bar_x = 50
         bar_y = 150
         bar_width = 180
+        bar_height = 20
 
-        self._hunger_bar = StatusBar(bar_x, bar_y, bar_width, 20, "Hunger", (180, 100, 80))
-        self._happiness_bar = StatusBar(bar_x, bar_y + 50, bar_width, 20, "Happiness", (220, 180, 60))
-        self._stamina_bar = StatusBar(bar_x, bar_y + 100, bar_width, 20, "Stamina", (80, 160, 80))
-        self._bond_bar = StatusBar(bar_x, bar_y + 150, bar_width, 20, "Bond", (160, 100, 180))
+        self._hunger_bar = StatusBar(bar_x, bar_y, "Hunger", (180, 100, 80), bar_width, bar_height)
+        self._happiness_bar = StatusBar(bar_x, bar_y + 50, "Happiness", (220, 180, 60), bar_width, bar_height)
+        self._stamina_bar = StatusBar(bar_x, bar_y + 100, "Stamina", (80, 160, 80), bar_width, bar_height)
+        self._bond_bar = StatusBar(bar_x, bar_y + 150, "Bond", (160, 100, 180), bar_width, bar_height)
 
         # Create buttons
         self._feed_button = Button(50, SCREEN_HEIGHT - 100, 100, 40, "Feed", self._on_feed)
