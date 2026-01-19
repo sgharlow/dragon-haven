@@ -640,7 +640,8 @@ class ExplorationModeState(BaseScreen):
                 stats['stamina'] * 100,
                 stats['happiness'] * 100,
                 self._dragon.name,
-                self._dragon.get_mood()
+                self._dragon.get_mood(),
+                self._dragon.get_stage()
             )
 
         # Check for weather notifications

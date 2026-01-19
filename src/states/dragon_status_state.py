@@ -15,9 +15,10 @@ from constants import (
     UI_PANEL, UI_BORDER, UI_TEXT, UI_TEXT_DIM,
     CAFE_CREAM, CAFE_WARM, BLACK,
     DRAGON_STAGE_EGG, DRAGON_STAGE_HATCHLING, DRAGON_STAGE_JUVENILE,
-    DRAGON_EGG_DAYS, DRAGON_HATCHLING_DAYS,
-    DRAGON_STAT_MAX, DRAGON_BOND_MAX,
-    DRAGON_ABILITY_COSTS, DRAGON_STAGE_ABILITIES,
+    DRAGON_STAGE_ADOLESCENT, DRAGON_STAGE_ADULT,
+    DRAGON_EGG_DAYS, DRAGON_HATCHLING_DAYS, DRAGON_JUVENILE_DAYS, DRAGON_ADOLESCENT_DAYS,
+    DRAGON_STAT_MAX, DRAGON_BOND_MAX, DRAGON_STAGE_STAMINA_MAX,
+    DRAGON_ABILITY_COSTS, DRAGON_STAGE_ABILITIES, DRAGON_STAGE_DESCRIPTIONS,
 )
 
 
@@ -252,8 +253,12 @@ class DragonStatusState(BaseScreen):
             self._draw_egg(screen, cx, cy + bob, color_shift)
         elif stage == DRAGON_STAGE_HATCHLING:
             self._draw_hatchling(screen, cx, cy + bob, color_shift)
-        else:
+        elif stage == DRAGON_STAGE_JUVENILE:
             self._draw_juvenile(screen, cx, cy + bob, color_shift)
+        elif stage == DRAGON_STAGE_ADOLESCENT:
+            self._draw_adolescent(screen, cx, cy + bob, color_shift)
+        else:
+            self._draw_adult(screen, cx, cy + bob, color_shift)
 
         # Dragon name (clickable for editing)
         name_y = self.PORTRAIT_Y + self.PORTRAIT_SIZE + 20
@@ -371,6 +376,161 @@ class DragonStatusState(BaseScreen):
         pygame.draw.ellipse(screen, base_color, (cx - 35, cy + 15, 20, 30))
         pygame.draw.ellipse(screen, base_color, (cx + 15, cy + 15, 20, 30))
 
+    def _draw_adolescent(self, screen, cx, cy, color_shift):
+        """Draw adolescent stage dragon - horse-sized with wing buds."""
+        base_color = (160 + color_shift[0], 100 + color_shift[1], 180 + color_shift[2])
+        base_color = tuple(max(0, min(255, c)) for c in base_color)
+        dark_color = tuple(max(0, c - 50) for c in base_color)
+
+        # Larger body
+        pygame.draw.ellipse(screen, base_color, (cx - 55, cy - 30, 110, 70))
+
+        # Longer neck
+        pygame.draw.ellipse(screen, base_color, (cx + 30, cy - 65, 40, 65))
+
+        # Head with more detail
+        pygame.draw.ellipse(screen, base_color, (cx + 40, cy - 90, 60, 45))
+
+        # Snout
+        pygame.draw.ellipse(screen, base_color, (cx + 80, cy - 80, 25, 20))
+
+        # Eyes
+        pygame.draw.ellipse(screen, (255, 255, 255), (cx + 60, cy - 85, 22, 18))
+        pygame.draw.circle(screen, (40, 40, 40), (cx + 70, cy - 78), 7)
+        # Eye highlight
+        pygame.draw.circle(screen, (255, 255, 255), (cx + 67, cy - 82), 2)
+
+        # Larger horns
+        pygame.draw.polygon(screen, dark_color, [
+            (cx + 50, cy - 95), (cx + 42, cy - 120), (cx + 60, cy - 95)
+        ])
+        pygame.draw.polygon(screen, dark_color, [
+            (cx + 72, cy - 97), (cx + 80, cy - 120), (cx + 88, cy - 95)
+        ])
+
+        # Spines down neck
+        for i in range(4):
+            spine_x = cx + 35 + i * 8
+            spine_y = cy - 55 + i * 8
+            pygame.draw.polygon(screen, dark_color, [
+                (spine_x - 4, spine_y), (spine_x, spine_y - 12), (spine_x + 4, spine_y)
+            ])
+
+        # Wing buds (small but visible)
+        pygame.draw.ellipse(screen, dark_color, (cx - 50, cy - 65, 70, 45))
+        pygame.draw.ellipse(screen, base_color, (cx - 40, cy - 55, 55, 35))
+
+        # Muscular tail
+        pygame.draw.arc(screen, base_color, (cx - 90, cy - 25, 70, 60), 0, 2, 10)
+        # Tail spines
+        pygame.draw.polygon(screen, dark_color, [
+            (cx - 85, cy + 15), (cx - 100, cy + 5), (cx - 95, cy + 25), (cx - 80, cy + 25)
+        ])
+
+        # Belly
+        belly_color = (min(255, base_color[0] + 40), min(255, base_color[1] + 50), min(255, base_color[2] + 30))
+        pygame.draw.ellipse(screen, belly_color, (cx - 35, cy + 5, 70, 35))
+
+        # Stronger legs
+        pygame.draw.ellipse(screen, base_color, (cx - 40, cy + 20, 25, 35))
+        pygame.draw.ellipse(screen, base_color, (cx + 20, cy + 20, 25, 35))
+
+        # Claws
+        for leg_x in [cx - 35, cx + 25]:
+            for j in range(3):
+                claw_x = leg_x + j * 6
+                pygame.draw.line(screen, dark_color, (claw_x, cy + 50), (claw_x, cy + 58), 2)
+
+    def _draw_adult(self, screen, cx, cy, color_shift):
+        """Draw adult stage dragon - majestic with full wingspan."""
+        base_color = (200 + color_shift[0], 80 + color_shift[1], 80 + color_shift[2])
+        base_color = tuple(max(0, min(255, c)) for c in base_color)
+        dark_color = tuple(max(0, c - 60) for c in base_color)
+
+        # Majestic body
+        pygame.draw.ellipse(screen, base_color, (cx - 50, cy - 25, 100, 65))
+
+        # Long elegant neck
+        pygame.draw.ellipse(screen, base_color, (cx + 25, cy - 70, 45, 75))
+
+        # Noble head
+        pygame.draw.ellipse(screen, base_color, (cx + 35, cy - 95, 65, 50))
+
+        # Snout with nostrils
+        pygame.draw.ellipse(screen, base_color, (cx + 80, cy - 85, 30, 25))
+        # Fire glow nostrils
+        pygame.draw.circle(screen, (255, 150, 50), (cx + 100, cy - 78), 4)
+        pygame.draw.circle(screen, (255, 200, 100), (cx + 100, cy - 78), 2)
+        pygame.draw.circle(screen, (255, 150, 50), (cx + 100, cy - 68), 4)
+        pygame.draw.circle(screen, (255, 200, 100), (cx + 100, cy - 68), 2)
+
+        # Majestic eyes
+        pygame.draw.ellipse(screen, (255, 255, 255), (cx + 55, cy - 90, 25, 20))
+        pygame.draw.circle(screen, (180, 50, 50), (cx + 67, cy - 82), 8)
+        pygame.draw.circle(screen, (40, 40, 40), (cx + 67, cy - 82), 4)
+        pygame.draw.circle(screen, (255, 255, 255), (cx + 63, cy - 86), 3)
+
+        # Crown of horns
+        pygame.draw.polygon(screen, dark_color, [
+            (cx + 45, cy - 100), (cx + 35, cy - 130), (cx + 55, cy - 100)
+        ])
+        pygame.draw.polygon(screen, dark_color, [
+            (cx + 65, cy - 102), (cx + 70, cy - 135), (cx + 82, cy - 100)
+        ])
+        pygame.draw.polygon(screen, dark_color, [
+            (cx + 85, cy - 98), (cx + 95, cy - 120), (cx + 98, cy - 95)
+        ])
+
+        # Spines down neck and back
+        for i in range(6):
+            spine_x = cx + 30 + i * 10
+            spine_y = cy - 60 + i * 10
+            spine_height = 15 - i * 2
+            pygame.draw.polygon(screen, dark_color, [
+                (spine_x - 5, spine_y), (spine_x, spine_y - spine_height), (spine_x + 5, spine_y)
+            ])
+
+        # Full wingspan
+        # Left wing membrane
+        wing_color = (base_color[0] - 20, base_color[1] + 20, base_color[2] + 40)
+        wing_color = tuple(max(0, min(255, c)) for c in wing_color)
+        pygame.draw.polygon(screen, wing_color, [
+            (cx - 30, cy - 40),
+            (cx - 95, cy - 80),
+            (cx - 90, cy - 50),
+            (cx - 75, cy - 30),
+            (cx - 50, cy - 20),
+        ])
+        # Wing bones
+        pygame.draw.line(screen, dark_color, (cx - 30, cy - 40), (cx - 95, cy - 80), 4)
+        pygame.draw.line(screen, dark_color, (cx - 30, cy - 40), (cx - 75, cy - 30), 3)
+        pygame.draw.line(screen, dark_color, (cx - 30, cy - 40), (cx - 50, cy - 20), 3)
+
+        # Powerful tail
+        pygame.draw.arc(screen, base_color, (cx - 85, cy - 20, 70, 55), 0, 2, 12)
+        # Tail flame tip
+        pygame.draw.polygon(screen, dark_color, [
+            (cx - 80, cy + 18), (cx - 110, cy + 10), (cx - 100, cy + 30), (cx - 75, cy + 30)
+        ])
+
+        # Armored belly
+        belly_color = (min(255, base_color[0] + 30), min(255, base_color[1] + 60), min(255, base_color[2] + 50))
+        pygame.draw.ellipse(screen, belly_color, (cx - 30, cy + 10, 65, 35))
+        # Belly scales
+        for i in range(3):
+            scale_y = cy + 18 + i * 10
+            pygame.draw.arc(screen, dark_color, (cx - 20 + i * 5, scale_y, 30, 12), 3.14, 6.28, 1)
+
+        # Powerful legs
+        pygame.draw.ellipse(screen, base_color, (cx - 38, cy + 25, 28, 40))
+        pygame.draw.ellipse(screen, base_color, (cx + 18, cy + 25, 28, 40))
+
+        # Sharp claws
+        for leg_x in [cx - 32, cx + 24]:
+            for j in range(4):
+                claw_x = leg_x + j * 5
+                pygame.draw.line(screen, (60, 60, 60), (claw_x, cy + 60), (claw_x - 2, cy + 70), 3)
+
     def _draw_stats_panel(self, screen):
         """Draw the stats panel."""
         panel_rect = pygame.Rect(30, 120, 230, 230)
@@ -415,15 +575,26 @@ class DragonStatusState(BaseScreen):
 
         # Days in current stage
         stage = self._dragon.get_stage()
+        egg_end = DRAGON_EGG_DAYS
+        hatchling_end = egg_end + DRAGON_HATCHLING_DAYS
+        juvenile_end = hatchling_end + DRAGON_JUVENILE_DAYS
+        adolescent_end = juvenile_end + DRAGON_ADOLESCENT_DAYS
+
         if stage == DRAGON_STAGE_EGG:
             days_in_stage = days
-            days_until_next = max(0, DRAGON_EGG_DAYS - days + 1)
+            days_until_next = max(0, egg_end - days + 1)
         elif stage == DRAGON_STAGE_HATCHLING:
-            days_in_stage = days - DRAGON_EGG_DAYS
+            days_in_stage = days - egg_end
             days_until_next = max(0, DRAGON_HATCHLING_DAYS - days_in_stage + 1)
+        elif stage == DRAGON_STAGE_JUVENILE:
+            days_in_stage = days - hatchling_end
+            days_until_next = max(0, DRAGON_JUVENILE_DAYS - days_in_stage + 1)
+        elif stage == DRAGON_STAGE_ADOLESCENT:
+            days_in_stage = days - juvenile_end
+            days_until_next = max(0, DRAGON_ADOLESCENT_DAYS - days_in_stage + 1)
         else:
-            days_in_stage = days - DRAGON_EGG_DAYS - DRAGON_HATCHLING_DAYS
-            days_until_next = -1  # No next stage
+            days_in_stage = days - adolescent_end
+            days_until_next = -1  # Adult - no next stage
 
         stage_days = self._stat_font.render(f"In Stage: {days_in_stage} days", True, UI_TEXT)
         screen.blit(stage_days, (panel_x + 20, y))
@@ -458,7 +629,7 @@ class DragonStatusState(BaseScreen):
 
         # Get all possible abilities and current abilities
         current_abilities = self._dragon.get_available_abilities()
-        all_abilities = ['burrow_fetch', 'sniff_track', 'rock_smash']
+        all_abilities = ['burrow_fetch', 'sniff_track', 'rock_smash', 'fire_breath', 'flight_scout']
 
         for ability in all_abilities:
             is_unlocked = ability in current_abilities
@@ -506,6 +677,8 @@ class DragonStatusState(BaseScreen):
             'burrow_fetch': "Dig up buried items",
             'sniff_track': "Find hidden resources",
             'rock_smash': "Break rocks for minerals",
+            'fire_breath': "Cook ingredients instantly",
+            'flight_scout': "Reveal distant areas",
         }
         return hints.get(ability, "Use in exploration")
 

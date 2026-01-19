@@ -1,22 +1,22 @@
 # Tasks
 
 > Last updated: 2026-01-18
-> Progress: 38/45 complete (Phase 1 done, Phase 2 in progress)
+> Progress: 39/45 complete (Phase 1 done, Phase 2 in progress)
 
 ## Ready
-- [ ] `039` Adolescent & Adult dragon stages
+- [ ] `040` Additional dragon abilities
+- [ ] `041` Additional world zones
 - [ ] `043` Evening service period
+- [ ] `044` Additional story chapters
 - [ ] `045` Character affinity system
 
 ## In Progress
 
 ## Blocked
-- [ ] `040` Additional dragon abilities (depends: 039)
-- [ ] `041` Additional world zones (depends: 039)
 - [ ] `042` Additional recipes (depends: 041)
-- [ ] `044` Additional story chapters (depends: 039)
 
 ## Done (Phase 2)
+- [x] `039` Adolescent & Adult dragon stages ✓
 - [x] `038` Stormy & Special weather ✓
 - [x] `037` Autumn & Winter seasons ✓
 - [x] `036` Dragon naming system ✓

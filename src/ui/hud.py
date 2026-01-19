@@ -152,7 +152,7 @@ class HUD:
         self._weather = weather
 
     def set_dragon_stats(self, hunger: float, stamina: float, happiness: float,
-                         name: str = None, mood: str = None):
+                         name: str = None, mood: str = None, stage: str = None):
         """
         Update dragon status display.
 
@@ -162,8 +162,9 @@ class HUD:
             happiness: Happiness value (0-100)
             name: Dragon name (optional)
             mood: Dragon mood (optional)
+            stage: Dragon stage (optional)
         """
-        self.dragon_bars.set_dragon_stats(hunger, stamina, happiness, name, mood)
+        self.dragon_bars.set_dragon_stats(hunger, stamina, happiness, name, mood, stage)
 
     def set_quick_inventory(self, items: List[Dict[str, Any]]):
         """

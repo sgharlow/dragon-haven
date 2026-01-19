@@ -7,8 +7,9 @@ from typing import Dict, List, Optional, Tuple, Any
 from dataclasses import dataclass, field
 from constants import (
     DRAGON_STAGE_EGG, DRAGON_STAGE_HATCHLING, DRAGON_STAGE_JUVENILE,
-    DRAGON_EGG_DAYS, DRAGON_HATCHLING_DAYS,
-    DRAGON_STAT_MAX, DRAGON_BOND_MAX,
+    DRAGON_STAGE_ADOLESCENT, DRAGON_STAGE_ADULT,
+    DRAGON_EGG_DAYS, DRAGON_HATCHLING_DAYS, DRAGON_JUVENILE_DAYS, DRAGON_ADOLESCENT_DAYS,
+    DRAGON_STAT_MAX, DRAGON_BOND_MAX, DRAGON_STAGE_STAMINA_MAX,
     DRAGON_HUNGER_DECAY, DRAGON_HAPPINESS_DECAY, DRAGON_STAMINA_REGEN,
     DRAGON_HUNGER_WARNING, DRAGON_HAPPINESS_WARNING, DRAGON_STAMINA_LOW,
     DRAGON_FEED_HUNGER_RESTORE, DRAGON_FEED_HAPPINESS_BONUS, DRAGON_FEED_BOND_BONUS,
@@ -154,25 +155,38 @@ class Dragon:
         self._happiness = max(0, self._happiness)
 
         # Stamina regenerates when resting, decays slowly otherwise
+        max_stamina = self.get_max_stamina()
         if self._is_resting:
             self._stamina += DRAGON_STAMINA_REGEN * game_hours
         else:
             self._stamina += DRAGON_STAMINA_REGEN * 0.3 * game_hours  # Slow regen when active
 
-        self._stamina = max(0, min(DRAGON_STAT_MAX, self._stamina))
+        self._stamina = max(0, min(max_stamina, self._stamina))
 
     def _check_stage_progression(self):
         """Check and handle stage transitions."""
         days_old = self.get_age_days()
         old_stage = self._stage
 
-        if days_old <= DRAGON_EGG_DAYS:
+        # Calculate stage thresholds
+        egg_end = DRAGON_EGG_DAYS
+        hatchling_end = egg_end + DRAGON_HATCHLING_DAYS
+        juvenile_end = hatchling_end + DRAGON_JUVENILE_DAYS
+        adolescent_end = juvenile_end + DRAGON_ADOLESCENT_DAYS
+
+        if days_old <= egg_end:
             self._stage = DRAGON_STAGE_EGG
-        elif days_old <= DRAGON_EGG_DAYS + DRAGON_HATCHLING_DAYS:
+        elif days_old <= hatchling_end:
             self._stage = DRAGON_STAGE_HATCHLING
             self._hatched = True
-        else:
+        elif days_old <= juvenile_end:
             self._stage = DRAGON_STAGE_JUVENILE
+            self._hatched = True
+        elif days_old <= adolescent_end:
+            self._stage = DRAGON_STAGE_ADOLESCENT
+            self._hatched = True
+        else:
+            self._stage = DRAGON_STAGE_ADULT
             self._hatched = True
 
         # Trigger callbacks if stage changed
@@ -196,8 +210,12 @@ class Dragon:
         return self._happiness
 
     def get_stamina(self) -> float:
-        """Get current stamina (0-100)."""
+        """Get current stamina (0-max based on stage)."""
         return self._stamina
+
+    def get_max_stamina(self) -> float:
+        """Get maximum stamina for current stage."""
+        return DRAGON_STAGE_STAMINA_MAX.get(self._stage, DRAGON_STAT_MAX)
 
     def get_bond(self) -> int:
         """Get lifetime bond level (0-1000)."""
@@ -237,10 +255,11 @@ class Dragon:
 
     def get_stat_percentages(self) -> Dict[str, float]:
         """Get all stats as percentages (0.0-1.0)."""
+        max_stamina = self.get_max_stamina()
         return {
             'hunger': self._hunger / DRAGON_STAT_MAX,
             'happiness': self._happiness / DRAGON_STAT_MAX,
-            'stamina': self._stamina / DRAGON_STAT_MAX,
+            'stamina': self._stamina / max_stamina,
             'bond': self._bond / DRAGON_BOND_MAX
         }
 
@@ -495,13 +514,25 @@ class Dragon:
         """
         days = self.get_age_days()
 
+        # Calculate stage thresholds
+        egg_end = DRAGON_EGG_DAYS
+        hatchling_end = egg_end + DRAGON_HATCHLING_DAYS
+        juvenile_end = hatchling_end + DRAGON_JUVENILE_DAYS
+        adolescent_end = juvenile_end + DRAGON_ADOLESCENT_DAYS
+
         if self._stage == DRAGON_STAGE_EGG:
             return min(1.0, days / DRAGON_EGG_DAYS)
         elif self._stage == DRAGON_STAGE_HATCHLING:
-            days_in_stage = days - DRAGON_EGG_DAYS
+            days_in_stage = days - egg_end
             return min(1.0, days_in_stage / DRAGON_HATCHLING_DAYS)
+        elif self._stage == DRAGON_STAGE_JUVENILE:
+            days_in_stage = days - hatchling_end
+            return min(1.0, days_in_stage / DRAGON_JUVENILE_DAYS)
+        elif self._stage == DRAGON_STAGE_ADOLESCENT:
+            days_in_stage = days - juvenile_end
+            return min(1.0, days_in_stage / DRAGON_ADOLESCENT_DAYS)
         else:
-            # Juvenile has no end, show bond progress instead
+            # Adult has no end, show bond progress instead
             return min(1.0, self._bond / DRAGON_BOND_MAX)
 
     def __repr__(self) -> str:

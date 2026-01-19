@@ -56,7 +56,10 @@ DRAGON_EGG_SHELL = (220, 210, 190)
 DRAGON_EGG_SPOT = (180, 160, 130)
 DRAGON_HATCHLING = (140, 200, 160)
 DRAGON_JUVENILE = (100, 180, 130)
+DRAGON_ADOLESCENT = (80, 160, 110)
+DRAGON_ADULT = (60, 140, 90)
 DRAGON_WING = (80, 150, 110)
+DRAGON_WING_MEMBRANE = (100, 180, 130)  # Slightly lighter for wing membranes
 DRAGON_EYE = (60, 40, 30)
 DRAGON_BELLY = (200, 220, 190)
 
@@ -306,21 +309,43 @@ ORDER_CATEGORY_DRINK = 'drink'
 # =============================================================================
 # DRAGON SYSTEM
 # =============================================================================
-# Life stages and their day ranges
+# Life stages (5-stage progression)
 DRAGON_STAGE_EGG = 'egg'
 DRAGON_STAGE_HATCHLING = 'hatchling'
 DRAGON_STAGE_JUVENILE = 'juvenile'
+DRAGON_STAGE_ADOLESCENT = 'adolescent'
+DRAGON_STAGE_ADULT = 'adult'
+
+# All stages in order (for iteration)
+DRAGON_STAGES = [
+    DRAGON_STAGE_EGG,
+    DRAGON_STAGE_HATCHLING,
+    DRAGON_STAGE_JUVENILE,
+    DRAGON_STAGE_ADOLESCENT,
+    DRAGON_STAGE_ADULT,
+]
 
 # Stage progression (days alive)
-# BALANCE: Faster growth for shorter play sessions (15-30 min target)
-# At 12 real min/day: Egg hatches in 12 min, Juvenile at 36 min
-DRAGON_EGG_DAYS = 1        # Day 1: Egg (hatches quickly!)
-DRAGON_HATCHLING_DAYS = 3  # Days 2-4: Hatchling
-# Days 5+: Juvenile
+# BALANCE: Adjusted for prototype pacing (full growth in ~2 hours real time)
+# At 12 real min/day: Full adult in ~2 hours of play
+DRAGON_EGG_DAYS = 1          # Day 1: Egg (hatches quickly!)
+DRAGON_HATCHLING_DAYS = 2    # Days 2-3: Hatchling (small, cute)
+DRAGON_JUVENILE_DAYS = 2     # Days 4-5: Juvenile (cat-sized, playful)
+DRAGON_ADOLESCENT_DAYS = 4   # Days 6-9: Adolescent (horse-sized, wing buds)
+# Days 10+: Adult (full wingspan, majestic)
 
 # Stat ranges
 DRAGON_STAT_MAX = 100.0
 DRAGON_BOND_MAX = 500  # BALANCE: Lower max for achievable progression
+
+# Max stamina scales by stage (allows longer exploration as dragon grows)
+DRAGON_STAGE_STAMINA_MAX = {
+    DRAGON_STAGE_EGG: 100,        # Eggs don't use stamina
+    DRAGON_STAGE_HATCHLING: 100,  # Base stamina
+    DRAGON_STAGE_JUVENILE: 100,   # Still base stamina
+    DRAGON_STAGE_ADOLESCENT: 125, # 25% increase
+    DRAGON_STAGE_ADULT: 150,      # 50% increase
+}
 
 # Stat decay rates (per game hour)
 # BALANCE: With 30 sec/hour, decay is 2x faster in real-time
@@ -356,6 +381,8 @@ DRAGON_ABILITY_COSTS = {
     'burrow_fetch': 20,
     'sniff_track': 15,
     'rock_smash': 30,
+    'fire_breath': 40,   # Adolescent+: Cook/warm items, clear obstacles
+    'flight_scout': 50,  # Adult only: Reveal resources in adjacent zones
 }
 
 # Abilities unlocked per stage
@@ -363,6 +390,26 @@ DRAGON_STAGE_ABILITIES = {
     DRAGON_STAGE_EGG: [],
     DRAGON_STAGE_HATCHLING: ['burrow_fetch', 'sniff_track'],
     DRAGON_STAGE_JUVENILE: ['burrow_fetch', 'sniff_track', 'rock_smash'],
+    DRAGON_STAGE_ADOLESCENT: ['burrow_fetch', 'sniff_track', 'rock_smash', 'fire_breath'],
+    DRAGON_STAGE_ADULT: ['burrow_fetch', 'sniff_track', 'rock_smash', 'fire_breath', 'flight_scout'],
+}
+
+# Stage descriptions for UI
+DRAGON_STAGE_DESCRIPTIONS = {
+    DRAGON_STAGE_EGG: "A mysterious dragon egg, warm to the touch.",
+    DRAGON_STAGE_HATCHLING: "A tiny hatchling, curious and playful.",
+    DRAGON_STAGE_JUVENILE: "A cat-sized dragon, eager to explore.",
+    DRAGON_STAGE_ADOLESCENT: "A horse-sized dragon with growing wing buds.",
+    DRAGON_STAGE_ADULT: "A majestic adult dragon with full wingspan.",
+}
+
+# Stage sizes for rendering (scale multiplier)
+DRAGON_STAGE_SIZES = {
+    DRAGON_STAGE_EGG: 1.0,
+    DRAGON_STAGE_HATCHLING: 1.0,
+    DRAGON_STAGE_JUVENILE: 1.2,
+    DRAGON_STAGE_ADOLESCENT: 1.6,
+    DRAGON_STAGE_ADULT: 2.0,
 }
 
 # =============================================================================
