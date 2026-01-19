@@ -9,6 +9,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from systems.dialogue import get_dialogue_manager
 from constants import DRAGON_STAGES
+from entities.story_character import get_character_manager
 
 
 @dataclass
@@ -346,6 +347,35 @@ class StoryManager:
         elif ctype == 'chapter':
             # Value is chapter that must be current
             return self._current_chapter == value
+
+        elif ctype == 'affinity_min':
+            # Value is {'character': char_id, 'amount': min_affinity}
+            if isinstance(value, dict):
+                char_id = value.get('character', '')
+                min_affinity = value.get('amount', 0)
+                char_mgr = get_character_manager()
+                return char_mgr.get_affinity(char_id) >= min_affinity
+            return False
+
+        elif ctype == 'affinity_level':
+            # Value is {'character': char_id, 'level': 'friendly'/'close'/'best_friend'}
+            if isinstance(value, dict):
+                char_id = value.get('character', '')
+                required_level = value.get('level', 'acquaintance')
+                char_mgr = get_character_manager()
+                char = char_mgr.get_character(char_id)
+                if char:
+                    from constants import AFFINITY_LEVELS
+                    current_min = AFFINITY_LEVELS.get(char.get_affinity_level(), {}).get('min', 0)
+                    required_min = AFFINITY_LEVELS.get(required_level, {}).get('min', 0)
+                    return current_min >= required_min
+            return False
+
+        elif ctype == 'character_met':
+            # Value is character ID that must be met
+            char_mgr = get_character_manager()
+            char = char_mgr.get_character(value)
+            return char.met if char else False
 
         return False
 

@@ -9,8 +9,10 @@ from constants import (
     SCREEN_WIDTH, SCREEN_HEIGHT,
     UI_PANEL, UI_BORDER, UI_TEXT, UI_TEXT_DIM,
     CAFE_CREAM, CAFE_WARM, BLACK,
+    AFFINITY_LEVELS, AFFINITY_MAX,
 )
 from systems.dialogue import DialogueNode, DialogueChoice
+from entities.story_character import get_character_manager
 
 
 class DialogueBox:
@@ -327,6 +329,9 @@ class DialogueBox:
         # Draw portrait placeholder (or actual portrait)
         self._draw_portrait(dialogue_surface, portrait_x, portrait_y, alpha)
 
+        # Draw affinity bar for story characters
+        self._draw_affinity_bar(dialogue_surface, portrait_x, portrait_y + self.PORTRAIT_SIZE - 25, alpha)
+
         # Draw speaker name
         text_x = self.PORTRAIT_SIZE + self.PADDING * 2
         speaker_color = (255, 245, 220, alpha)
@@ -558,6 +563,67 @@ class DialogueBox:
         pygame.draw.polygon(surface, (130, 100, 120), [
             (cx - 18, cy + 18), (cx - 22, cy + 30), (cx + 22, cy + 30), (cx + 18, cy + 18)
         ])
+
+    def _draw_affinity_bar(self, surface: pygame.Surface, x: int, y: int, alpha: int):
+        """
+        Draw an affinity bar for story characters.
+
+        Args:
+            surface: Surface to draw on
+            x: X position (aligned with portrait)
+            y: Y position (below portrait)
+            alpha: Current alpha for fading
+        """
+        # Check if this is a story character
+        char_mgr = get_character_manager()
+        character = char_mgr.get_character(self._portrait_id.lower()) if self._portrait_id else None
+
+        if not character or not character.met:
+            return
+
+        # Bar dimensions
+        bar_width = self.PORTRAIT_SIZE
+        bar_height = 8
+        padding = 2
+
+        # Background
+        bg_color = (30, 25, 40, min(180, alpha))
+        pygame.draw.rect(surface, bg_color, (x, y, bar_width, bar_height + 12), border_radius=3)
+
+        # Get affinity level and color
+        affinity = character.affinity
+        affinity_level = character.get_affinity_level()
+        level_name = character.get_affinity_level_name()
+
+        # Color based on level
+        level_colors = {
+            'acquaintance': (120, 120, 140),   # Gray-blue
+            'friendly': (100, 180, 120),        # Green
+            'close': (180, 140, 80),            # Gold
+            'best_friend': (200, 100, 150),     # Pink/rose
+        }
+        bar_color = level_colors.get(affinity_level, (120, 120, 140))
+
+        # Draw bar background
+        bar_bg = (50, 45, 60, alpha)
+        pygame.draw.rect(surface, bar_bg,
+                        (x + padding, y + padding, bar_width - padding * 2, bar_height),
+                        border_radius=2)
+
+        # Draw filled portion
+        fill_width = int((bar_width - padding * 2) * (affinity / 100.0))
+        if fill_width > 0:
+            pygame.draw.rect(surface, bar_color,
+                           (x + padding, y + padding, fill_width, bar_height),
+                           border_radius=2)
+
+        # Draw level name below bar
+        level_font = pygame.font.Font(None, 16)
+        level_text = level_font.render(level_name, True, bar_color)
+        level_text.set_alpha(alpha)
+        # Center the text under the bar
+        text_x = x + (bar_width - level_text.get_width()) // 2
+        surface.blit(level_text, (text_x, y + bar_height + padding))
 
     def _draw_wrapped_text(self, surface: pygame.Surface, text: str,
                           x: int, y: int, max_width: int, color: Tuple, alpha: int):

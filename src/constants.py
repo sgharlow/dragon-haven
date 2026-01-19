@@ -241,6 +241,53 @@ REPUTATION_UNLOCKS = {
 }
 
 # =============================================================================
+# CHARACTER AFFINITY SYSTEM
+# =============================================================================
+# Affinity range (per character)
+AFFINITY_MIN = 0
+AFFINITY_MAX = 100
+
+# Affinity level thresholds
+AFFINITY_LEVEL_ACQUAINTANCE = 'acquaintance'  # 0-24
+AFFINITY_LEVEL_FRIENDLY = 'friendly'          # 25-49
+AFFINITY_LEVEL_CLOSE = 'close'                # 50-74
+AFFINITY_LEVEL_BEST_FRIEND = 'best_friend'    # 75-100
+
+AFFINITY_LEVELS = {
+    AFFINITY_LEVEL_ACQUAINTANCE: {'min': 0, 'max': 24, 'name': 'Acquaintance'},
+    AFFINITY_LEVEL_FRIENDLY: {'min': 25, 'max': 49, 'name': 'Friendly'},
+    AFFINITY_LEVEL_CLOSE: {'min': 50, 'max': 74, 'name': 'Close'},
+    AFFINITY_LEVEL_BEST_FRIEND: {'min': 75, 'max': 100, 'name': 'Best Friend'},
+}
+
+# Affinity gains from interactions
+AFFINITY_COOK_BASE = 5           # Base cooking for character
+AFFINITY_COOK_QUALITY_BONUS = 5  # Extra for high quality (4-5 stars)
+AFFINITY_COOK_FAVORITE = 15      # Cooking their favorite recipe
+AFFINITY_COOK_LIKED = 8          # Cooking a liked recipe
+AFFINITY_COOK_DISLIKED = -5      # Cooking a disliked recipe
+
+AFFINITY_DIALOGUE_POSITIVE = 8   # Positive dialogue choice
+AFFINITY_DIALOGUE_NEGATIVE = -5  # Negative dialogue choice
+
+AFFINITY_GIFT_MIN = 3            # Minimum gift bonus
+AFFINITY_GIFT_MAX = 15           # Maximum gift bonus (preferred items)
+
+# Affinity unlock thresholds
+AFFINITY_UNLOCK_PERSONAL_STORY = 25   # Personal stories unlock
+AFFINITY_UNLOCK_SECRET_RECIPE = 50    # Secret recipes unlock
+AFFINITY_UNLOCK_SPECIAL_EVENT = 75    # Special events unlock
+
+# Secret recipes unlocked at Close affinity (50+)
+CHARACTER_SECRET_RECIPES = {
+    'mother': 'mothers_comfort_stew',
+    'marcus': 'wanderers_secret_blend',
+    'lily': 'lilys_perfect_souffle',
+    'vera': 'captains_treasure_catch',
+    'noble': 'royal_midnight_feast',
+}
+
+# =============================================================================
 # STAFF SYSTEM
 # =============================================================================
 # Staff roles
@@ -902,6 +949,7 @@ UNLOCK_TYPE_DEFAULT = 'default'       # Available from start
 UNLOCK_TYPE_REPUTATION = 'reputation'  # Requires reputation level
 UNLOCK_TYPE_STORY = 'story'           # Requires story progress
 UNLOCK_TYPE_DISCOVERY = 'discovery'   # Found through exploration
+UNLOCK_TYPE_AFFINITY = 'affinity'     # Requires character affinity (secret recipes)
 
 # Recipe definitions
 # Format: id -> {name, description, category, difficulty, base_price, ingredients, color_influence, unlock}
@@ -1372,6 +1420,87 @@ RECIPES = {
         ],
         'color_influence': (0.6, 0.4, 0.3),  # Comfort brown
         'unlock': {'type': UNLOCK_TYPE_REPUTATION, 'requirement': 40},
+    },
+
+    # =========================================================================
+    # SECRET RECIPES - Unlocked through character affinity (Close level: 50+)
+    # =========================================================================
+    'mothers_comfort_stew': {
+        'name': "Mother's Comfort Stew",
+        'description': 'A secret family recipe passed down through generations. Warm, comforting, and made with love.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 3,
+        'base_price': 110,
+        'ingredients': [
+            ('buried_root', 2, 2),
+            ('wild_herb', 2, 2),
+            ('golden_honey', 1, 2),
+            ('field_mushroom', 1, 2),
+        ],
+        'color_influence': (0.6, 0.5, 0.4),  # Warm earthy
+        'unlock': {'type': UNLOCK_TYPE_AFFINITY, 'character': 'mother'},
+    },
+    'wanderers_secret_blend': {
+        'name': "Wanderer's Secret Blend",
+        'description': "Marcus's special spice blend from his travels. The exact ingredients are a closely guarded secret.",
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 4,
+        'base_price': 135,
+        'ingredients': [
+            ('mountain_herb', 2, 2),
+            ('forest_herb', 1, 2),
+            ('wild_game', 1, 3),
+            ('rare_mushroom', 1, 2),
+        ],
+        'color_influence': (0.5, 0.4, 0.3),  # Exotic brown
+        'unlock': {'type': UNLOCK_TYPE_AFFINITY, 'character': 'marcus'},
+    },
+    'lilys_perfect_souffle': {
+        'name': "Lily's Perfect Soufflé",
+        'description': "A recipe that took Lily years to perfect. Light as air with an impossibly delicate texture.",
+        'category': RECIPE_CATEGORY_DESSERT,
+        'difficulty': 5,
+        'base_price': 150,
+        'ingredients': [
+            ('edible_flower', 2, 3),
+            ('golden_honey', 2, 2),
+            ('alpine_flower', 1, 2),
+            ('crystal_shard', 1, 2),
+        ],
+        'color_influence': (0.8, 0.7, 0.6),  # Golden delicate
+        'unlock': {'type': UNLOCK_TYPE_AFFINITY, 'character': 'lily'},
+    },
+    'captains_treasure_catch': {
+        'name': "Captain's Treasure Catch",
+        'description': "Vera's legendary seafood dish, said to bring good fortune to those who taste it.",
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 4,
+        'base_price': 175,
+        'ingredients': [
+            ('coastal_crab', 1, 3),
+            ('pearl_oyster', 2, 2),
+            ('tidal_clam', 1, 2),
+            ('sea_salt', 1, 2),
+            ('forest_fish', 1, 2),
+        ],
+        'color_influence': (0.4, 0.6, 0.8),  # Ocean blue
+        'unlock': {'type': UNLOCK_TYPE_AFFINITY, 'character': 'vera'},
+    },
+    'royal_midnight_feast': {
+        'name': 'Royal Midnight Feast',
+        'description': "The Masked Noble's secret recipe from the royal kitchens. Extraordinarily decadent.",
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 5,
+        'base_price': 200,
+        'ingredients': [
+            ('hidden_truffle', 1, 3),
+            ('rare_mushroom', 2, 2),
+            ('wild_game', 1, 3),
+            ('mineral_crystal', 1, 2),
+            ('rock_honey', 1, 2),
+        ],
+        'color_influence': (0.4, 0.3, 0.5),  # Regal purple
+        'unlock': {'type': UNLOCK_TYPE_AFFINITY, 'character': 'noble'},
     },
 }
 
