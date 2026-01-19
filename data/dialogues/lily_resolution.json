@@ -1,0 +1,76 @@
+{
+  "id": "lily_resolution",
+  "name": "A Shared Passion",
+  "start_id": "lily_cooking",
+  "nodes": {
+    "lily_cooking": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You find Lily in your kitchen, cooking with a freedom you've never seen in her before. She hums softly as she works, occasionally adjusting seasonings by instinct rather than measurement.",
+      "next_id": "lily_joy"
+    },
+    "lily_joy": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*She notices you and beams - a genuine, warm smile* Watch this. I'm making my old Gourmet Special, but I'm improvising. I added a touch of honey because it felt right. Can you imagine? Felt!",
+      "next_id": "lily_new_dish"
+    },
+    "lily_new_dish": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*She plates the dish with care, but not obsessive precision* I've decided to create something new. A dish that celebrates imperfection. I'm calling it 'The Happy Accident.'",
+      "next_id": "lily_gift"
+    },
+    "lily_gift": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "But first... I want to share something with you. My old secret recipe - the soufflé I spent five years perfecting. I've never shared it with anyone.",
+      "next_id": "lily_explain_gift"
+    },
+    "lily_explain_gift": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*She pulls out a handwritten recipe card, worn at the edges* This recipe was my prison. Every failed attempt felt like personal failure. But now... it can be a gift instead.",
+      "next_id": "player_receive_recipe"
+    },
+    "player_receive_recipe": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Lily offers you her treasured recipe.",
+      "choices": [
+        {
+          "text": "I'm honored, Lily. I'll add my own twist to it.",
+          "next_id": "lily_delighted"
+        },
+        {
+          "text": "Are you sure? This means so much to you.",
+          "next_id": "lily_certain"
+        }
+      ]
+    },
+    "lily_delighted": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*She laughs* Yes! Make it yours. Ruin it beautifully. That's the whole point now, isn't it? The old Lily would be horrified. The new Lily can't wait to taste your version.",
+      "next_id": "lily_friendship"
+    },
+    "lily_certain": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "I've never been more certain of anything. This recipe deserves to be in a kitchen where it will be loved, not feared. Your kitchen is that place.",
+      "next_id": "lily_friendship"
+    },
+    "lily_friendship": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "You know, I came here to judge. To feel superior. Instead, I found something I'd lost - my love of cooking. And a friend who showed me the way back.",
+      "set_flags": ["lily_resolved"],
+      "next_id": "lily_final"
+    },
+    "lily_final": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*She raises her spoon like a toast* To Dragon Haven Cafe - where perfection goes to die, and something better takes its place."
+    }
+  }
+}

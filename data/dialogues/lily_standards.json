@@ -1,0 +1,82 @@
+{
+  "id": "lily_standards",
+  "name": "High Standards",
+  "start_id": "lily_returns",
+  "nodes": {
+    "lily_returns": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Lily has returned to the cafe. She sits at her usual table, a small notebook open before her, filled with meticulous notes.",
+      "next_id": "lily_observation"
+    },
+    "lily_observation": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*Without looking up* I've been observing your kitchen for several days now. Your technique is... unrefined. Your plating inconsistent. Your timing variable.",
+      "next_id": "lily_pause"
+    },
+    "lily_pause": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*She finally looks up, her expression unreadable* And yet... your customers leave satisfied. It's baffling.",
+      "next_id": "player_respond_critique"
+    },
+    "player_respond_critique": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "How do you respond to her critique?",
+      "choices": [
+        {
+          "text": "I cook with heart. That's what matters most.",
+          "next_id": "lily_dismissive",
+          "set_flags": ["lily_heart_response"]
+        },
+        {
+          "text": "I'm always trying to improve. What would you suggest?",
+          "next_id": "lily_respect",
+          "set_flags": ["lily_humble_response"]
+        },
+        {
+          "text": "Not everyone needs perfection to enjoy a good meal.",
+          "next_id": "lily_triggered"
+        }
+      ]
+    },
+    "lily_dismissive": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "Heart. *She scoffs, but there's something in her eyes* My mentor used to say the same thing. I thought it was just an excuse for sloppiness.",
+      "next_id": "lily_backstory_hint"
+    },
+    "lily_respect": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*Her expression softens slightly* A willingness to learn. That's... rare. Most people defend their mediocrity rather than strive to overcome it.",
+      "next_id": "lily_backstory_hint"
+    },
+    "lily_triggered": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*Her jaw tightens* Perfection isn't about others. It's about... *She stops herself* Never mind. You wouldn't understand.",
+      "next_id": "lily_backstory_hint"
+    },
+    "lily_backstory_hint": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "I once worked in the finest restaurant in the capital. Every dish had to be flawless. A single wilted garnish could end a career. One mistake... ended mine.",
+      "next_id": "lily_vulnerability"
+    },
+    "lily_vulnerability": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*She looks away* I left before they could dismiss me. Pride, perhaps. Or cowardice. Now I wander, judging others' kitchens because I can no longer face my own.",
+      "set_flags": ["lily_standards_known"],
+      "next_id": "lily_recovery"
+    },
+    "lily_recovery": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*She straightens, composure returning* Forgive me. That was... unprofessional. *She closes her notebook* Perhaps you could show me your signature dish sometime."
+    }
+  }
+}

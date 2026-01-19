@@ -1,11 +1,17 @@
 # Tasks
 
 > Last updated: 2026-01-18
-> Progress: 45/45 complete (Phase 1 done, Phase 2 complete!)
+> Progress: 45/51 complete (Phase 1 done, Phase 2 done, Phase 3 in progress)
 
 ## Ready
+- [ ] `047` Chapter 3 - Old Man Garrett
+- [ ] `048` Chapter 6 - Estranged Siblings
+- [ ] `049` Ancient Ruins zone
+- [ ] `050` Sky Islands zone
+- [ ] `051` Finale - Mother's Secret
 
 ## In Progress
+- [ ] `046` Chapter 2 - Lily the Perfectionist
 
 ## Blocked
 
@@ -79,4 +85,24 @@ Closing gaps between prototype and full specification. See `.orchestra/EXPANSION
                   └─→ 044 Story Chapters          │
 043 Evening Service ──────────────────────────────┤
 045 Affinity System ──────────────────────────────┘
+```
+
+---
+
+## Phase 3: Story Completion
+
+Completing all story chapters and world zones per specification.
+
+### Implementation Order
+1. **Story Chapters** (046, 047, 048): Lily, Garrett, Siblings
+2. **World Zones** (049, 050): Ancient Ruins, Sky Islands
+3. **Finale** (051): Mother's Secret conclusion
+
+### Dependencies
+```
+046 Chapter 2 (Lily) ──→ 047 Chapter 3 (Garrett) ──→ 048 Chapter 6 (Siblings)
+                                                              │
+049 Ancient Ruins ──→ 050 Sky Islands ────────────────────────┤
+                                                              ↓
+                                                    051 Finale
 ```

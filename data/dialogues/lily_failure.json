@@ -1,0 +1,111 @@
+{
+  "id": "lily_failure",
+  "name": "The Imperfect Dish",
+  "start_id": "challenge_begins",
+  "nodes": {
+    "challenge_begins": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The evening of the challenge has arrived. Lily stands at a borrowed station in your kitchen, her ingredients arranged with military precision.",
+      "next_id": "lily_confident"
+    },
+    "lily_confident": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*She ties her apron with practiced movements* Watch carefully. This is how a true chef operates. Every movement deliberate. Every measurement exact.",
+      "next_id": "cooking_montage"
+    },
+    "cooking_montage": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You both cook in focused silence. Lily's movements are like a dance - precise, rehearsed, beautiful. But as she reaches for a spice jar, your dragon bumps into the counter...",
+      "next_id": "accident_happens"
+    },
+    "accident_happens": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The jar tips. Too much spice falls into Lily's dish. Her face goes pale.",
+      "next_id": "lily_panic"
+    },
+    "lily_panic": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "No. No, no, no... *Her hands tremble* It's ruined. The balance is destroyed. I can't... I can't serve this. I WON'T serve this!",
+      "next_id": "lily_breakdown"
+    },
+    "lily_breakdown": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*She grips the counter, breathing hard* All those years. All that precision. And it still happens. I still fail. I'm still not good enough.",
+      "next_id": "player_respond_failure"
+    },
+    "player_respond_failure": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Lily is spiraling. What do you do?",
+      "choices": [
+        {
+          "text": "Taste it anyway. Maybe it's still good.",
+          "next_id": "taste_test",
+          "set_flags": ["lily_tasted_failure"]
+        },
+        {
+          "text": "One mistake doesn't erase years of skill, Lily.",
+          "next_id": "lily_comfort"
+        },
+        {
+          "text": "My dragon apologizes. Let's start over together.",
+          "next_id": "lily_dragon_apology"
+        }
+      ]
+    },
+    "taste_test": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You take a spoonful of Lily's 'ruined' dish. Your eyes widen.",
+      "next_id": "unexpected_result"
+    },
+    "lily_comfort": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*She laughs bitterly* Skill? What good is skill that can't handle the unexpected? The kitchen doesn't care about your years of training when disaster strikes.",
+      "next_id": "player_insist_taste"
+    },
+    "lily_dragon_apology": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*She looks at your dragon, then back at the dish* Start over? With that amount of spice wasted? With my reputation already... *She trails off*",
+      "next_id": "player_insist_taste"
+    },
+    "player_insist_taste": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You take a spoonful of the dish before Lily can stop you.",
+      "next_id": "unexpected_result"
+    },
+    "unexpected_result": {
+      "speaker": "You",
+      "portrait": "player",
+      "text": "Lily... this is incredible. The extra spice, it creates this warmth, this depth that wasn't in the original recipe. It's not perfect. It's better.",
+      "next_id": "lily_disbelief"
+    },
+    "lily_disbelief": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*She stares at you* Better? That's... that's not possible. It deviated from the recipe. It's objectively incorrect.",
+      "next_id": "lily_tastes"
+    },
+    "lily_tastes": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "With trembling hands, Lily tastes her own creation. Tears begin to form in her eyes.",
+      "set_flags": ["lily_failure_witnessed"],
+      "next_id": "lily_realization"
+    },
+    "lily_realization": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "It's... *her voice breaks* ...it's what I was always trying to create. But I was so focused on perfection that I never let the food... breathe."
+    }
+  }
+}

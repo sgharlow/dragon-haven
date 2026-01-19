@@ -1,0 +1,71 @@
+{
+  "id": "lily_arrival",
+  "name": "Chapter 2 - The Perfectionist Arrives",
+  "start_id": "lily_enters",
+  "nodes": {
+    "lily_enters": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The door opens precisely, not too fast, not too slow. A woman with auburn hair in a perfect bun steps inside. Her sharp eyes immediately begin cataloging every detail of your cafe.",
+      "next_id": "lily_first_look"
+    },
+    "lily_first_look": {
+      "speaker": "???",
+      "portrait": "lily",
+      "text": "*Her gaze sweeps across the room, lingering on the kitchen* Hmm. Dragon Haven Cafe. I've heard... interesting things about this establishment.",
+      "next_id": "lily_intro"
+    },
+    "lily_intro": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "I am Lily. A chef by trade, a perfectionist by nature. *She adjusts her pristine white collar* I've come to see if the rumors about your cooking have any merit.",
+      "next_id": "player_greet_lily"
+    },
+    "player_greet_lily": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "How do you respond to this exacting visitor?",
+      "choices": [
+        {
+          "text": "Welcome! I'd be honored to cook for a fellow chef.",
+          "next_id": "lily_intrigued",
+          "set_flags": ["lily_humble_greeting"]
+        },
+        {
+          "text": "Our food speaks for itself. Care to try some?",
+          "next_id": "lily_challenge_accepted"
+        }
+      ]
+    },
+    "lily_intrigued": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*Her eyebrow raises slightly* Fellow chef? Bold claim. But... there's something about your kitchen. It has soul, even if the organization leaves something to be desired.",
+      "next_id": "lily_notices_dragon"
+    },
+    "lily_challenge_accepted": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "Confidence without pretension. *A hint of approval* Very well. I shall judge your work by its merits alone. Fair warning - I am not easily impressed.",
+      "next_id": "lily_notices_dragon"
+    },
+    "lily_notices_dragon": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*She freezes, noticing your dragon for the first time* Is that... a dragon? In a restaurant kitchen? *Her eye twitches* The hygiene implications alone...",
+      "next_id": "lily_dragon_reaction"
+    },
+    "lily_dragon_reaction": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*After a long pause* ...And yet, the aroma from your kitchen is remarkable. Perhaps unconventional methods can yield... acceptable results.",
+      "set_flags": ["lily_met"],
+      "next_id": "lily_promise"
+    },
+    "lily_promise": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "I shall return. Often. Consider yourself under evaluation, chef. *She straightens her already-perfect collar* Do try not to disappoint me."
+    }
+  }
+}

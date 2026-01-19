@@ -1,0 +1,58 @@
+{
+  "id": "lily_challenge",
+  "name": "A Chef's Challenge",
+  "start_id": "lily_proposal",
+  "nodes": {
+    "lily_proposal": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*She approaches with unusual energy* I have a proposition. A challenge, if you will. Cook your best dish - not for your customers, but for me.",
+      "next_id": "lily_explain"
+    },
+    "lily_explain": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "In return, I will cook for you. We shall compare our philosophies through our cooking. Your 'heart' against my precision. May the better approach win.",
+      "next_id": "player_accept_challenge"
+    },
+    "player_accept_challenge": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Do you accept Lily's challenge?",
+      "choices": [
+        {
+          "text": "I accept! Let's learn from each other.",
+          "next_id": "lily_pleased"
+        },
+        {
+          "text": "This isn't a competition, Lily. We can both cook well.",
+          "next_id": "lily_insistent"
+        }
+      ]
+    },
+    "lily_pleased": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*A genuine smile crosses her face* Excellent. I shall prepare my Gourmet Special - a dish that took me years to perfect. Every element calculated to the gram.",
+      "next_id": "lily_teach"
+    },
+    "lily_insistent": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*She shakes her head* It must be a competition. That's how we improve - by measuring ourselves against others. Please... I need this.",
+      "next_id": "lily_teach"
+    },
+    "lily_teach": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "Here - *she pulls out a worn recipe card* The Gourmet Special. Study it. Master it if you can. We cook tomorrow evening.",
+      "set_flags": ["lily_challenge_active"],
+      "next_id": "lily_warning"
+    },
+    "lily_warning": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*Her expression turns serious* I should warn you - I have never made this dish anything less than perfect. Be prepared to witness true culinary excellence."
+    }
+  }
+}
