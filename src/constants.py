@@ -84,6 +84,42 @@ TERRAIN_FLOWER_RED = (220, 80, 80)
 TERRAIN_FLOWER_YELLOW = (240, 220, 80)
 TERRAIN_FLOWER_BLUE = (100, 140, 220)
 
+# Seasonal color palettes (for zone rendering adjustments)
+SEASON_COLORS = {
+    'spring': {
+        'grass': (100, 180, 80),      # Bright green
+        'leaves': (80, 160, 60),      # Fresh green
+        'sky_tint': (200, 220, 255),  # Light blue
+        'accent': (255, 180, 200),    # Pink blossoms
+    },
+    'summer': {
+        'grass': (120, 160, 60),      # Yellow-green
+        'leaves': (60, 140, 50),      # Deep green
+        'sky_tint': (180, 200, 255),  # Clear blue
+        'accent': (255, 220, 100),    # Golden
+    },
+    'autumn': {
+        'grass': (140, 140, 80),      # Faded green
+        'leaves': (200, 120, 60),     # Orange-brown
+        'sky_tint': (220, 200, 180),  # Warm haze
+        'accent': (180, 80, 40),      # Deep red
+    },
+    'winter': {
+        'grass': (160, 170, 180),     # Frost-touched
+        'leaves': (100, 110, 120),    # Gray-brown
+        'sky_tint': (200, 210, 230),  # Cold blue
+        'accent': (240, 245, 255),    # Snow white
+    },
+}
+
+# Seasonal overlay tint (applied to entire scene, RGBA)
+SEASON_OVERLAY = {
+    'spring': (255, 240, 245, 10),   # Slight pink
+    'summer': (255, 255, 220, 15),   # Warm yellow
+    'autumn': (255, 220, 180, 20),   # Orange tint
+    'winter': (220, 230, 255, 25),   # Cool blue
+}
+
 # =============================================================================
 # TIME SYSTEM
 # =============================================================================
@@ -99,9 +135,9 @@ TIME_NIGHT_START = 0      # 12:00 AM (wraps around)
 REAL_SECONDS_PER_GAME_HOUR = 30.0  # 30 real seconds = 1 game hour
 GAME_HOURS_PER_DAY = 24
 
-# Seasons (simplified)
-DAYS_PER_SEASON = 7  # BALANCE: Shorter seasons for variety
-SEASONS = ['spring', 'summer']
+# Seasons
+DAYS_PER_SEASON = 7  # BALANCE: Shorter seasons for variety (28-day year)
+SEASONS = ['spring', 'summer', 'autumn', 'winter']
 
 # Cafe operating hours
 CAFE_OPEN_HOUR = 8   # Opens at 8 AM
@@ -401,6 +437,8 @@ ALL_WEATHER = [WEATHER_SUNNY, WEATHER_CLOUDY, WEATHER_RAINY]
 WEATHER_PROBABILITIES = {
     'spring': {WEATHER_SUNNY: 0.4, WEATHER_CLOUDY: 0.35, WEATHER_RAINY: 0.25},
     'summer': {WEATHER_SUNNY: 0.6, WEATHER_CLOUDY: 0.3, WEATHER_RAINY: 0.1},
+    'autumn': {WEATHER_SUNNY: 0.35, WEATHER_CLOUDY: 0.40, WEATHER_RAINY: 0.25},
+    'winter': {WEATHER_SUNNY: 0.25, WEATHER_CLOUDY: 0.50, WEATHER_RAINY: 0.25},
 }
 
 # Weather effects on resource spawn rates
@@ -435,10 +473,20 @@ RESPAWN_DAYS = {
 QUALITY_MIN = 1
 QUALITY_MAX = 5
 
-# Quality bonuses
+# Quality bonuses per season (ingredient type -> bonus stars)
 QUALITY_SEASON_BONUS = {
     'spring': {'herb': 1, 'flower': 1, 'berry': 0},
     'summer': {'berry': 1, 'honey': 1, 'herb': 0},
+    'autumn': {'mushroom': 1, 'root': 1, 'grain': 1},
+    'winter': {'preserved': 1, 'meat': 1, 'fish': 0},
+}
+
+# Popular dish types per season (affects customer preferences)
+SEASON_POPULAR_DISHES = {
+    'spring': ['salad', 'tea', 'light'],
+    'summer': ['cold', 'refreshing', 'fruit'],
+    'autumn': ['soup', 'stew', 'hearty'],
+    'winter': ['warm', 'roasted', 'comfort'],
 }
 
 QUALITY_WEATHER_BONUS = {
@@ -1017,10 +1065,12 @@ NOTIFICATION_COLORS = {
     NOTIFICATION_ERROR: (220, 80, 80),
 }
 
-# Season/Weather icons (unicode characters for procedural drawing)
+# Season/Weather icons (for procedural drawing)
 SEASON_ICONS = {
     'spring': 'flower',
     'summer': 'sun',
+    'autumn': 'leaf',
+    'winter': 'snowflake',
 }
 
 WEATHER_ICONS = {

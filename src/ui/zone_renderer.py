@@ -15,8 +15,10 @@ from constants import (
     CAFE_WOOD, CAFE_WARM, CAFE_CREAM,
     ZONE_CAFE_GROUNDS, ZONE_MEADOW_FIELDS, ZONE_FOREST_DEPTHS,
     SPAWN_RARITY_COMMON, SPAWN_RARITY_UNCOMMON, SPAWN_RARITY_RARE,
+    SEASON_COLORS, SEASON_OVERLAY,
 )
 from systems.world import TileType, Zone
+from systems.time_system import get_time_manager
 
 
 class ZoneRenderer:
@@ -80,6 +82,10 @@ class ZoneRenderer:
         # Animation timer
         self._anim_timer = 0.0
 
+        # Season tracking (updated from time system)
+        self._current_season: str = 'spring'
+        self._season_colors: Dict[str, Tuple[int, int, int]] = SEASON_COLORS.get('spring', {})
+
     def set_zone(self, zone: Zone, zone_id: str = ""):
         """
         Set the zone to render.
@@ -117,8 +123,16 @@ class ZoneRenderer:
                         })
 
     def update(self, dt: float):
-        """Update animation timer."""
+        """Update animation timer and check for season changes."""
         self._anim_timer += dt
+
+        # Check if season changed
+        time_mgr = get_time_manager()
+        current_season = time_mgr.get_current_season()
+        if current_season != self._current_season:
+            self._current_season = current_season
+            self._season_colors = SEASON_COLORS.get(current_season, SEASON_COLORS.get('spring', {}))
+            self._needs_redraw = True
 
     def draw(self, surface: pygame.Surface, camera_x: int = 0, camera_y: int = 0):
         """
@@ -136,6 +150,17 @@ class ZoneRenderer:
 
         # Draw decorations
         self._draw_decorations(surface, camera_x, camera_y)
+
+        # Apply seasonal overlay
+        self._draw_seasonal_overlay(surface)
+
+    def _draw_seasonal_overlay(self, surface: pygame.Surface):
+        """Apply a subtle seasonal tint overlay."""
+        overlay_data = SEASON_OVERLAY.get(self._current_season)
+        if overlay_data and overlay_data[3] > 0:  # If alpha > 0
+            overlay = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
+            overlay.fill(overlay_data)
+            surface.blit(overlay, (0, 0))
 
     def _draw_tiles(self, surface: pygame.Surface, camera_x: int, camera_y: int):
         """Draw all visible tiles."""
@@ -169,8 +194,16 @@ class ZoneRenderer:
         rect = pygame.Rect(x, y, TILE_SIZE, TILE_SIZE)
 
         if tile_type == TileType.GRASS:
-            # Grass with slight variation
-            color = theme.get('grass', GRASS_GREEN)
+            # Grass with seasonal and slight variation
+            # Blend zone theme with seasonal colors
+            base_color = theme.get('grass', GRASS_GREEN)
+            seasonal_grass = self._season_colors.get('grass', base_color)
+            # Blend 60% zone theme, 40% seasonal
+            color = (
+                int(base_color[0] * 0.6 + seasonal_grass[0] * 0.4),
+                int(base_color[1] * 0.6 + seasonal_grass[1] * 0.4),
+                int(base_color[2] * 0.6 + seasonal_grass[2] * 0.4),
+            )
             var = ((tile_x * 7 + tile_y * 13) % 3) * 5
             color = (
                 min(255, color[0] + var),
@@ -203,19 +236,35 @@ class ZoneRenderer:
                            (x + 4, y + 4, TILE_SIZE - 8, TILE_SIZE - 8), border_radius=4)
 
         elif tile_type == TileType.TREE:
-            # Tree trunk and foliage
-            base_color = theme.get('tree', FOREST_GREEN)
-            pygame.draw.rect(surface, theme.get('grass', GRASS_GREEN), rect)
+            # Tree trunk and foliage with seasonal colors
+            base_tree = theme.get('tree', FOREST_GREEN)
+            seasonal_leaves = self._season_colors.get('leaves', base_tree)
+            # Blend zone theme with seasonal
+            base_color = (
+                int(base_tree[0] * 0.5 + seasonal_leaves[0] * 0.5),
+                int(base_tree[1] * 0.5 + seasonal_leaves[1] * 0.5),
+                int(base_tree[2] * 0.5 + seasonal_leaves[2] * 0.5),
+            )
+
+            # Draw grass background with seasonal color
+            grass_base = theme.get('grass', GRASS_GREEN)
+            seasonal_grass = self._season_colors.get('grass', grass_base)
+            grass_color = (
+                int(grass_base[0] * 0.6 + seasonal_grass[0] * 0.4),
+                int(grass_base[1] * 0.6 + seasonal_grass[1] * 0.4),
+                int(grass_base[2] * 0.6 + seasonal_grass[2] * 0.4),
+            )
+            pygame.draw.rect(surface, grass_color, rect)
 
             # Trunk
             trunk_rect = pygame.Rect(x + TILE_SIZE // 2 - 4, y + TILE_SIZE // 2,
                                     8, TILE_SIZE // 2)
             pygame.draw.rect(surface, CAFE_WOOD, trunk_rect)
 
-            # Foliage
+            # Foliage with seasonal variation
             foliage_color = (
-                base_color[0] + ((tile_x + tile_y) % 3) * 10,
-                base_color[1] + ((tile_x + tile_y) % 3) * 10,
+                min(255, base_color[0] + ((tile_x + tile_y) % 3) * 10),
+                min(255, base_color[1] + ((tile_x + tile_y) % 3) * 10),
                 base_color[2]
             )
             pygame.draw.circle(surface, foliage_color,
@@ -226,17 +275,43 @@ class ZoneRenderer:
                              (x + 2 * TILE_SIZE // 3, y + TILE_SIZE // 2), 10)
 
         elif tile_type == TileType.BUSH:
-            pygame.draw.rect(surface, theme.get('grass', GRASS_GREEN), rect)
-            # Bush shape
-            pygame.draw.ellipse(surface, (80, 140, 70),
+            # Bush with seasonal grass background
+            grass_base = theme.get('grass', GRASS_GREEN)
+            seasonal_grass = self._season_colors.get('grass', grass_base)
+            grass_color = (
+                int(grass_base[0] * 0.6 + seasonal_grass[0] * 0.4),
+                int(grass_base[1] * 0.6 + seasonal_grass[1] * 0.4),
+                int(grass_base[2] * 0.6 + seasonal_grass[2] * 0.4),
+            )
+            pygame.draw.rect(surface, grass_color, rect)
+
+            # Bush with seasonal leaf color
+            seasonal_leaves = self._season_colors.get('leaves', (80, 140, 70))
+            bush_color = (
+                int(80 * 0.5 + seasonal_leaves[0] * 0.5),
+                int(140 * 0.5 + seasonal_leaves[1] * 0.5),
+                int(70 * 0.5 + seasonal_leaves[2] * 0.5),
+            )
+            bush_dark = (max(0, bush_color[0] - 20), max(0, bush_color[1] - 20), max(0, bush_color[2] - 20))
+            pygame.draw.ellipse(surface, bush_color,
                               (x + 4, y + 8, TILE_SIZE - 8, TILE_SIZE - 12))
-            pygame.draw.ellipse(surface, (60, 120, 50),
+            pygame.draw.ellipse(surface, bush_dark,
                               (x + 8, y + 12, TILE_SIZE - 16, TILE_SIZE - 18))
 
         elif tile_type == TileType.FLOWER:
-            pygame.draw.rect(surface, theme.get('grass', GRASS_GREEN), rect)
-            # Flower patches
-            colors = [TERRAIN_FLOWER_RED, TERRAIN_FLOWER_YELLOW, TERRAIN_FLOWER_BLUE]
+            # Grass background with seasonal color
+            grass_base = theme.get('grass', GRASS_GREEN)
+            seasonal_grass = self._season_colors.get('grass', grass_base)
+            grass_color = (
+                int(grass_base[0] * 0.6 + seasonal_grass[0] * 0.4),
+                int(grass_base[1] * 0.6 + seasonal_grass[1] * 0.4),
+                int(grass_base[2] * 0.6 + seasonal_grass[2] * 0.4),
+            )
+            pygame.draw.rect(surface, grass_color, rect)
+
+            # Flower patches with seasonal accent colors
+            seasonal_accent = self._season_colors.get('accent', TERRAIN_FLOWER_YELLOW)
+            colors = [TERRAIN_FLOWER_RED, seasonal_accent, TERRAIN_FLOWER_BLUE]
             for i in range(3):
                 fx = x + (tile_x * 3 + i * 7) % (TILE_SIZE - 8) + 4
                 fy = y + (tile_y * 5 + i * 11) % (TILE_SIZE - 8) + 4
@@ -269,13 +344,25 @@ class ZoneRenderer:
             var = dec['color_var']
 
             if dec['type'] == 'flower':
-                colors = [(220 + var, 100, 120), (100, 180 + var, 220), (240, 200 + var, 100)]
+                # Use seasonal accent color for variety
+                seasonal_accent = self._season_colors.get('accent', (240, 200, 100))
+                colors = [
+                    (220 + var, 100, 120),
+                    (seasonal_accent[0], seasonal_accent[1] + var, seasonal_accent[2]),
+                    (100, 180 + var, 220)
+                ]
                 color = colors[abs(var) % 3]
                 pygame.draw.circle(surface, color, (screen_x, screen_y), 3)
                 pygame.draw.circle(surface, (255, 255, 200), (screen_x, screen_y), 1)
 
             elif dec['type'] == 'grass_tuft':
-                color = (80 + var, 140 + var, 60)
+                # Use seasonal grass color for tufts
+                seasonal_grass = self._season_colors.get('grass', (100, 180, 80))
+                color = (
+                    max(0, min(255, seasonal_grass[0] - 20 + var)),
+                    max(0, min(255, seasonal_grass[1] - 40 + var)),
+                    max(0, min(255, seasonal_grass[2] - 20))
+                )
                 pygame.draw.line(surface, color, (screen_x, screen_y),
                                (screen_x - 2, screen_y - 5), 1)
                 pygame.draw.line(surface, color, (screen_x, screen_y),
