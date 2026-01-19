@@ -571,11 +571,12 @@ ZONE_MEADOW_FIELDS = 'meadow_fields'
 ZONE_FOREST_DEPTHS = 'forest_depths'
 ZONE_COASTAL_SHORE = 'coastal_shore'
 ZONE_MOUNTAIN_PASS = 'mountain_pass'
+ZONE_ANCIENT_RUINS = 'ancient_ruins'
 
 # All zones for iteration
 ALL_ZONES = [
     ZONE_CAFE_GROUNDS, ZONE_MEADOW_FIELDS, ZONE_FOREST_DEPTHS,
-    ZONE_COASTAL_SHORE, ZONE_MOUNTAIN_PASS,
+    ZONE_COASTAL_SHORE, ZONE_MOUNTAIN_PASS, ZONE_ANCIENT_RUINS,
 ]
 
 # Zone unlock requirements (dragon stage)
@@ -585,15 +586,17 @@ ZONE_UNLOCK_REQUIREMENTS = {
     ZONE_FOREST_DEPTHS: DRAGON_STAGE_JUVENILE,
     ZONE_COASTAL_SHORE: DRAGON_STAGE_JUVENILE,  # Same as Forest
     ZONE_MOUNTAIN_PASS: DRAGON_STAGE_ADOLESCENT,  # Requires Adolescent
+    ZONE_ANCIENT_RUINS: DRAGON_STAGE_ADOLESCENT,  # Requires Adolescent
 }
 
 # Zone connections (which zones connect to which)
 ZONE_CONNECTIONS = {
     ZONE_CAFE_GROUNDS: [ZONE_MEADOW_FIELDS],
     ZONE_MEADOW_FIELDS: [ZONE_CAFE_GROUNDS, ZONE_FOREST_DEPTHS, ZONE_MOUNTAIN_PASS],
-    ZONE_FOREST_DEPTHS: [ZONE_MEADOW_FIELDS, ZONE_COASTAL_SHORE],
+    ZONE_FOREST_DEPTHS: [ZONE_MEADOW_FIELDS, ZONE_COASTAL_SHORE, ZONE_ANCIENT_RUINS],
     ZONE_COASTAL_SHORE: [ZONE_FOREST_DEPTHS],
     ZONE_MOUNTAIN_PASS: [ZONE_MEADOW_FIELDS],
+    ZONE_ANCIENT_RUINS: [ZONE_FOREST_DEPTHS],
 }
 
 # Zone map sizes (tiles)
@@ -782,6 +785,16 @@ INGREDIENTS = {
     'alpine_flower': ('Alpine Flower', ITEM_SPECIAL, 35, 2, (0.9, 0.5, 0.7)),
     'mountain_moss': ('Mountain Moss', ITEM_VEGETABLE, 22, 3, (0.4, 0.6, 0.3)),
     'hot_spring_egg': ('Hot Spring Egg', ITEM_SPECIAL, 45, 0, (0.9, 0.9, 0.7)),  # Never spoils
+
+    # Ancient Ruins ingredients - Magical and preserved
+    'ancient_spice': ('Ancient Spice', ITEM_SPICE, 45, 0, (0.7, 0.5, 0.3)),  # Preserved, never spoils
+    'ruin_moss': ('Ruin Moss', ITEM_VEGETABLE, 35, 3, (0.3, 0.5, 0.4)),  # Magical moss
+    'crystal_flower': ('Crystal Flower', ITEM_SPECIAL, 65, 0, (0.7, 0.8, 0.9)),  # Grows from crystal, never spoils
+    'dragon_scale_herb': ('Dragon Scale Herb', ITEM_SPICE, 55, 2, (0.6, 0.4, 0.3)),  # Resembles scales
+    'forgotten_grain': ('Forgotten Grain', ITEM_VEGETABLE, 40, 4, (0.8, 0.7, 0.5)),  # Ancient grain variety
+    'mystic_mushroom': ('Mystic Mushroom', ITEM_VEGETABLE, 50, 2, (0.5, 0.4, 0.7)),  # Glowing mushroom
+    'ancient_honey': ('Ancient Honey', ITEM_SPECIAL, 70, 0, (0.9, 0.6, 0.3)),  # Crystallized, never spoils
+    'ruin_berry': ('Ruin Berry', ITEM_FRUIT, 38, 2, (0.6, 0.3, 0.5)),  # Wild berries in ruins
 }
 
 # Spawn point definitions per zone: list of (id, name, x, y, ingredient_id, rarity, ability_required)
@@ -833,6 +846,19 @@ ZONE_SPAWN_POINTS = {
         ('mp_moss_1', 'Mossy Rocks', 3, 9, 'mountain_moss', SPAWN_RARITY_COMMON, None),
         ('mp_egg_1', 'Hot Springs', 12, 14, 'hot_spring_egg', SPAWN_RARITY_RARE, None),
     ],
+    ZONE_ANCIENT_RUINS: [
+        ('ar_spice_1', 'Sealed Storage', 5, 5, 'ancient_spice', SPAWN_RARITY_UNCOMMON, ABILITY_SMASH),
+        ('ar_spice_2', 'Crumbling Pantry', 14, 3, 'ancient_spice', SPAWN_RARITY_RARE, None),
+        ('ar_moss_1', 'Overgrown Wall', 8, 8, 'ruin_moss', SPAWN_RARITY_COMMON, None),
+        ('ar_moss_2', 'Temple Steps', 16, 12, 'ruin_moss', SPAWN_RARITY_UNCOMMON, None),
+        ('ar_crystal_1', 'Crystal Garden', 10, 6, 'crystal_flower', SPAWN_RARITY_RARE, ABILITY_SNIFF),
+        ('ar_herb_1', 'Dragon Shrine', 4, 12, 'dragon_scale_herb', SPAWN_RARITY_UNCOMMON, None),
+        ('ar_herb_2', 'Scale Grove', 18, 8, 'dragon_scale_herb', SPAWN_RARITY_RARE, ABILITY_SNIFF),
+        ('ar_grain_1', 'Ancient Granary', 12, 10, 'forgotten_grain', SPAWN_RARITY_UNCOMMON, ABILITY_BURROW),
+        ('ar_mushroom_1', 'Glowing Cellar', 6, 14, 'mystic_mushroom', SPAWN_RARITY_RARE, None),
+        ('ar_honey_1', 'Amber Chamber', 15, 5, 'ancient_honey', SPAWN_RARITY_RARE, ABILITY_SMASH),
+        ('ar_berry_1', 'Courtyard Vines', 3, 9, 'ruin_berry', SPAWN_RARITY_COMMON, None),
+    ],
 }
 
 # Weather-conditional spawn points (only appear during specific weather)
@@ -862,6 +888,12 @@ WEATHER_SPAWN_POINTS = {
         ('mp_storm_2', 'Storm Ridge', 16, 8, 'storm_flower', SPAWN_RARITY_UNCOMMON, None, WEATHER_STORMY),
         ('mp_special_1', 'Starlit Summit', 12, 2, 'stardust_petal', SPAWN_RARITY_RARE, None, WEATHER_SPECIAL),
         ('mp_special_2', 'Aurora Pool', 8, 12, 'rainbow_essence', SPAWN_RARITY_RARE, None, WEATHER_SPECIAL),
+    ],
+    ZONE_ANCIENT_RUINS: [
+        ('ar_storm_1', 'Lightning Altar', 10, 5, 'lightning_crystal', SPAWN_RARITY_UNCOMMON, None, WEATHER_STORMY),
+        ('ar_storm_2', 'Thunder Sanctum', 5, 10, 'storm_flower', SPAWN_RARITY_UNCOMMON, None, WEATHER_STORMY),
+        ('ar_special_1', 'Moonlit Chamber', 12, 8, 'moonbeam_honey', SPAWN_RARITY_RARE, None, WEATHER_SPECIAL),
+        ('ar_special_2', 'Starfall Ruins', 16, 4, 'stardust_petal', SPAWN_RARITY_RARE, None, WEATHER_SPECIAL),
     ],
 }
 
@@ -1548,6 +1580,52 @@ RECIPES = {
         ],
         'color_influence': (0.6, 0.5, 0.4),  # Warm rustic brown
         'unlock': {'type': UNLOCK_TYPE_AFFINITY, 'character': 'thomas'},
+    },
+
+    # Ancient Ruins discovery recipes
+    'ancient_elixir': {
+        'name': 'Ancient Elixir',
+        'description': "A mystical beverage recreated from inscriptions found in the ruins. Said to grant clarity of mind.",
+        'category': RECIPE_CATEGORY_BEVERAGE,
+        'difficulty': 4,
+        'base_price': 120,
+        'ingredients': [
+            ('ancient_spice', 1, 2),
+            ('crystal_flower', 1, 3),
+            ('ancient_honey', 1, 2),
+            ('wild_herb', 1, 2),
+        ],
+        'color_influence': (0.6, 0.7, 0.8),  # Mystical blue-silver
+        'unlock': {'type': UNLOCK_TYPE_DISCOVERY, 'zone': 'ancient_ruins'},
+    },
+    'dragon_scale_stew': {
+        'name': 'Dragon Scale Stew',
+        'description': "A hearty stew featuring herbs that resemble dragon scales. Ancient dragons were said to favor this dish.",
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 4,
+        'base_price': 130,
+        'ingredients': [
+            ('dragon_scale_herb', 2, 2),
+            ('forgotten_grain', 1, 2),
+            ('mystic_mushroom', 1, 2),
+            ('ruin_moss', 1, 2),
+        ],
+        'color_influence': (0.5, 0.4, 0.3),  # Earthy dragon tones
+        'unlock': {'type': UNLOCK_TYPE_DISCOVERY, 'zone': 'ancient_ruins'},
+    },
+    'ruins_mystery_bread': {
+        'name': 'Ruins Mystery Bread',
+        'description': "Bread made with ancient grains and honey preserved for centuries. Surprisingly delicious.",
+        'category': RECIPE_CATEGORY_APPETIZER,
+        'difficulty': 3,
+        'base_price': 95,
+        'ingredients': [
+            ('forgotten_grain', 2, 2),
+            ('ancient_honey', 1, 2),
+            ('ruin_berry', 1, 2),
+        ],
+        'color_influence': (0.7, 0.6, 0.4),  # Golden ancient
+        'unlock': {'type': UNLOCK_TYPE_DISCOVERY, 'zone': 'ancient_ruins'},
     },
 }
 

@@ -14,7 +14,7 @@ from constants import (
     TERRAIN_FLOWER_RED, TERRAIN_FLOWER_YELLOW, TERRAIN_FLOWER_BLUE,
     CAFE_WOOD, CAFE_WARM, CAFE_CREAM,
     ZONE_CAFE_GROUNDS, ZONE_MEADOW_FIELDS, ZONE_FOREST_DEPTHS,
-    ZONE_COASTAL_SHORE, ZONE_MOUNTAIN_PASS,
+    ZONE_COASTAL_SHORE, ZONE_MOUNTAIN_PASS, ZONE_ANCIENT_RUINS,
     SPAWN_RARITY_COMMON, SPAWN_RARITY_UNCOMMON, SPAWN_RARITY_RARE,
     SEASON_COLORS, SEASON_OVERLAY,
 )
@@ -52,6 +52,12 @@ class ZoneRenderer:
         TileType.SNOW: (240, 245, 250),
         TileType.ALPINE_FLOWER: (200, 150, 220),
         TileType.HOT_SPRING: (100, 160, 200),
+        # Ancient Ruins tiles
+        TileType.RUIN_FLOOR: (140, 130, 120),
+        TileType.RUIN_WALL: (90, 85, 80),
+        TileType.CRYSTAL_CLUSTER: (140, 180, 200),
+        TileType.OVERGROWN: (80, 100, 70),
+        TileType.ANCIENT_PATH: (160, 150, 130),
     }
 
     # Zone-specific color themes
@@ -84,6 +90,14 @@ class ZoneRenderer:
             'tree': (50, 80, 45),  # Mountain pine
             'rock': (120, 115, 110),  # Mountain rock
             'snow': (240, 245, 250),  # Snow patches
+        },
+        ZONE_ANCIENT_RUINS: {
+            'grass': (70, 90, 60),  # Moss-covered grass
+            'accent': (150, 140, 130),  # Aged stone accent
+            'tree': (50, 70, 45),  # Old overgrown trees
+            'ruin': (130, 120, 110),  # Ruin stone
+            'crystal': (120, 160, 190),  # Crystal formations
+            'moss': (60, 80, 55),  # Ancient moss
         },
     }
 

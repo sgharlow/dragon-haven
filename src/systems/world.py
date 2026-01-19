@@ -8,7 +8,7 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Any, Tuple, Set
 from constants import (
     ZONE_CAFE_GROUNDS, ZONE_MEADOW_FIELDS, ZONE_FOREST_DEPTHS,
-    ZONE_COASTAL_SHORE, ZONE_MOUNTAIN_PASS,
+    ZONE_COASTAL_SHORE, ZONE_MOUNTAIN_PASS, ZONE_ANCIENT_RUINS,
     ALL_ZONES, ZONE_UNLOCK_REQUIREMENTS, ZONE_CONNECTIONS,
     ZONE_WIDTH, ZONE_HEIGHT, TILE_SIZE,
     WEATHER_SUNNY, WEATHER_CLOUDY, WEATHER_RAINY, WEATHER_STORMY, WEATHER_SPECIAL,
@@ -44,10 +44,16 @@ class TileType:
     SNOW = 'snow'
     ALPINE_FLOWER = 'alpine_flower'
     HOT_SPRING = 'hot_spring'
+    # Ancient Ruins tiles
+    RUIN_FLOOR = 'ruin_floor'
+    RUIN_WALL = 'ruin_wall'
+    CRYSTAL_CLUSTER = 'crystal_cluster'
+    OVERGROWN = 'overgrown'
+    ANCIENT_PATH = 'ancient_path'
 
     # Walkable tiles
-    WALKABLE = {GRASS, DIRT, FLOWER, SAND, SHALLOW_WATER, SEAWEED, TIDAL_POOL, ROCK, SNOW, ALPINE_FLOWER, HOT_SPRING}
-    BLOCKING = {WATER, STONE, TREE, BUSH, BUILDING}
+    WALKABLE = {GRASS, DIRT, FLOWER, SAND, SHALLOW_WATER, SEAWEED, TIDAL_POOL, ROCK, SNOW, ALPINE_FLOWER, HOT_SPRING, RUIN_FLOOR, OVERGROWN, ANCIENT_PATH}
+    BLOCKING = {WATER, STONE, TREE, BUSH, BUILDING, RUIN_WALL, CRYSTAL_CLUSTER}
 
 
 @dataclass
@@ -326,6 +332,27 @@ class WorldManager:
         mountain.tile_map = self._generate_mountain_map()
         self._zones[ZONE_MOUNTAIN_PASS] = mountain
 
+        # Ancient Ruins - requires adolescent
+        ruins = Zone(
+            id=ZONE_ANCIENT_RUINS,
+            name="Ancient Ruins",
+            description="Mysterious ruins from a forgotten civilization, overgrown with magical flora.",
+            unlock_requirement=ZONE_UNLOCK_REQUIREMENTS[ZONE_ANCIENT_RUINS],
+            connections=ZONE_CONNECTIONS[ZONE_ANCIENT_RUINS]
+        )
+        ruins.resource_points = [
+            ResourcePoint('ar_spice_1', 'Sealed Storage', 5, 5, 'spice', 3),
+            ResourcePoint('ar_moss_1', 'Overgrown Wall', 8, 8, 'moss', 4),
+            ResourcePoint('ar_crystal_1', 'Crystal Garden', 10, 6, 'crystal', 2),
+            ResourcePoint('ar_herb_1', 'Dragon Shrine', 4, 12, 'herb', 3),
+            ResourcePoint('ar_grain_1', 'Ancient Granary', 12, 10, 'grain', 3),
+            ResourcePoint('ar_mushroom_1', 'Glowing Cellar', 6, 14, 'mushroom', 2),
+            ResourcePoint('ar_honey_1', 'Amber Chamber', 15, 5, 'honey', 2),
+        ]
+        # Generate ruins-themed tile map
+        ruins.tile_map = self._generate_ruins_map()
+        self._zones[ZONE_ANCIENT_RUINS] = ruins
+
     def _generate_coastal_map(self) -> List[List[str]]:
         """Generate a coastal-themed tile map."""
         tiles = []
@@ -388,6 +415,38 @@ class WorldManager:
                         tile = TileType.SNOW
                     elif r < 0.9:
                         tile = TileType.HOT_SPRING
+                    else:
+                        tile = TileType.STONE
+                row.append(tile)
+            tiles.append(row)
+        return tiles
+
+    def _generate_ruins_map(self) -> List[List[str]]:
+        """Generate an ancient ruins-themed tile map."""
+        tiles = []
+        for y in range(ZONE_HEIGHT):
+            row = []
+            for x in range(ZONE_WIDTH):
+                # Border is ruined walls
+                if x == 0 or x == ZONE_WIDTH - 1 or y == 0 or y == ZONE_HEIGHT - 1:
+                    tile = TileType.RUIN_WALL
+                else:
+                    # Ancient ruins terrain
+                    r = random.random()
+                    if r < 0.35:
+                        tile = TileType.RUIN_FLOOR
+                    elif r < 0.50:
+                        tile = TileType.OVERGROWN
+                    elif r < 0.60:
+                        tile = TileType.ANCIENT_PATH
+                    elif r < 0.70:
+                        tile = TileType.GRASS
+                    elif r < 0.80:
+                        tile = TileType.DIRT
+                    elif r < 0.88:
+                        tile = TileType.RUIN_WALL
+                    elif r < 0.94:
+                        tile = TileType.CRYSTAL_CLUSTER
                     else:
                         tile = TileType.STONE
                 row.append(tile)
