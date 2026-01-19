@@ -1,10 +1,9 @@
 # Tasks
 
 > Last updated: 2026-01-18
-> Progress: 48/51 complete (Phase 1 done, Phase 2 done, Phase 3 in progress)
+> Progress: 49/51 complete (Phase 1 done, Phase 2 done, Phase 3 in progress)
 
 ## Ready
-- [ ] `049` Ancient Ruins zone
 - [ ] `050` Sky Islands zone
 - [ ] `051` Finale - Mother's Secret
 
@@ -13,6 +12,7 @@
 ## Blocked
 
 ## Done (Phase 3)
+- [x] `049` Ancient Ruins zone ✓
 - [x] `048` Chapter 6 - Estranged Siblings ✓
 - [x] `047` Chapter 3 - Old Man Garrett ✓
 - [x] `046` Chapter 2 - Lily the Perfectionist ✓
