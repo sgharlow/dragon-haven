@@ -1,16 +1,16 @@
 # Tasks
 
 > Last updated: 2026-01-18
-> Progress: 44/45 complete (Phase 1 done, Phase 2 in progress)
+> Progress: 45/45 complete (Phase 1 done, Phase 2 complete!)
 
 ## Ready
-- [ ] `045` Character affinity system
 
 ## In Progress
 
 ## Blocked
 
 ## Done (Phase 2)
+- [x] `045` Character affinity system ✓
 - [x] `044` Additional story chapters ✓
 - [x] `043` Evening service period ✓
 - [x] `042` Additional recipes ✓
