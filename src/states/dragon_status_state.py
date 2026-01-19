@@ -18,7 +18,8 @@ from constants import (
     DRAGON_STAGE_ADOLESCENT, DRAGON_STAGE_ADULT,
     DRAGON_EGG_DAYS, DRAGON_HATCHLING_DAYS, DRAGON_JUVENILE_DAYS, DRAGON_ADOLESCENT_DAYS,
     DRAGON_STAT_MAX, DRAGON_BOND_MAX, DRAGON_STAGE_STAMINA_MAX,
-    DRAGON_ABILITY_COSTS, DRAGON_STAGE_ABILITIES, DRAGON_STAGE_DESCRIPTIONS,
+    DRAGON_ABILITY_COSTS, DRAGON_ABILITY_CONTINUOUS, DRAGON_STAGE_ABILITIES,
+    DRAGON_STAGE_DESCRIPTIONS, DRAGON_ABILITY_DESCRIPTIONS,
 )
 
 
@@ -210,11 +211,10 @@ class DragonStatusState(BaseScreen):
         # Draw info panel (under portrait)
         self._draw_info_panel(screen)
 
-        # Draw abilities panel (right side)
+        # Draw abilities panel (right side - expanded for all 10 abilities)
         self._draw_abilities_panel(screen)
 
-        # Draw preferences panel (bottom right)
-        self._draw_preferences_panel(screen)
+        # Note: Preferences panel removed due to expanded abilities panel
 
         # Draw color breakdown
         self._draw_color_panel(screen)
@@ -617,7 +617,7 @@ class DragonStatusState(BaseScreen):
         """Draw the abilities panel."""
         panel_x = SCREEN_WIDTH - 280
         panel_y = 120
-        panel_rect = pygame.Rect(panel_x, panel_y, 250, 250)
+        panel_rect = pygame.Rect(panel_x, panel_y, 250, 430)
         pygame.draw.rect(screen, UI_PANEL, panel_rect, border_radius=8)
         pygame.draw.rect(screen, UI_BORDER, panel_rect, 2, border_radius=8)
 
@@ -625,15 +625,21 @@ class DragonStatusState(BaseScreen):
         title = self._label_font.render("Abilities", True, CAFE_CREAM)
         screen.blit(title, (panel_x + 20, panel_y + 10))
 
-        y = panel_y + 40
+        y = panel_y + 35
 
         # Get all possible abilities and current abilities
         current_abilities = self._dragon.get_available_abilities()
-        all_abilities = ['burrow_fetch', 'sniff_track', 'rock_smash', 'fire_breath', 'flight_scout']
+        # All abilities in unlock order
+        all_abilities = [
+            'burrow_fetch', 'sniff_track',  # Hatchling
+            'rock_smash', 'creature_scare',  # Juvenile
+            'ember_breath', 'fire_breath', 'glide',  # Adolescent
+            'flight_scout', 'full_flight', 'fire_stream',  # Adult
+        ]
 
         for ability in all_abilities:
             is_unlocked = ability in current_abilities
-            cost = DRAGON_ABILITY_COSTS.get(ability, 0)
+            is_continuous = ability in DRAGON_ABILITY_CONTINUOUS
             can_use = self._dragon.can_use_ability(ability)
 
             ability_name = ability.replace('_', ' ').title()
@@ -650,14 +656,21 @@ class DragonStatusState(BaseScreen):
                 name_surface = self._stat_font.render(ability_name, True, name_color)
                 screen.blit(name_surface, (panel_x + 20, y))
 
-                cost_text = f"Cost: {cost} stamina"
+                # Cost display (different for continuous abilities)
+                if is_continuous:
+                    cost = DRAGON_ABILITY_CONTINUOUS.get(ability, 0)
+                    cost_text = f"{cost}/sec"
+                else:
+                    cost = DRAGON_ABILITY_COSTS.get(ability, 0)
+                    cost_text = f"{cost} stamina"
+
                 cost_surface = self._small_font.render(cost_text, True, cost_color)
-                screen.blit(cost_surface, (panel_x + 30, y + 22))
+                screen.blit(cost_surface, (panel_x + 160, y + 2))
 
                 # Usage hint
-                hint = self._get_ability_hint(ability)
+                hint = DRAGON_ABILITY_DESCRIPTIONS.get(ability, "Use in exploration")
                 hint_surface = self._small_font.render(hint, True, UI_TEXT_DIM)
-                screen.blit(hint_surface, (panel_x + 30, y + 38))
+                screen.blit(hint_surface, (panel_x + 25, y + 20))
             else:
                 # Locked ability
                 locked_name = self._stat_font.render(f"??? {ability_name}", True, (80, 75, 95))
@@ -665,22 +678,10 @@ class DragonStatusState(BaseScreen):
 
                 # Unlock condition
                 unlock_stage = self._get_ability_unlock_stage(ability)
-                unlock_text = f"Unlocks at: {unlock_stage}"
-                unlock_surface = self._small_font.render(unlock_text, True, (100, 95, 115))
-                screen.blit(unlock_surface, (panel_x + 30, y + 22))
+                unlock_surface = self._small_font.render(f"({unlock_stage})", True, (100, 95, 115))
+                screen.blit(unlock_surface, (panel_x + 160, y + 2))
 
-            y += 70
-
-    def _get_ability_hint(self, ability: str) -> str:
-        """Get usage hint for an ability."""
-        hints = {
-            'burrow_fetch': "Dig up buried items",
-            'sniff_track': "Find hidden resources",
-            'rock_smash': "Break rocks for minerals",
-            'fire_breath': "Cook ingredients instantly",
-            'flight_scout': "Reveal distant areas",
-        }
-        return hints.get(ability, "Use in exploration")
+            y += 40
 
     def _get_ability_unlock_stage(self, ability: str) -> str:
         """Get the stage that unlocks an ability."""

@@ -376,22 +376,51 @@ DRAGON_COLOR_SHIFT_RATE = 0.05
 DRAGON_NAME_MAX_LENGTH = 20
 DRAGON_NAME_DEFAULT = "Dragon"
 
-# Ability stamina costs
+# Ability stamina costs (one-time cost for instant abilities)
 DRAGON_ABILITY_COSTS = {
-    'burrow_fetch': 20,
-    'sniff_track': 15,
-    'rock_smash': 30,
-    'fire_breath': 40,   # Adolescent+: Cook/warm items, clear obstacles
-    'flight_scout': 50,  # Adult only: Reveal resources in adjacent zones
+    'burrow_fetch': 20,   # Hatchling+: Dig up buried items
+    'sniff_track': 15,    # Hatchling+: Find hidden resources
+    'rock_smash': 30,     # Juvenile+: Break rocks for minerals
+    'creature_scare': 20, # Juvenile+: Frighten hostile creatures
+    'ember_breath': 25,   # Adolescent+: Light torches, clear brambles
+    'fire_breath': 40,    # Adolescent+: Cook items, clear obstacles
+    'flight_scout': 50,   # Adult: Reveal resources in adjacent zones
+    'fire_stream': 40,    # Adult: Clear major obstacles
 }
+
+# Continuous abilities drain stamina per second while active
+DRAGON_ABILITY_CONTINUOUS = {
+    'glide': 3,           # Adolescent+: Descend safely from heights
+    'full_flight': 5,     # Adult: Fast travel, access flight-only areas
+}
+
+# All abilities combined for validation
+DRAGON_ALL_ABILITIES = list(DRAGON_ABILITY_COSTS.keys()) + list(DRAGON_ABILITY_CONTINUOUS.keys())
 
 # Abilities unlocked per stage
 DRAGON_STAGE_ABILITIES = {
     DRAGON_STAGE_EGG: [],
     DRAGON_STAGE_HATCHLING: ['burrow_fetch', 'sniff_track'],
-    DRAGON_STAGE_JUVENILE: ['burrow_fetch', 'sniff_track', 'rock_smash'],
-    DRAGON_STAGE_ADOLESCENT: ['burrow_fetch', 'sniff_track', 'rock_smash', 'fire_breath'],
-    DRAGON_STAGE_ADULT: ['burrow_fetch', 'sniff_track', 'rock_smash', 'fire_breath', 'flight_scout'],
+    DRAGON_STAGE_JUVENILE: ['burrow_fetch', 'sniff_track', 'rock_smash', 'creature_scare'],
+    DRAGON_STAGE_ADOLESCENT: ['burrow_fetch', 'sniff_track', 'rock_smash', 'creature_scare',
+                              'ember_breath', 'fire_breath', 'glide'],
+    DRAGON_STAGE_ADULT: ['burrow_fetch', 'sniff_track', 'rock_smash', 'creature_scare',
+                         'ember_breath', 'fire_breath', 'glide', 'flight_scout',
+                         'full_flight', 'fire_stream'],
+}
+
+# Ability descriptions for UI
+DRAGON_ABILITY_DESCRIPTIONS = {
+    'burrow_fetch': "Dig up buried items",
+    'sniff_track': "Find hidden resources",
+    'rock_smash': "Break rocks for minerals",
+    'creature_scare': "Frighten hostile creatures",
+    'ember_breath': "Light torches, clear brambles",
+    'fire_breath': "Cook items, clear obstacles",
+    'flight_scout': "Reveal distant resources",
+    'fire_stream': "Clear major obstacles",
+    'glide': "Descend safely from heights",
+    'full_flight': "Fast travel, access sky areas",
 }
 
 # Stage descriptions for UI

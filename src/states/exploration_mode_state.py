@@ -16,6 +16,7 @@ from constants import (
     DRAGON_STAGE_EGG, DRAGON_STAGE_HATCHLING, DRAGON_STAGE_JUVENILE,
     CAFE_CREAM, UI_TEXT, UI_TEXT_DIM, UI_BG, UI_PANEL,
     WEATHER_STORMY, WEATHER_SPECIAL,
+    DRAGON_ABILITY_CONTINUOUS,
 )
 from entities.player import Player
 from entities.dragon import Dragon
@@ -492,11 +493,50 @@ class ExplorationModeState(BaseScreen):
             return
 
         ability_name = abilities[ability_idx]
-        if self._dragon.use_ability(ability_name):
-            self._show_interaction_text(f"Used {ability_name.replace('_', ' ').title()}!")
-            self._trigger_ability_effect(ability_name)
+
+        # Handle continuous abilities (toggle on/off)
+        if ability_name in DRAGON_ABILITY_CONTINUOUS:
+            if self._dragon.is_ability_active(ability_name):
+                # Turn off
+                self._dragon.stop_continuous_ability()
+                self._show_interaction_text(f"{ability_name.replace('_', ' ').title()} deactivated")
+            else:
+                # Turn on
+                if self._dragon.start_continuous_ability(ability_name):
+                    self._show_interaction_text(f"{ability_name.replace('_', ' ').title()} activated!")
+                    self._trigger_ability_effect(ability_name)
+                else:
+                    self._show_interaction_text("Not enough stamina!")
         else:
-            self._show_interaction_text("Not enough stamina!")
+            # Instant ability
+            if self._dragon.use_ability(ability_name):
+                self._show_interaction_text(f"Used {ability_name.replace('_', ' ').title()}!")
+                self._trigger_ability_effect(ability_name)
+                self._apply_ability_effect(ability_name)
+            else:
+                self._show_interaction_text("Not enough stamina!")
+
+    def _apply_ability_effect(self, ability_name: str):
+        """Apply the gameplay effect of an ability."""
+        if ability_name == 'creature_scare':
+            # Frighten nearby creatures (would affect creature system)
+            self.hud.add_notification("Creatures frightened away!", NOTIFICATION_SUCCESS, 2.0)
+
+        elif ability_name == 'ember_breath':
+            # Light torches, clear brambles in a radius
+            self.hud.add_notification("Brambles cleared with ember breath!", NOTIFICATION_SUCCESS, 2.0)
+
+        elif ability_name == 'fire_breath':
+            # More powerful fire effect
+            self.hud.add_notification("Fire breath clears the path!", NOTIFICATION_SUCCESS, 2.0)
+
+        elif ability_name == 'fire_stream':
+            # Most powerful fire attack
+            self.hud.add_notification("Powerful fire stream unleashed!", NOTIFICATION_SUCCESS, 2.0)
+
+        elif ability_name == 'flight_scout':
+            # Reveal resources in adjacent zones
+            self.hud.add_notification("Resources spotted in nearby zones!", NOTIFICATION_INFO, 3.0)
 
     def _trigger_ability_effect(self, ability_name: str):
         """Trigger visual effect for ability."""
@@ -762,6 +802,90 @@ class ExplorationModeState(BaseScreen):
                     end_y = y + int(math.sin(rad) * radius)
                     pygame.draw.line(screen, (140, 140, 140, alpha), (x, y), (end_x, end_y), 2)
 
+            elif effect['type'] == 'creature_scare':
+                # Scary roar wave
+                radius = int(60 * progress)
+                alpha = int(200 * (1 - progress))
+                color = (200, 100, 100, alpha)
+                surf = pygame.Surface((radius * 2, radius * 2), pygame.SRCALPHA)
+                pygame.draw.circle(surf, color, (radius, radius), radius, 4)
+                # Add jagged edges
+                for angle in range(0, 360, 30):
+                    rad = math.radians(angle)
+                    spike_len = 10 * (1 - progress)
+                    sx = int(radius + math.cos(rad) * (radius + spike_len))
+                    sy = int(radius + math.sin(rad) * (radius + spike_len))
+                    pygame.draw.line(surf, color, (radius + int(math.cos(rad) * radius),
+                                                   radius + int(math.sin(rad) * radius)), (sx, sy), 2)
+                screen.blit(surf, (x - radius, y - radius))
+
+            elif effect['type'] == 'ember_breath':
+                # Small fire particles
+                for i in range(5):
+                    fx = x + int(30 * progress * math.cos(i * 1.2))
+                    fy = y - int(20 * progress) + int(10 * math.sin(i * 1.5))
+                    size = int(8 * (1 - progress))
+                    if size > 0:
+                        pygame.draw.circle(screen, (255, 150, 50), (fx, fy), size)
+                        pygame.draw.circle(screen, (255, 220, 100), (fx, fy), max(1, size // 2))
+
+            elif effect['type'] == 'fire_breath':
+                # Larger flame cone
+                flame_length = int(60 * progress)
+                flame_width = int(30 * (1 - progress * 0.5))
+                points = [
+                    (x, y),
+                    (x + flame_length, y - flame_width),
+                    (x + flame_length + 10, y),
+                    (x + flame_length, y + flame_width),
+                ]
+                pygame.draw.polygon(screen, (255, 100, 50), points)
+                inner_points = [
+                    (x + 5, y),
+                    (x + flame_length - 10, y - flame_width // 2),
+                    (x + flame_length, y),
+                    (x + flame_length - 10, y + flame_width // 2),
+                ]
+                pygame.draw.polygon(screen, (255, 200, 100), inner_points)
+
+            elif effect['type'] == 'fire_stream':
+                # Intense fire stream
+                for i in range(8):
+                    fx = x + int(80 * progress * (i / 8))
+                    fy = y + int(15 * math.sin(progress * 10 + i))
+                    size = int(15 * (1 - progress * 0.3))
+                    pygame.draw.circle(screen, (255, 80, 30), (fx, fy), size)
+                    pygame.draw.circle(screen, (255, 180, 50), (fx, fy), size // 2)
+
+            elif effect['type'] == 'flight_scout':
+                # Rising sparkles
+                for i in range(6):
+                    sx = x + int(20 * math.cos(i * 1.0 + progress * 5))
+                    sy = y - int(50 * progress)
+                    alpha = int(200 * (1 - progress))
+                    size = 3
+                    surf = pygame.Surface((size * 2, size * 2), pygame.SRCALPHA)
+                    pygame.draw.circle(surf, (255, 255, 200, alpha), (size, size), size)
+                    screen.blit(surf, (sx - size, sy - size))
+
+            elif effect['type'] == 'glide':
+                # Wind effect around player
+                for i in range(3):
+                    wx = x - int(20 + 30 * progress)
+                    wy = y + int(10 * math.sin(i * 2 + progress * 5))
+                    alpha = int(150 * (1 - progress))
+                    pygame.draw.line(screen, (200, 220, 255, alpha), (wx, wy), (wx + 20, wy), 2)
+
+            elif effect['type'] == 'full_flight':
+                # Wing swoosh and wind trails
+                for i in range(5):
+                    wx = x - int(30 + 40 * progress)
+                    wy = y + int(15 * math.sin(i * 1.5 + progress * 8))
+                    alpha = int(180 * (1 - progress))
+                    surf = pygame.Surface((30, 6), pygame.SRCALPHA)
+                    pygame.draw.ellipse(surf, (180, 200, 255, alpha), surf.get_rect())
+                    screen.blit(surf, (wx, wy - 3))
+
     def _draw_gather_progress(self, screen: pygame.Surface):
         """Draw gathering progress bar."""
         bar_width = 60
@@ -797,7 +921,7 @@ class ExplorationModeState(BaseScreen):
         hints = [
             "WASD: Move",
             "E/Space: Interact",
-            "1-3: Abilities",
+            "1-0: Abilities",
             "P: Pet Dragon",
             "C: Open Cafe",
         ]
@@ -806,3 +930,10 @@ class ExplorationModeState(BaseScreen):
         text_surface = self.info_font.render(hint_text, True, UI_TEXT_DIM)
         text_rect = text_surface.get_rect(centerx=SCREEN_WIDTH // 2, y=SCREEN_HEIGHT - 25)
         screen.blit(text_surface, text_rect)
+
+        # Show active continuous ability if any
+        if self._dragon and self._dragon.get_active_ability():
+            active = self._dragon.get_active_ability()
+            active_text = f"Active: {active.replace('_', ' ').title()}"
+            active_surface = self.info_font.render(active_text, True, (100, 200, 255))
+            screen.blit(active_surface, (SCREEN_WIDTH - 150, SCREEN_HEIGHT - 25))

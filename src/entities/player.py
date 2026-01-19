@@ -148,17 +148,19 @@ class Player:
 
     def is_ability_pressed(self, keys: pygame.key.ScancodeWrapper) -> Optional[int]:
         """
-        Check if an ability key is pressed (1, 2, 3).
+        Check if an ability key is pressed (1-9, 0 for ability 10).
 
         Returns:
-            Ability index (0, 1, 2) or None
+            Ability index (0-9) or None
         """
-        if keys[pygame.K_1]:
-            return 0
-        if keys[pygame.K_2]:
-            return 1
-        if keys[pygame.K_3]:
-            return 2
+        # Keys 1-9 map to abilities 0-8
+        ability_keys = [
+            pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5,
+            pygame.K_6, pygame.K_7, pygame.K_8, pygame.K_9, pygame.K_0,
+        ]
+        for idx, key in enumerate(ability_keys):
+            if keys[key]:
+                return idx
         return None
 
     # =========================================================================

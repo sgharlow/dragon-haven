@@ -1,10 +1,9 @@
 # Tasks
 
 > Last updated: 2026-01-18
-> Progress: 39/45 complete (Phase 1 done, Phase 2 in progress)
+> Progress: 40/45 complete (Phase 1 done, Phase 2 in progress)
 
 ## Ready
-- [ ] `040` Additional dragon abilities
 - [ ] `041` Additional world zones
 - [ ] `043` Evening service period
 - [ ] `044` Additional story chapters
@@ -16,6 +15,7 @@
 - [ ] `042` Additional recipes (depends: 041)
 
 ## Done (Phase 2)
+- [x] `040` Additional dragon abilities ✓
 - [x] `039` Adolescent & Adult dragon stages ✓
 - [x] `038` Stormy & Special weather ✓
 - [x] `037` Autumn & Winter seasons ✓

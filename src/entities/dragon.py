@@ -15,7 +15,7 @@ from constants import (
     DRAGON_FEED_HUNGER_RESTORE, DRAGON_FEED_HAPPINESS_BONUS, DRAGON_FEED_BOND_BONUS,
     DRAGON_PET_HAPPINESS, DRAGON_PET_BOND,
     DRAGON_COLOR_SHIFT_RATE,
-    DRAGON_ABILITY_COSTS, DRAGON_STAGE_ABILITIES,
+    DRAGON_ABILITY_COSTS, DRAGON_ABILITY_CONTINUOUS, DRAGON_STAGE_ABILITIES,
     DRAGON_NAME_MAX_LENGTH, DRAGON_NAME_DEFAULT,
     REAL_SECONDS_PER_GAME_HOUR
 )
@@ -113,6 +113,9 @@ class Dragon:
         self._last_fed_hour = 0.0
         self._times_fed_today = 0
 
+        # Active continuous ability (glide, full_flight)
+        self._active_continuous_ability: Optional[str] = None
+
         # Callbacks for stage change
         self._stage_change_callbacks = []
 
@@ -140,6 +143,9 @@ class Dragon:
         if self._stage != DRAGON_STAGE_EGG:
             self._update_stats(game_hours)
 
+        # Drain stamina for active continuous abilities
+        self._update_continuous_ability(dt)
+
     def _update_stats(self, game_hours: float):
         """Update stats based on time passed."""
         # Hunger decreases over time
@@ -162,6 +168,23 @@ class Dragon:
             self._stamina += DRAGON_STAMINA_REGEN * 0.3 * game_hours  # Slow regen when active
 
         self._stamina = max(0, min(max_stamina, self._stamina))
+
+    def _update_continuous_ability(self, dt: float):
+        """Update continuous ability stamina drain."""
+        if not self._active_continuous_ability:
+            return
+
+        # Get drain rate (stamina per second)
+        drain_rate = DRAGON_ABILITY_CONTINUOUS.get(self._active_continuous_ability, 0)
+        stamina_cost = drain_rate * dt
+
+        # Drain stamina
+        self._stamina -= stamina_cost
+
+        # If stamina depleted, deactivate ability
+        if self._stamina <= 0:
+            self._stamina = 0
+            self._active_continuous_ability = None
 
     def _check_stage_progression(self):
         """Check and handle stage transitions."""
@@ -383,6 +406,10 @@ class Dragon:
         """Get list of abilities available at current stage."""
         return DRAGON_STAGE_ABILITIES.get(self._stage, [])
 
+    def is_continuous_ability(self, ability_name: str) -> bool:
+        """Check if an ability is a continuous drain ability."""
+        return ability_name in DRAGON_ABILITY_CONTINUOUS
+
     def can_use_ability(self, ability_name: str) -> bool:
         """
         Check if an ability can be used.
@@ -397,12 +424,19 @@ class Dragon:
         if ability_name not in available:
             return False
 
+        # For continuous abilities, check minimum stamina (1 second worth)
+        if self.is_continuous_ability(ability_name):
+            drain_rate = DRAGON_ABILITY_CONTINUOUS.get(ability_name, 0)
+            return self._stamina >= drain_rate
+
+        # For instant abilities, check full cost
         cost = DRAGON_ABILITY_COSTS.get(ability_name, 0)
         return self._stamina >= cost
 
     def use_ability(self, ability_name: str) -> bool:
         """
-        Use an ability, consuming stamina.
+        Use an instant ability, consuming stamina.
+        For continuous abilities, use start_continuous_ability() instead.
 
         Args:
             ability_name: Name of the ability to use
@@ -410,6 +444,10 @@ class Dragon:
         Returns:
             True if ability was used successfully
         """
+        # Continuous abilities use start/stop methods
+        if self.is_continuous_ability(ability_name):
+            return False
+
         if not self.can_use_ability(ability_name):
             return False
 
@@ -417,8 +455,55 @@ class Dragon:
         self._stamina -= cost
         return True
 
-    def get_ability_cost(self, ability_name: str) -> int:
-        """Get the stamina cost of an ability."""
+    def start_continuous_ability(self, ability_name: str) -> bool:
+        """
+        Start a continuous ability (glide, full_flight).
+
+        Args:
+            ability_name: Name of the continuous ability
+
+        Returns:
+            True if ability was started successfully
+        """
+        if not self.is_continuous_ability(ability_name):
+            return False
+
+        if not self.can_use_ability(ability_name):
+            return False
+
+        # Stop any currently active ability
+        self._active_continuous_ability = ability_name
+        return True
+
+    def stop_continuous_ability(self):
+        """Stop the currently active continuous ability."""
+        self._active_continuous_ability = None
+
+    def is_ability_active(self, ability_name: str = None) -> bool:
+        """
+        Check if a continuous ability is active.
+
+        Args:
+            ability_name: Specific ability to check, or None for any
+
+        Returns:
+            True if the ability (or any ability) is active
+        """
+        if ability_name is None:
+            return self._active_continuous_ability is not None
+        return self._active_continuous_ability == ability_name
+
+    def get_active_ability(self) -> Optional[str]:
+        """Get the currently active continuous ability."""
+        return self._active_continuous_ability
+
+    def get_ability_cost(self, ability_name: str) -> float:
+        """
+        Get the stamina cost of an ability.
+        For continuous abilities, returns per-second drain rate.
+        """
+        if self.is_continuous_ability(ability_name):
+            return DRAGON_ABILITY_CONTINUOUS.get(ability_name, 0)
         return DRAGON_ABILITY_COSTS.get(ability_name, 0)
 
     # =========================================================================
