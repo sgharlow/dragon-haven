@@ -1,0 +1,94 @@
+{
+  "id": "finale_epilogue",
+  "name": "A New Chapter",
+  "start_id": "morning_after",
+  "nodes": {
+    "morning_after": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The morning after the celebration, Dragon Haven Cafe is quiet. The guests have departed, but their warmth lingers in the walls.",
+      "next_id": "mother_packing"
+    },
+    "mother_packing": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You find Mother in the guest room, carefully packing a small bag.",
+      "next_id": "player_surprised"
+    },
+    "player_surprised": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "A pang of concern strikes you. Is she leaving so soon?",
+      "choices": [
+        {
+          "text": "You're leaving already?",
+          "next_id": "mother_explains"
+        },
+        {
+          "text": "Please stay a little longer.",
+          "next_id": "mother_gentle"
+        }
+      ]
+    },
+    "mother_explains": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "*She turns with a soft smile* Not leaving, my dear. Relocating. There's a small cottage just past the meadow. I thought I might make it home.",
+      "next_id": "mother_stays"
+    },
+    "mother_gentle": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "*She takes your hands* Oh, my child. I'm not leaving. I was just moving my things to the cottage past the meadow. I plan to stay close.",
+      "next_id": "mother_stays"
+    },
+    "mother_stays": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "The cafe is yours now. Your domain, your responsibility. But I'll be nearby when you need advice... or just when you want company.",
+      "next_id": "relief"
+    },
+    "relief": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Relief washes over you. Mother isn't disappearing from your life - she's simply taking her proper place beside it.",
+      "next_id": "mother_wisdom"
+    },
+    "mother_wisdom": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "You know, when I first sent you here, I was terrified. Terrified you'd fail. Terrified you'd succeed. Terrified of what the truth would do to you.",
+      "next_id": "mother_proud"
+    },
+    "mother_proud": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "*Her eyes glisten* But look at you now. The cafe thrives. Your dragon loves you. You've touched so many lives. You've exceeded every hope I ever had.",
+      "next_id": "dragon_joins"
+    },
+    "dragon_joins": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Your dragon pads into the room, nuzzling first Mother, then you. Through your bond, you feel its contentment - and something more. Pride.",
+      "next_id": "mother_future"
+    },
+    "mother_future": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "The future is unwritten. There will be challenges ahead - there always are. But you won't face them alone. You have your dragon, your friends, and you have me.",
+      "next_id": "player_grateful"
+    },
+    "player_grateful": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You embrace your mother, your dragon curling around you both. This is what family means - not just blood, but choice, love, and unwavering support.",
+      "set_flags": ["epilogue_seen"],
+      "next_id": "end_scene"
+    },
+    "end_scene": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "Now then, Guardian of Dragon Haven... I believe you have a cafe to run. And I have a cottage to make cozy. We both have new chapters to begin."
+    }
+  }
+}

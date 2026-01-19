@@ -1,0 +1,100 @@
+{
+  "id": "finale_reflection",
+  "name": "Looking Back",
+  "start_id": "cafe_quiet",
+  "nodes": {
+    "cafe_quiet": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The cafe is quiet in the late evening. You sit at your favorite table, your dragon dozing beside you, Mother across from you with two cups of tea.",
+      "next_id": "mother_asks"
+    },
+    "mother_asks": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "When I sent you here, I wasn't sure what would happen. I only knew that you needed to find your own way. Tell me... has it been worth it?",
+      "next_id": "player_reflects"
+    },
+    "player_reflects": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You think of all that's happened. The struggles. The triumphs. The friends you've made along the way.",
+      "choices": [
+        {
+          "text": "Every moment has been a gift.",
+          "next_id": "mother_pleased"
+        },
+        {
+          "text": "It wasn't easy, but I wouldn't change any of it.",
+          "next_id": "mother_proud"
+        }
+      ]
+    },
+    "mother_pleased": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "*She smiles warmly* That's what I hoped you'd say. You've faced challenges that would have broken others, and you've grown stronger for it.",
+      "next_id": "remember_marcus"
+    },
+    "mother_proud": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "*Pride shines in her eyes* Strength isn't about avoiding hardship. It's about walking through it and coming out the other side. You've done that beautifully.",
+      "next_id": "remember_marcus"
+    },
+    "remember_marcus": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "Tell me about the people you've met. Marcus, the wanderer... what did he teach you?",
+      "next_id": "marcus_lesson"
+    },
+    "marcus_lesson": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You remember Marcus - his stories, his wisdom, his kindness to strangers. He taught you that adventure doesn't always mean traveling far.",
+      "next_id": "lily_prompt"
+    },
+    "lily_prompt": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "And Lily? The perfectionist?",
+      "next_id": "lily_lesson"
+    },
+    "lily_lesson": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Lily showed you that excellence and kindness aren't opposites. That passion for craft is beautiful, but connection with others is what makes it meaningful.",
+      "next_id": "garrett_prompt"
+    },
+    "garrett_prompt": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "Old Man Garrett... such a gentle soul carrying such heavy grief.",
+      "next_id": "garrett_lesson"
+    },
+    "garrett_lesson": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "From Garrett, you learned that letting go doesn't mean forgetting. That honoring the past and embracing the future can coexist.",
+      "next_id": "all_friends"
+    },
+    "all_friends": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "Captain Vera, the Noble, the siblings Elena and Thomas... each of them found something here. Found healing. Found hope.",
+      "next_id": "mother_truth"
+    },
+    "mother_truth": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "That's the true legacy of Dragon Haven Cafe, my child. Not just the dragon bond, but this - creating a place where broken people can become whole again.",
+      "set_flags": ["reflected_on_journey"],
+      "next_id": "end_scene"
+    },
+    "end_scene": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Your dragon stirs in its sleep, a contented rumble escaping. This place, these people, this life - it's exactly where you're meant to be."
+    }
+  }
+}

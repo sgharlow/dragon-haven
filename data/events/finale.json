@@ -1,0 +1,164 @@
+[
+  {
+    "id": "finale_mother_returns",
+    "chapter": "finale",
+    "sequence_order": 1,
+    "name": "A Familiar Face",
+    "description": "Mother arrives at the cafe, fully recovered",
+    "conditions": [
+      {"type": "dragon_stage", "value": "adult"},
+      {"type": "flag", "value": "chapter7_unlocked"},
+      {"type": "reputation_min", "value": 700},
+      {"type": "not_flag", "value": "finale_started"}
+    ],
+    "dialogue_id": "finale_beginning",
+    "outcomes": [
+      {"type": "set_flag", "value": "finale_started"},
+      {"type": "set_flag", "value": "mother_returned"},
+      {"type": "set_chapter", "value": "finale"}
+    ]
+  },
+  {
+    "id": "finale_mother_watches",
+    "chapter": "finale",
+    "sequence_order": 2,
+    "name": "The Old Connection",
+    "description": "Mother observes your bond with the dragon",
+    "conditions": [
+      {"type": "flag", "value": "mother_returned"},
+      {"type": "day_min", "value": 85}
+    ],
+    "dialogue_id": "finale_mother_observes",
+    "outcomes": [
+      {"type": "set_flag", "value": "mother_observed"}
+    ]
+  },
+  {
+    "id": "finale_heritage_reveal",
+    "chapter": "finale",
+    "sequence_order": 3,
+    "name": "The Family Secret",
+    "description": "Mother reveals the truth about your heritage",
+    "conditions": [
+      {"type": "flag", "value": "mother_observed"},
+      {"type": "day_min", "value": 90}
+    ],
+    "dialogue_id": "finale_heritage",
+    "outcomes": [
+      {"type": "set_flag", "value": "heritage_revealed"},
+      {"type": "reputation_change", "value": 50}
+    ]
+  },
+  {
+    "id": "finale_dragon_bond",
+    "chapter": "finale",
+    "sequence_order": 4,
+    "name": "Understanding the Bond",
+    "description": "The dragon's special connection to you is explained",
+    "conditions": [
+      {"type": "flag", "value": "heritage_revealed"},
+      {"type": "day_min", "value": 95}
+    ],
+    "dialogue_id": "finale_dragon_bond",
+    "outcomes": [
+      {"type": "set_flag", "value": "bond_understood"},
+      {"type": "unlock_recipe", "value": "ancestral_blessing"}
+    ]
+  },
+  {
+    "id": "finale_reflection",
+    "chapter": "finale",
+    "sequence_order": 5,
+    "name": "Looking Back",
+    "description": "Time to reflect on the journey",
+    "conditions": [
+      {"type": "flag", "value": "bond_understood"},
+      {"type": "day_min", "value": 100}
+    ],
+    "dialogue_id": "finale_reflection",
+    "outcomes": [
+      {"type": "set_flag", "value": "reflected_on_journey"}
+    ]
+  },
+  {
+    "id": "finale_acceptance",
+    "chapter": "finale",
+    "sequence_order": 6,
+    "name": "Accepting Destiny",
+    "description": "You embrace your heritage and destiny",
+    "conditions": [
+      {"type": "flag", "value": "reflected_on_journey"},
+      {"type": "day_min", "value": 105}
+    ],
+    "dialogue_id": "finale_acceptance",
+    "outcomes": [
+      {"type": "set_flag", "value": "destiny_accepted"},
+      {"type": "unlock_recipe", "value": "dragons_heart_feast"},
+      {"type": "reputation_change", "value": 75}
+    ]
+  },
+  {
+    "id": "finale_invitations",
+    "chapter": "finale",
+    "sequence_order": 7,
+    "name": "Gathering Friends",
+    "description": "Word spreads about a special celebration",
+    "conditions": [
+      {"type": "flag", "value": "destiny_accepted"},
+      {"type": "day_min", "value": 108}
+    ],
+    "dialogue_id": "finale_invitations",
+    "outcomes": [
+      {"type": "set_flag", "value": "celebration_planned"}
+    ]
+  },
+  {
+    "id": "finale_celebration",
+    "chapter": "finale",
+    "sequence_order": 8,
+    "name": "The Grand Celebration",
+    "description": "All your friends gather at Dragon Haven Cafe",
+    "conditions": [
+      {"type": "flag", "value": "celebration_planned"},
+      {"type": "day_min", "value": 112}
+    ],
+    "dialogue_id": "finale_celebration",
+    "outcomes": [
+      {"type": "set_flag", "value": "celebration_complete"},
+      {"type": "gold_reward", "value": 1000},
+      {"type": "reputation_change", "value": 100}
+    ]
+  },
+  {
+    "id": "finale_epilogue",
+    "chapter": "finale",
+    "sequence_order": 9,
+    "name": "A New Chapter",
+    "description": "Looking toward the future",
+    "conditions": [
+      {"type": "flag", "value": "celebration_complete"},
+      {"type": "day_min", "value": 115}
+    ],
+    "dialogue_id": "finale_epilogue",
+    "outcomes": [
+      {"type": "set_flag", "value": "epilogue_seen"}
+    ]
+  },
+  {
+    "id": "finale_end",
+    "chapter": "finale",
+    "sequence_order": 10,
+    "name": "The End",
+    "description": "The story concludes",
+    "conditions": [
+      {"type": "flag", "value": "epilogue_seen"},
+      {"type": "day_min", "value": 117}
+    ],
+    "dialogue_id": "finale_end",
+    "outcomes": [
+      {"type": "set_flag", "value": "story_complete"},
+      {"type": "set_flag", "value": "credits_unlocked"},
+      {"type": "unlock_recipe", "value": "legacy_eternal"}
+    ]
+  }
+]

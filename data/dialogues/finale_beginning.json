@@ -1,0 +1,103 @@
+{
+  "id": "finale_beginning",
+  "name": "A Familiar Face",
+  "start_id": "door_opens",
+  "nodes": {
+    "door_opens": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The cafe door opens with its familiar chime, but this time the figure standing in the doorway makes your heart skip a beat.",
+      "next_id": "mother_enters"
+    },
+    "mother_enters": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "*Her eyes bright and cheeks rosy with health* My dear child... look at what you've built here.",
+      "next_id": "player_surprise"
+    },
+    "player_surprise": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Your mother stands before you - not the frail, bedridden woman you left behind, but vibrant and full of life. The change is remarkable.",
+      "choices": [
+        {
+          "text": "Mother! You're... you're well!",
+          "next_id": "mother_well"
+        },
+        {
+          "text": "I've missed you so much.",
+          "next_id": "mother_missed"
+        }
+      ]
+    },
+    "mother_well": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "*She laughs softly* Yes, my dear. The doctors couldn't explain it. The moment you took over the cafe and bonded with... *she glances at your dragon* ...with your companion, I began to improve.",
+      "next_id": "dragon_approach"
+    },
+    "mother_missed": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "*She embraces you tightly* And I you, my brave child. Every letter you sent, every story about the cafe and your dragon friend... they gave me strength.",
+      "next_id": "dragon_approach"
+    },
+    "dragon_approach": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Your dragon, now fully grown and magnificent, approaches Mother with an unusual reverence - head bowed, wings folded close.",
+      "next_id": "mother_dragon_reaction"
+    },
+    "mother_dragon_reaction": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "*She reaches out to touch the dragon's snout, tears forming* Oh, little one... you've grown so beautiful. Just like... *she catches herself*",
+      "next_id": "player_curious"
+    },
+    "player_curious": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "There's something in Mother's eyes - a depth of recognition, of memory, that seems far too personal for someone meeting a dragon for the first time.",
+      "choices": [
+        {
+          "text": "Mother, do you know something about my dragon?",
+          "next_id": "mother_deflects"
+        },
+        {
+          "text": "Just like what, Mother?",
+          "next_id": "mother_deflects"
+        }
+      ]
+    },
+    "mother_deflects": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "*She straightens, composing herself* There's so much I need to tell you. Things I should have told you long ago. But first... *she looks around the cafe* ...show me everything. Show me the life you've built here.",
+      "next_id": "tour_begins"
+    },
+    "tour_begins": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You spend the afternoon showing Mother every corner of Dragon Haven Cafe - the kitchen, the dining room, the ingredient garden, the zones you've explored.",
+      "next_id": "mother_pride"
+    },
+    "mother_pride": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "*Her voice thick with emotion* You've done more than I ever dreamed. This place... it's alive again. And your dragon... the bond between you two... *she trails off*",
+      "next_id": "mother_promise"
+    },
+    "mother_promise": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "Soon, my dear. Soon I will tell you everything. About the egg in the cellar. About our family. About why you were always meant to be here.",
+      "set_flags": ["mother_returned", "finale_started"],
+      "next_id": "end_scene"
+    },
+    "end_scene": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Mother squeezes your hand, a lifetime of secrets swimming in her eyes. Whatever she has to say, it will change everything you thought you knew."
+    }
+  }
+}

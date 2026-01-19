@@ -1,0 +1,121 @@
+{
+  "id": "finale_heritage",
+  "name": "The Family Secret",
+  "start_id": "sitting_room",
+  "nodes": {
+    "sitting_room": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The old sitting room is lit by candlelight. Mother sits in grandmother's chair, an ancient book in her lap. Your dragon curls at her feet as if it belongs there.",
+      "next_id": "mother_begins"
+    },
+    "mother_begins": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "Our family name... do you know what it means? In the old tongue, it means 'Dragon's Heart.'",
+      "next_id": "mother_history"
+    },
+    "mother_history": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "*She opens the ancient book* Three hundred years ago, our ancestor, Elara, was a healer. During the Dragon Wars, she found a wounded dragon - the last of its kind in our region.",
+      "next_id": "mother_elara"
+    },
+    "mother_elara": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "Rather than turn it in for the bounty, she healed it. Hid it. And in doing so, formed a bond that changed our bloodline forever.",
+      "next_id": "player_react"
+    },
+    "player_react": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Your dragon makes a low, resonant sound - almost like recognition.",
+      "choices": [
+        {
+          "text": "Changed how?",
+          "next_id": "mother_bond"
+        },
+        {
+          "text": "That's why we've always had this cafe...",
+          "next_id": "mother_cafe"
+        }
+      ]
+    },
+    "mother_bond": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "The dragon, grateful for her kindness, shared something with Elara - a piece of its essence. From that day forward, every generation of our family has been able to bond with dragons.",
+      "next_id": "mother_skip"
+    },
+    "mother_cafe": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "*She nods* Elara built this very cafe as a sanctuary. A place where dragons and humans could exist together, away from those who would harm them.",
+      "next_id": "mother_skip"
+    },
+    "mother_skip": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "But the gift doesn't always manifest. Sometimes it skips generations. Your grandmother didn't have it. I didn't have it. But you...",
+      "next_id": "mother_you"
+    },
+    "mother_you": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "*Her voice trembles* The moment I held you, I felt it. That reaching, that longing. You were born to bond with dragons.",
+      "next_id": "mother_egg"
+    },
+    "mother_egg": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "The egg in the cellar... it's been there for over a century, waiting. Dragons choose their bonded. It was waiting for YOU.",
+      "next_id": "dragon_rises"
+    },
+    "dragon_rises": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Your dragon rises and moves to stand beside you. In this moment, you feel the full weight of your connection - ancient, profound, and unbreakable.",
+      "next_id": "mother_illness"
+    },
+    "mother_illness": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "My illness... it was the burden of keeping this secret. Of watching you grow incomplete, knowing what you needed but afraid to give it to you.",
+      "next_id": "mother_apologizes"
+    },
+    "mother_apologizes": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "*Tears stream down her face* When you bonded with your dragon and took your rightful place here, the weight lifted from me. I could finally breathe again.",
+      "next_id": "player_comfort"
+    },
+    "player_comfort": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You move to embrace your mother. Your dragon wraps a wing around you both.",
+      "choices": [
+        {
+          "text": "I understand, Mother. You were trying to protect me.",
+          "next_id": "mother_grateful"
+        },
+        {
+          "text": "Thank you for finally telling me the truth.",
+          "next_id": "mother_grateful"
+        }
+      ]
+    },
+    "mother_grateful": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "*She holds you tight* You are the heir to a beautiful legacy, my child. The line of Dragon's Heart continues with you.",
+      "set_flags": ["heritage_revealed"],
+      "next_id": "end_scene"
+    },
+    "end_scene": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "For the first time in your life, you understand who you are. The empty spaces inside you were never emptiness at all - they were spaces waiting to be filled by this moment, this truth, this dragon beside you."
+    }
+  }
+}

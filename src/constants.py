@@ -989,12 +989,14 @@ RECIPE_CATEGORY_APPETIZER = 'appetizer'
 RECIPE_CATEGORY_MAIN = 'main'
 RECIPE_CATEGORY_DESSERT = 'dessert'
 RECIPE_CATEGORY_BEVERAGE = 'beverage'
+RECIPE_CATEGORY_SPECIAL = 'special'  # Legendary/story recipes
 
 ALL_RECIPE_CATEGORIES = [
     RECIPE_CATEGORY_APPETIZER,
     RECIPE_CATEGORY_MAIN,
     RECIPE_CATEGORY_DESSERT,
     RECIPE_CATEGORY_BEVERAGE,
+    RECIPE_CATEGORY_SPECIAL,
 ]
 
 # Difficulty levels (1-5 stars)
@@ -1020,6 +1022,7 @@ UNLOCK_TYPE_REPUTATION = 'reputation'  # Requires reputation level
 UNLOCK_TYPE_STORY = 'story'           # Requires story progress
 UNLOCK_TYPE_DISCOVERY = 'discovery'   # Found through exploration
 UNLOCK_TYPE_AFFINITY = 'affinity'     # Requires character affinity (secret recipes)
+UNLOCK_TYPE_EVENT = 'event'           # Requires specific story event
 
 # Recipe definitions
 # Format: id -> {name, description, category, difficulty, base_price, ingredients, color_influence, unlock}
@@ -1721,6 +1724,58 @@ RECIPES = {
         ],
         'color_influence': (0.85, 0.9, 1.0),  # Soft cloud white
         'unlock': {'type': UNLOCK_TYPE_DISCOVERY, 'zone': 'sky_islands'},
+    },
+
+    # =========================================================================
+    # FINALE - LEGACY RECIPES
+    # Unlocked through story events in the finale chapter
+    # =========================================================================
+    'ancestral_blessing': {
+        'name': 'Ancestral Blessing',
+        'description': "Elara's original recipe, passed down through generations. Said to strengthen the bond between dragon and bonded.",
+        'category': RECIPE_CATEGORY_SPECIAL,
+        'difficulty': 5,
+        'base_price': 500,
+        'ingredients': [
+            ('dragon_tear', 1, 3),
+            ('starlight_nectar', 2, 3),
+            ('celestial_berry', 2, 2),
+            ('honey', 1, 2),
+        ],
+        'color_influence': (0.9, 0.85, 1.0),  # Ethereal purple
+        'unlock': {'type': UNLOCK_TYPE_EVENT, 'event': 'finale_dragon_bond'},
+    },
+    'dragons_heart_feast': {
+        'name': "Dragon's Heart Feast",
+        'description': "The sacred feast of the Dragon's Heart lineage. Only a true guardian can prepare this legendary meal.",
+        'category': RECIPE_CATEGORY_SPECIAL,
+        'difficulty': 5,
+        'base_price': 750,
+        'ingredients': [
+            ('phoenix_feather', 1, 3),
+            ('dragon_tear', 1, 3),
+            ('cloud_essence', 2, 2),
+            ('ancient_honey', 1, 3),
+            ('celestial_berry', 2, 2),
+        ],
+        'color_influence': (1.0, 0.7, 0.5),  # Warm golden orange
+        'unlock': {'type': UNLOCK_TYPE_EVENT, 'event': 'finale_acceptance'},
+    },
+    'legacy_eternal': {
+        'name': 'Legacy Eternal',
+        'description': "The ultimate expression of the cafe's heritage. A dish that embodies three centuries of dragon-human friendship.",
+        'category': RECIPE_CATEGORY_SPECIAL,
+        'difficulty': 5,
+        'base_price': 1000,
+        'ingredients': [
+            ('phoenix_feather', 1, 3),
+            ('dragon_tear', 2, 3),
+            ('starlight_nectar', 2, 3),
+            ('sky_crystal', 1, 3),
+            ('ancient_spice', 2, 3),
+        ],
+        'color_influence': (1.0, 0.95, 0.8),  # Radiant gold
+        'unlock': {'type': UNLOCK_TYPE_EVENT, 'event': 'finale_end'},
     },
 }
 

@@ -1,0 +1,76 @@
+{
+  "id": "finale_mother_observes",
+  "name": "The Old Connection",
+  "start_id": "watching",
+  "nodes": {
+    "watching": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You find Mother in the garden, watching your dragon bask in the morning sun. There's something ancient in her gaze.",
+      "next_id": "mother_speaks"
+    },
+    "mother_speaks": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "When you were born, the midwife said you came into the world reaching for something that wasn't there. Your hands grasping at empty air.",
+      "next_id": "mother_continues"
+    },
+    "mother_continues": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "I knew then. I knew what it meant. But I was afraid... afraid of what it would mean for you. For our family.",
+      "next_id": "player_question"
+    },
+    "player_question": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Your dragon lifts its head, sensing the weight of the conversation, and moves closer to you.",
+      "choices": [
+        {
+          "text": "What were you afraid of?",
+          "next_id": "mother_fear"
+        },
+        {
+          "text": "I feel like I've always been waiting for something.",
+          "next_id": "mother_waiting"
+        }
+      ]
+    },
+    "mother_fear": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "Our family's history is... complicated. We carry a legacy that most would call impossible. I wanted you to have a normal life.",
+      "next_id": "dragon_nuzzle"
+    },
+    "mother_waiting": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "*Tears well in her eyes* I know, my darling. And I'm so sorry I made you wait. Made you feel incomplete all these years.",
+      "next_id": "dragon_nuzzle"
+    },
+    "dragon_nuzzle": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Your dragon nuzzles against you, and you feel a warmth spread through your chest - a connection deeper than words.",
+      "next_id": "mother_observes"
+    },
+    "mother_observes": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "*Watching with wonder* Look at that. The way you move together. The way you understand each other without speaking. It's exactly like...",
+      "next_id": "mother_stops"
+    },
+    "mother_stops": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "*She stops herself again, pressing a hand to her heart* Tomorrow night. Come to the old sitting room after the cafe closes. There's something I must show you.",
+      "set_flags": ["mother_observed"],
+      "next_id": "end_scene"
+    },
+    "end_scene": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Mother walks away, shoulders squared with resolve. Whatever secret she's been carrying, the time has come to share it."
+    }
+  }
+}

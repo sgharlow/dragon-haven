@@ -1,0 +1,109 @@
+{
+  "id": "finale_celebration",
+  "name": "The Grand Celebration",
+  "start_id": "cafe_transformed",
+  "nodes": {
+    "cafe_transformed": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Dragon Haven Cafe has been transformed. Lanterns hang from every beam, flowers adorn every surface, and the aroma of the finest feast you've ever prepared fills the air.",
+      "next_id": "guests_arrive"
+    },
+    "guests_arrive": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "One by one, your friends arrive. Marcus with his travel-worn cloak. Lily in elegant attire. Garrett carrying a bouquet of flowers. Vera in her captain's best.",
+      "next_id": "noble_entrance"
+    },
+    "noble_entrance": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The Noble enters - and for the first time, removes their mask, revealing a kind face marked by former nobility and genuine warmth.",
+      "next_id": "siblings_together"
+    },
+    "siblings_together": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Elena and Thomas arrive arm in arm, still tentative but together. The sight brings a smile to everyone's face.",
+      "next_id": "mother_speaks"
+    },
+    "mother_speaks": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "*Standing at the head of the table* Thank you all for coming. You may not know it, but each of you has been part of something extraordinary.",
+      "next_id": "mother_reveals"
+    },
+    "mother_reveals": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "My child here is the heir to an ancient legacy - a guardian of dragons, a keeper of sanctuary. And you, each of you, have helped them become who they were meant to be.",
+      "next_id": "dragon_display"
+    },
+    "dragon_display": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Your dragon rises and spreads its magnificent wings, scales catching the lantern light like living jewels. Gasps of wonder fill the room.",
+      "next_id": "marcus_toast"
+    },
+    "marcus_toast": {
+      "speaker": "Marcus",
+      "portrait": "marcus",
+      "text": "*Raising his glass* I've traveled to the ends of the earth, but I've never found a home like this. To Dragon Haven - and to our friend who makes it special!",
+      "next_id": "lily_toast"
+    },
+    "lily_toast": {
+      "speaker": "Lily",
+      "portrait": "lily",
+      "text": "*Standing with grace* I came here critical and cold. I leave... no, I stay... warm and grateful. This place taught me that perfection includes imperfection.",
+      "next_id": "garrett_toast"
+    },
+    "garrett_toast": {
+      "speaker": "Garrett",
+      "portrait": "garrett",
+      "text": "*Voice trembling* My Margaret would have loved this. Thank you for helping an old man find joy again.",
+      "next_id": "vera_toast"
+    },
+    "vera_toast": {
+      "speaker": "Vera",
+      "portrait": "vera",
+      "text": "*Her eyes bright* I captained ships across stormy seas, but the hardest voyage was finding peace. This cafe was my safe harbor.",
+      "next_id": "noble_toast"
+    },
+    "noble_toast": {
+      "speaker": "The Noble",
+      "portrait": "noble",
+      "text": "*Face finally visible, vulnerable* I hid behind a mask for years. Here, I learned that who I truly am is enough.",
+      "next_id": "siblings_toast"
+    },
+    "siblings_toast": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "*Glancing at Thomas* We lost five years to pride and stubbornness. Dragon Haven gave us the chance to find each other again.",
+      "next_id": "thomas_adds"
+    },
+    "thomas_adds": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "To family. The one you're born with, and the one you choose.",
+      "next_id": "feast_begins"
+    },
+    "feast_begins": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The feast begins in earnest. Laughter fills the air. Stories are shared. Your dragon moves among the guests, accepting pets and praise with regal dignity.",
+      "next_id": "night_continues"
+    },
+    "night_continues": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "As the night wears on, you look around at the faces of those who have become your chosen family. This is what Dragon Haven was always meant to be.",
+      "set_flags": ["celebration_complete"],
+      "next_id": "end_scene"
+    },
+    "end_scene": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "*Squeezing your hand* Elara would be so proud. I am so proud. This is your legacy now - not just the dragon bond, but this: a family of misfits who found each other."
+    }
+  }
+}

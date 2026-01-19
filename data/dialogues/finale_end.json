@@ -1,0 +1,79 @@
+{
+  "id": "finale_end",
+  "name": "The End",
+  "start_id": "one_year_later",
+  "nodes": {
+    "one_year_later": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "One Year Later...",
+      "next_id": "cafe_thriving"
+    },
+    "cafe_thriving": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Dragon Haven Cafe has become legendary. Travelers come from across the realm just to glimpse the dragon, to taste your cooking, to feel the warmth of this special place.",
+      "next_id": "regular_visits"
+    },
+    "regular_visits": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Marcus stops by between adventures. Lily sends promising young chefs to train with you. Garrett tends flowers in your garden. Vera brings tales from the sea.",
+      "next_id": "noble_peace"
+    },
+    "noble_peace": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The Noble, now simply called by their true name, visits often - no longer hiding behind a mask, fully themselves at last.",
+      "next_id": "siblings_healed"
+    },
+    "siblings_healed": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Elena and Thomas have rebuilt their bond. They celebrate holidays together now, and sometimes, they even cook together.",
+      "next_id": "mother_happy"
+    },
+    "mother_happy": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Mother tends her cottage garden and visits for tea every afternoon. The illness is a distant memory - love and truth proved stronger than any secret's burden.",
+      "next_id": "dragon_magnificent"
+    },
+    "dragon_magnificent": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Your dragon has grown even more magnificent. Children gasp in wonder when they see it. Adults remember what it felt like to believe in magic.",
+      "next_id": "final_sunset"
+    },
+    "final_sunset": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You stand at the cafe's entrance as the sun sets, your dragon beside you. Through your bond, you share a moment of perfect peace.",
+      "next_id": "reflection"
+    },
+    "reflection": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You think of Elara, all those centuries ago, making the choice that would lead to this moment. Her courage. Her compassion. Her legacy.",
+      "next_id": "your_legacy"
+    },
+    "your_legacy": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Now it's your legacy too. The line of Dragon's Heart continues. The sanctuary stands. And love - for family, friends, and a dragon who chose you - fills every corner of Dragon Haven Cafe.",
+      "next_id": "final_words"
+    },
+    "final_words": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "As the first stars appear, your dragon rumbles contentedly. Tomorrow will bring new customers, new challenges, new adventures.",
+      "set_flags": ["story_complete", "credits_unlocked"],
+      "next_id": "the_end"
+    },
+    "the_end": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "But tonight, you simply enjoy the warmth of belonging. Of purpose. Of home.\n\n~ THE END ~\n\nThank you for playing Dragon Haven Cafe."
+    }
+  }
+}

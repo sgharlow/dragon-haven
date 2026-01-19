@@ -1,0 +1,100 @@
+{
+  "id": "finale_acceptance",
+  "name": "Accepting Destiny",
+  "start_id": "dawn",
+  "nodes": {
+    "dawn": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You wake before dawn. Your dragon is already awake, watching the first light creep over the horizon. Something in the air feels different today.",
+      "next_id": "dragon_waits"
+    },
+    "dragon_waits": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Through your bond, you sense anticipation from your dragon. It's time for something important.",
+      "next_id": "mother_calls"
+    },
+    "mother_calls": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "*She appears in the doorway, dressed in flowing robes you've never seen before* Come. There's one final piece of your inheritance.",
+      "next_id": "follow_mother"
+    },
+    "follow_mother": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "She leads you to the secret garden, to the stone circle. But now, in the pre-dawn light, you see something you missed before - symbols carved into the stones.",
+      "next_id": "mother_presents"
+    },
+    "mother_presents": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "*She produces an ancient pendant from beneath her robes* This belonged to Elara. It's been passed down through generations, waiting for one worthy to wear it.",
+      "next_id": "pendant_described"
+    },
+    "pendant_described": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The pendant is shaped like a dragon's heart, carved from a stone that seems to shimmer with inner fire. Your dragon keens softly at the sight of it.",
+      "next_id": "mother_offers"
+    },
+    "mother_offers": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "By accepting this, you accept your place in the line of Dragon's Heart. You accept the responsibility to protect dragons, to run this sanctuary, to carry on Elara's mission.",
+      "next_id": "choice_moment"
+    },
+    "choice_moment": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The weight of the moment settles over you. This is more than accepting an heirloom. It's accepting who you are.",
+      "choices": [
+        {
+          "text": "I accept. This is who I was born to be.",
+          "next_id": "acceptance"
+        },
+        {
+          "text": "I'm ready to carry on Elara's legacy.",
+          "next_id": "acceptance"
+        }
+      ]
+    },
+    "acceptance": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "As Mother places the pendant around your neck, warmth floods through you. The stone pulses once, twice, then settles into a steady glow.",
+      "next_id": "dragon_reacts"
+    },
+    "dragon_reacts": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Your dragon throws its head back and releases a magnificent roar - not of fury, but of celebration. The sound echoes across the valley.",
+      "next_id": "mother_blessing"
+    },
+    "mother_blessing": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "*Tears streaming down her face* My child... you are now the guardian of Dragon Haven. May your heart always burn bright, and may your bond never falter.",
+      "next_id": "sun_rises"
+    },
+    "sun_rises": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The sun crests the horizon, bathing the stone circle in golden light. Your dragon wraps around you, and you feel the truth settle into your bones.",
+      "next_id": "new_recipe"
+    },
+    "new_recipe": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "And now, the most sacred recipe of our line - Dragon's Heart Feast. Only a true guardian can prepare it. Use it well.",
+      "set_flags": ["destiny_accepted"],
+      "next_id": "end_scene"
+    },
+    "end_scene": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You are no longer just a cafe owner. You are the Guardian of Dragon Haven, heir to Elara's legacy, bonded to a dragon who chose you before you were born. Your destiny has finally begun."
+    }
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "id": "finale_invitations",
+  "name": "Gathering Friends",
+  "start_id": "mother_idea",
+  "nodes": {
+    "mother_idea": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "You know what this calls for? A celebration. A proper one. We should invite everyone who's been touched by Dragon Haven.",
+      "next_id": "player_considers"
+    },
+    "player_considers": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You think of all the friends you've made - Marcus, Lily, Garrett, Vera, the Noble, Elena, Thomas. Each of them found something special here.",
+      "choices": [
+        {
+          "text": "That's a wonderful idea!",
+          "next_id": "mother_excited"
+        },
+        {
+          "text": "Will they all come?",
+          "next_id": "mother_confident"
+        }
+      ]
+    },
+    "mother_excited": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "*Her eyes light up* We'll prepare the finest feast this cafe has ever seen! Dragon Haven will live up to its name.",
+      "next_id": "sending_word"
+    },
+    "mother_confident": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "For you? For what you've done for each of them? *She smiles knowingly* They'll come from across the realm if they must.",
+      "next_id": "sending_word"
+    },
+    "sending_word": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Over the next few days, you send word to all your friends. Your dragon personally delivers some of the invitations, delighting in the task.",
+      "next_id": "marcus_reply"
+    },
+    "marcus_reply": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Marcus sends word from a distant town - he'll be there, with stories from his latest adventures.",
+      "next_id": "lily_reply"
+    },
+    "lily_reply": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Lily responds immediately, offering to help prepare the feast. Her standards may be high, but so is her generosity.",
+      "next_id": "garrett_reply"
+    },
+    "garrett_reply": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Garrett's reply brings tears to your eyes - he's bringing flowers from his wife's garden. His way of sharing her memory with you.",
+      "next_id": "vera_reply"
+    },
+    "vera_reply": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Captain Vera sends a single word: 'Anchored.' You know she'll be there.",
+      "next_id": "noble_reply"
+    },
+    "noble_reply": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The Noble's acceptance arrives on perfumed paper, with a promise to finally reveal who they really are.",
+      "next_id": "siblings_reply"
+    },
+    "siblings_reply": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Elena and Thomas reply together - the first letter they've written jointly in years. Reconciliation truly is possible.",
+      "next_id": "preparations"
+    },
+    "preparations": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "*Surveying the cafe* We have much to prepare. This will be a celebration they'll never forget.",
+      "set_flags": ["celebration_planned"],
+      "next_id": "end_scene"
+    },
+    "end_scene": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Your dragon helps arrange tables while you and Mother plan the menu. Dragon Haven Cafe has never felt more alive with possibility."
+    }
+  }
+}

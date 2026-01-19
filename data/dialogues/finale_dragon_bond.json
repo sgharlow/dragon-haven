@@ -1,0 +1,96 @@
+{
+  "id": "finale_dragon_bond",
+  "name": "Understanding the Bond",
+  "start_id": "meditation",
+  "nodes": {
+    "meditation": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Mother leads you to a hidden garden behind the cafe - a place overgrown and forgotten. At its center, an ancient stone circle.",
+      "next_id": "mother_explains"
+    },
+    "mother_explains": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "This is where Elara and her dragon would come to deepen their bond. The stones still hold that ancient magic.",
+      "next_id": "dragon_excited"
+    },
+    "dragon_excited": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Your dragon moves to the center of the circle with purpose, settling down and looking at you expectantly.",
+      "next_id": "mother_instructs"
+    },
+    "mother_instructs": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "Sit with your dragon. Close your eyes. Feel the connection you've built over all these months. It's time to understand what it truly means.",
+      "next_id": "player_sits"
+    },
+    "player_sits": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You settle beside your dragon. The moment you close your eyes, warmth spreads through you - and then something extraordinary happens.",
+      "next_id": "vision_begins"
+    },
+    "vision_begins": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You see through your dragon's eyes. You feel what it feels. A flood of memories - not just yours, but generations of bonded pairs before you.",
+      "next_id": "vision_elara"
+    },
+    "vision_elara": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You see Elara, young and fierce, tending to a wounded dragon. You feel the gratitude, the trust, the love that sparked a legacy.",
+      "next_id": "vision_generations"
+    },
+    "vision_generations": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Generation after generation flashes before you. Some bonds strong, some faint. All of them leading to this moment - to you.",
+      "next_id": "dragon_speaks"
+    },
+    "dragon_speaks": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "And then, for the first time, you hear your dragon's voice - not in words, but in pure feeling. It speaks of waiting, of hope, of finally being complete.",
+      "choices": [
+        {
+          "text": "[Reach out with your heart]",
+          "next_id": "bond_deepens"
+        }
+      ]
+    },
+    "bond_deepens": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You reach back with everything you have. The love you've built. The adventures you've shared. The future you want to create together.",
+      "next_id": "bond_complete"
+    },
+    "bond_complete": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The connection solidifies into something unbreakable. You are two hearts, one purpose. Dragon and bonded, as it was always meant to be.",
+      "next_id": "mother_tears"
+    },
+    "mother_tears": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "*Through tears* I can see it... the bond is complete. You're truly one of Elara's children now.",
+      "next_id": "dragon_rumbles"
+    },
+    "dragon_rumbles": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Your dragon rumbles with contentment, and you feel it echo in your own chest. This is what you were born for.",
+      "set_flags": ["bond_understood"],
+      "next_id": "end_scene"
+    },
+    "end_scene": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "You've unlocked an ancient recipe - the Ancestral Blessing. It was Elara's gift to her dragon. Now it belongs to you."
+    }
+  }
+}
