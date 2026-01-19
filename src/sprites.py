@@ -925,6 +925,75 @@ class SpriteGenerator:
                                tuple(max(0, c - 20) for c in CAFE_WOOD),
                                (0, y), (size, y), 1)
 
+        # Coastal tiles
+        elif tile_type == 'shallow_water':
+            # Light blue water
+            shallow_blue = (100, 180, 220)
+            surface.fill(shallow_blue)
+            # Subtle wave effect
+            lighter = tuple(min(255, c + 20) for c in shallow_blue)
+            pygame.draw.arc(surface, lighter, pygame.Rect(0, size // 3, size, size // 3), 0, 3.14, 1)
+
+        elif tile_type == 'seaweed':
+            # Sandy base with green seaweed
+            surface.fill(TERRAIN_SAND)
+            seaweed_green = (40, 100, 60)
+            for i in range(3):
+                x = 4 + i * 10
+                pygame.draw.line(surface, seaweed_green, (x, size), (x - 2, size // 2), 2)
+                pygame.draw.line(surface, seaweed_green, (x, size), (x + 3, size // 2 + 4), 2)
+
+        elif tile_type == 'tidal_pool':
+            # Sandy base with water pool
+            surface.fill(TERRAIN_SAND)
+            pool_blue = (80, 140, 180)
+            pygame.draw.ellipse(surface, pool_blue, pygame.Rect(4, 4, size - 8, size - 8))
+            pygame.draw.ellipse(surface, (100, 160, 200), pygame.Rect(6, 6, size - 14, size - 14))
+
+        # Mountain tiles
+        elif tile_type == 'rock':
+            # Gray rocky terrain
+            rock_gray = (100, 95, 90)
+            surface.fill(rock_gray)
+            # Rocky texture
+            lighter = tuple(min(255, c + 15) for c in rock_gray)
+            darker = tuple(max(0, c - 15) for c in rock_gray)
+            pygame.draw.polygon(surface, lighter, [(0, size), (size // 3, size // 2), (0, size // 3)])
+            pygame.draw.polygon(surface, darker, [(size, 0), (size * 2 // 3, size // 2), (size, size * 2 // 3)])
+
+        elif tile_type == 'snow':
+            # White snow
+            surface.fill((240, 245, 250))
+            # Snow sparkle
+            for i in range(4):
+                x = (i * 9 + 3) % size
+                y = (i * 7 + 5) % size
+                pygame.draw.circle(surface, (255, 255, 255), (x, y), 1)
+
+        elif tile_type == 'alpine_flower':
+            # Grass with alpine flowers
+            surface.fill(GRASS_GREEN)
+            # Pink/purple alpine flowers
+            flower_colors = [(220, 120, 180), (180, 100, 200), (200, 150, 220)]
+            for i in range(3):
+                x = 5 + i * 10
+                y = 8 + (i * 7) % 16
+                color = flower_colors[i % len(flower_colors)]
+                pygame.draw.circle(surface, color, (x, y), 3)
+                pygame.draw.circle(surface, (255, 220, 100), (x, y), 1)
+
+        elif tile_type == 'hot_spring':
+            # Warm water
+            spring_blue = (100, 160, 200)
+            surface.fill(spring_blue)
+            # Steam bubbles
+            for i in range(4):
+                x = 6 + (i * 8) % (size - 8)
+                y = 4 + (i * 6) % (size - 8)
+                pygame.draw.circle(surface, (200, 220, 240), (x, y), 2)
+            # Warmth indicator (subtle orange glow at edges)
+            pygame.draw.arc(surface, (180, 140, 120), pygame.Rect(0, 0, size, size), 0, 6.28, 2)
+
         else:
             surface.fill(GRAY)
 

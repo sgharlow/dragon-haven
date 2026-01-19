@@ -8,13 +8,15 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Any, Tuple, Set
 from constants import (
     ZONE_CAFE_GROUNDS, ZONE_MEADOW_FIELDS, ZONE_FOREST_DEPTHS,
+    ZONE_COASTAL_SHORE, ZONE_MOUNTAIN_PASS,
     ALL_ZONES, ZONE_UNLOCK_REQUIREMENTS, ZONE_CONNECTIONS,
     ZONE_WIDTH, ZONE_HEIGHT, TILE_SIZE,
     WEATHER_SUNNY, WEATHER_CLOUDY, WEATHER_RAINY, WEATHER_STORMY, WEATHER_SPECIAL,
     ALL_WEATHER, WEATHER_PROBABILITIES, WEATHER_RESOURCE_MULTIPLIER,
     WEATHER_CLOSES_CAFE, WEATHER_DANGER_LEVEL,
     SPECIAL_WEATHER_EVENTS, SPECIAL_WEATHER_DESCRIPTIONS,
-    DRAGON_STAGE_EGG, DRAGON_STAGE_HATCHLING, DRAGON_STAGE_JUVENILE
+    DRAGON_STAGE_EGG, DRAGON_STAGE_HATCHLING, DRAGON_STAGE_JUVENILE,
+    DRAGON_STAGE_ADOLESCENT, DRAGON_STAGE_ADULT
 )
 
 
@@ -32,9 +34,19 @@ class TileType:
     BUSH = 'bush'
     FLOWER = 'flower'
     BUILDING = 'building'
+    # Coastal tiles
+    SAND = 'sand'
+    SHALLOW_WATER = 'shallow_water'
+    SEAWEED = 'seaweed'
+    TIDAL_POOL = 'tidal_pool'
+    # Mountain tiles
+    ROCK = 'rock'
+    SNOW = 'snow'
+    ALPINE_FLOWER = 'alpine_flower'
+    HOT_SPRING = 'hot_spring'
 
     # Walkable tiles
-    WALKABLE = {GRASS, DIRT, FLOWER}
+    WALKABLE = {GRASS, DIRT, FLOWER, SAND, SHALLOW_WATER, SEAWEED, TIDAL_POOL, ROCK, SNOW, ALPINE_FLOWER, HOT_SPRING}
     BLOCKING = {WATER, STONE, TREE, BUSH, BUILDING}
 
 
@@ -274,6 +286,114 @@ class WorldManager:
         ]
         self._zones[ZONE_FOREST_DEPTHS] = forest
 
+        # Coastal Shore - requires juvenile (same as forest)
+        coastal = Zone(
+            id=ZONE_COASTAL_SHORE,
+            name="Coastal Shore",
+            description="A sandy beach with tidal pools and ocean breezes.",
+            unlock_requirement=ZONE_UNLOCK_REQUIREMENTS[ZONE_COASTAL_SHORE],
+            connections=ZONE_CONNECTIONS[ZONE_COASTAL_SHORE]
+        )
+        coastal.resource_points = [
+            ResourcePoint('cs_salt_1', 'Salt Flats', 4, 6, 'salt', 4),
+            ResourcePoint('cs_seaweed_1', 'Seaweed Bed', 8, 10, 'seaweed', 5),
+            ResourcePoint('cs_crab_1', 'Crab Rocks', 6, 12, 'crab', 2),
+            ResourcePoint('cs_oyster_1', 'Pearl Beds', 16, 5, 'oyster', 2),
+            ResourcePoint('cs_clam_1', 'Tidal Pool', 10, 4, 'clam', 3),
+            ResourcePoint('cs_berry_1', 'Dune Shrubs', 3, 14, 'berry', 3),
+        ]
+        # Generate coastal-themed tile map
+        coastal.tile_map = self._generate_coastal_map()
+        self._zones[ZONE_COASTAL_SHORE] = coastal
+
+        # Mountain Pass - requires adolescent
+        mountain = Zone(
+            id=ZONE_MOUNTAIN_PASS,
+            name="Mountain Pass",
+            description="A high mountain path with alpine flora and hot springs.",
+            unlock_requirement=ZONE_UNLOCK_REQUIREMENTS[ZONE_MOUNTAIN_PASS],
+            connections=ZONE_CONNECTIONS[ZONE_MOUNTAIN_PASS]
+        )
+        mountain.resource_points = [
+            ResourcePoint('mp_herb_1', 'Alpine Meadow', 5, 5, 'herb', 4),
+            ResourcePoint('mp_honey_1', 'Rock Hive', 10, 8, 'honey', 2),
+            ResourcePoint('mp_crystal_1', 'Crystal Vein', 18, 10, 'crystal', 2),
+            ResourcePoint('mp_flower_1', 'Alpine Garden', 7, 12, 'flower', 4),
+            ResourcePoint('mp_moss_1', 'Mossy Rocks', 3, 9, 'moss', 3),
+            ResourcePoint('mp_egg_1', 'Hot Springs', 12, 14, 'egg', 2),
+        ]
+        # Generate mountain-themed tile map
+        mountain.tile_map = self._generate_mountain_map()
+        self._zones[ZONE_MOUNTAIN_PASS] = mountain
+
+    def _generate_coastal_map(self) -> List[List[str]]:
+        """Generate a coastal-themed tile map."""
+        tiles = []
+        for y in range(ZONE_HEIGHT):
+            row = []
+            for x in range(ZONE_WIDTH):
+                # Ocean on the right side
+                if x >= ZONE_WIDTH - 3:
+                    tile = TileType.WATER
+                elif x >= ZONE_WIDTH - 5:
+                    # Shallow water / tidal zone
+                    r = random.random()
+                    if r < 0.4:
+                        tile = TileType.SHALLOW_WATER
+                    elif r < 0.6:
+                        tile = TileType.TIDAL_POOL
+                    elif r < 0.8:
+                        tile = TileType.SEAWEED
+                    else:
+                        tile = TileType.SAND
+                elif x == 0 or y == 0 or y == ZONE_HEIGHT - 1:
+                    # Left/top/bottom border
+                    tile = random.choice([TileType.BUSH, TileType.STONE, TileType.TREE])
+                else:
+                    # Sandy beach area
+                    r = random.random()
+                    if r < 0.7:
+                        tile = TileType.SAND
+                    elif r < 0.85:
+                        tile = TileType.GRASS
+                    elif r < 0.92:
+                        tile = TileType.BUSH
+                    else:
+                        tile = TileType.STONE
+                row.append(tile)
+            tiles.append(row)
+        return tiles
+
+    def _generate_mountain_map(self) -> List[List[str]]:
+        """Generate a mountain-themed tile map."""
+        tiles = []
+        for y in range(ZONE_HEIGHT):
+            row = []
+            for x in range(ZONE_WIDTH):
+                # Border is rocky
+                if x == 0 or x == ZONE_WIDTH - 1 or y == 0 or y == ZONE_HEIGHT - 1:
+                    tile = TileType.STONE
+                else:
+                    # Mountain terrain
+                    r = random.random()
+                    if r < 0.4:
+                        tile = TileType.ROCK
+                    elif r < 0.6:
+                        tile = TileType.DIRT
+                    elif r < 0.7:
+                        tile = TileType.GRASS
+                    elif r < 0.8:
+                        tile = TileType.ALPINE_FLOWER
+                    elif r < 0.85:
+                        tile = TileType.SNOW
+                    elif r < 0.9:
+                        tile = TileType.HOT_SPRING
+                    else:
+                        tile = TileType.STONE
+                row.append(tile)
+            tiles.append(row)
+        return tiles
+
     # =========================================================================
     # ZONE MANAGEMENT
     # =========================================================================
@@ -300,7 +420,7 @@ class WorldManager:
             return True
 
         # Check dragon stage progression
-        stage_order = [DRAGON_STAGE_EGG, DRAGON_STAGE_HATCHLING, DRAGON_STAGE_JUVENILE]
+        stage_order = [DRAGON_STAGE_EGG, DRAGON_STAGE_HATCHLING, DRAGON_STAGE_JUVENILE, DRAGON_STAGE_ADOLESCENT, DRAGON_STAGE_ADULT]
         required_idx = stage_order.index(zone.unlock_requirement) if zone.unlock_requirement in stage_order else -1
         current_idx = stage_order.index(dragon_stage) if dragon_stage in stage_order else -1
 

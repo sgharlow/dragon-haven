@@ -14,6 +14,7 @@ from constants import (
     TERRAIN_FLOWER_RED, TERRAIN_FLOWER_YELLOW, TERRAIN_FLOWER_BLUE,
     CAFE_WOOD, CAFE_WARM, CAFE_CREAM,
     ZONE_CAFE_GROUNDS, ZONE_MEADOW_FIELDS, ZONE_FOREST_DEPTHS,
+    ZONE_COASTAL_SHORE, ZONE_MOUNTAIN_PASS,
     SPAWN_RARITY_COMMON, SPAWN_RARITY_UNCOMMON, SPAWN_RARITY_RARE,
     SEASON_COLORS, SEASON_OVERLAY,
 )
@@ -41,6 +42,16 @@ class ZoneRenderer:
         TileType.BUSH: (80, 140, 70),
         TileType.FLOWER: (140, 180, 100),
         TileType.BUILDING: CAFE_WOOD,
+        # Coastal tiles
+        TileType.SAND: TERRAIN_SAND,
+        TileType.SHALLOW_WATER: (100, 180, 220),
+        TileType.SEAWEED: (40, 100, 60),
+        TileType.TIDAL_POOL: (80, 140, 180),
+        # Mountain tiles
+        TileType.ROCK: (100, 95, 90),
+        TileType.SNOW: (240, 245, 250),
+        TileType.ALPINE_FLOWER: (200, 150, 220),
+        TileType.HOT_SPRING: (100, 160, 200),
     }
 
     # Zone-specific color themes
@@ -59,6 +70,20 @@ class ZoneRenderer:
             'grass': (80, 120, 60),
             'accent': (100, 80, 60),
             'tree': (40, 70, 35),
+        },
+        ZONE_COASTAL_SHORE: {
+            'grass': (160, 190, 130),  # Sandy dune grass
+            'accent': (220, 200, 150),  # Sand accent
+            'tree': (70, 100, 60),  # Coastal scrub
+            'sand': (220, 200, 150),  # Beach sand
+            'water': (80, 160, 200),  # Ocean blue
+        },
+        ZONE_MOUNTAIN_PASS: {
+            'grass': (100, 140, 90),  # Alpine grass
+            'accent': (180, 160, 140),  # Rocky accent
+            'tree': (50, 80, 45),  # Mountain pine
+            'rock': (120, 115, 110),  # Mountain rock
+            'snow': (240, 245, 250),  # Snow patches
         },
     }
 
@@ -107,19 +132,41 @@ class ZoneRenderer:
         if not self._zone:
             return
 
-        # Add small decorations to grass tiles
+        # Add small decorations based on tile type
         for y in range(self._zone.height):
             for x in range(self._zone.width):
                 tile = self._zone.get_tile(x, y)
+
                 if tile == TileType.GRASS:
                     if random.random() < 0.15:
-                        # Add a small decoration
                         dec_type = random.choice(['flower', 'grass_tuft', 'pebble'])
                         self._decorations.append({
                             'type': dec_type,
                             'x': x * TILE_SIZE + random.randint(4, TILE_SIZE - 4),
                             'y': y * TILE_SIZE + random.randint(4, TILE_SIZE - 4),
                             'color_var': random.randint(-20, 20),
+                        })
+
+                # Coastal decorations
+                elif tile == TileType.SAND:
+                    if random.random() < 0.1:
+                        dec_type = random.choice(['shell', 'driftwood', 'beach_pebble'])
+                        self._decorations.append({
+                            'type': dec_type,
+                            'x': x * TILE_SIZE + random.randint(4, TILE_SIZE - 4),
+                            'y': y * TILE_SIZE + random.randint(4, TILE_SIZE - 4),
+                            'color_var': random.randint(-15, 15),
+                        })
+
+                # Mountain decorations
+                elif tile == TileType.ROCK:
+                    if random.random() < 0.08:
+                        dec_type = random.choice(['small_rock', 'lichen', 'crystal_shard'])
+                        self._decorations.append({
+                            'type': dec_type,
+                            'x': x * TILE_SIZE + random.randint(4, TILE_SIZE - 4),
+                            'y': y * TILE_SIZE + random.randint(4, TILE_SIZE - 4),
+                            'color_var': random.randint(-10, 10),
                         })
 
     def update(self, dt: float):
@@ -324,6 +371,90 @@ class ZoneRenderer:
             pygame.draw.rect(surface, (100, 65, 40),
                            (x + 2, y + 2, TILE_SIZE - 4, TILE_SIZE - 4), 2, border_radius=2)
 
+        # Coastal tiles
+        elif tile_type == TileType.SAND:
+            sand_color = theme.get('sand', TERRAIN_SAND)
+            pygame.draw.rect(surface, sand_color, rect)
+            # Sand texture dots
+            for i in range(4):
+                px = x + (tile_x * 7 + i * 9) % (TILE_SIZE - 4) + 2
+                py = y + (tile_y * 5 + i * 11) % (TILE_SIZE - 4) + 2
+                pygame.draw.circle(surface, tuple(max(0, c - 15) for c in sand_color), (px, py), 1)
+
+        elif tile_type == TileType.SHALLOW_WATER:
+            water_color = theme.get('water', (100, 180, 220))
+            pygame.draw.rect(surface, water_color, rect)
+            # Animated ripples
+            wave_offset = math.sin(self._anim_timer * 1.5 + tile_x + tile_y) * 8
+            lighter = tuple(min(255, c + 30) for c in water_color)
+            pygame.draw.arc(surface, lighter, pygame.Rect(x, y + TILE_SIZE // 3 + wave_offset // 2,
+                          TILE_SIZE, TILE_SIZE // 3), 0, 3.14, 1)
+
+        elif tile_type == TileType.SEAWEED:
+            # Sandy base
+            sand_color = theme.get('sand', TERRAIN_SAND)
+            pygame.draw.rect(surface, sand_color, rect)
+            # Green seaweed strands
+            seaweed_color = (40, 100, 60)
+            for i in range(3):
+                sx = x + 6 + i * 10
+                wave = math.sin(self._anim_timer * 2 + i) * 2
+                pygame.draw.line(surface, seaweed_color, (sx, y + TILE_SIZE),
+                               (sx + wave, y + TILE_SIZE // 2), 2)
+
+        elif tile_type == TileType.TIDAL_POOL:
+            sand_color = theme.get('sand', TERRAIN_SAND)
+            pygame.draw.rect(surface, sand_color, rect)
+            # Water pool
+            pool_color = (80, 140, 180)
+            pygame.draw.ellipse(surface, pool_color, (x + 4, y + 4, TILE_SIZE - 8, TILE_SIZE - 8))
+            pygame.draw.ellipse(surface, (100, 160, 200), (x + 6, y + 6, TILE_SIZE - 14, TILE_SIZE - 14))
+
+        # Mountain tiles
+        elif tile_type == TileType.ROCK:
+            rock_color = theme.get('rock', (100, 95, 90))
+            pygame.draw.rect(surface, rock_color, rect)
+            # Rock texture
+            lighter = tuple(min(255, c + 15) for c in rock_color)
+            darker = tuple(max(0, c - 15) for c in rock_color)
+            pygame.draw.polygon(surface, lighter, [(x, y + TILE_SIZE), (x + TILE_SIZE // 3, y + TILE_SIZE // 2),
+                              (x, y + TILE_SIZE // 3)])
+            pygame.draw.polygon(surface, darker, [(x + TILE_SIZE, y), (x + TILE_SIZE * 2 // 3, y + TILE_SIZE // 2),
+                              (x + TILE_SIZE, y + TILE_SIZE * 2 // 3)])
+
+        elif tile_type == TileType.SNOW:
+            snow_color = theme.get('snow', (240, 245, 250))
+            pygame.draw.rect(surface, snow_color, rect)
+            # Snow sparkle
+            for i in range(3):
+                px = x + (tile_x * 9 + i * 11) % (TILE_SIZE - 4) + 2
+                py = y + (tile_y * 7 + i * 9) % (TILE_SIZE - 4) + 2
+                pygame.draw.circle(surface, (255, 255, 255), (px, py), 1)
+
+        elif tile_type == TileType.ALPINE_FLOWER:
+            # Grass base with seasonal color
+            grass_color = theme.get('grass', (100, 140, 90))
+            pygame.draw.rect(surface, grass_color, rect)
+            # Alpine flowers (pink/purple)
+            flower_colors = [(220, 120, 180), (180, 100, 200), (200, 150, 220)]
+            for i in range(3):
+                fx = x + (tile_x * 5 + i * 9) % (TILE_SIZE - 8) + 4
+                fy = y + (tile_y * 7 + i * 7) % (TILE_SIZE - 8) + 4
+                pygame.draw.circle(surface, flower_colors[i % 3], (fx, fy), 3)
+                pygame.draw.circle(surface, (255, 220, 100), (fx, fy), 1)
+
+        elif tile_type == TileType.HOT_SPRING:
+            spring_color = (100, 160, 200)
+            pygame.draw.rect(surface, spring_color, rect)
+            # Steam bubbles animation
+            bubble_offset = math.sin(self._anim_timer * 3 + tile_x) * 3
+            for i in range(3):
+                bx = x + 8 + (i * 10)
+                by = y + 8 + bubble_offset - i * 2
+                pygame.draw.circle(surface, (200, 220, 240), (int(bx), int(by)), 2)
+            # Warm glow edge
+            pygame.draw.rect(surface, (180, 140, 120), rect, 2, border_radius=4)
+
         else:
             # Default
             color = self.TILE_COLORS.get(tile_type, (100, 100, 100))
@@ -373,6 +504,48 @@ class ZoneRenderer:
             elif dec['type'] == 'pebble':
                 color = (140 + var, 140 + var, 140 + var)
                 pygame.draw.circle(surface, color, (screen_x, screen_y), 2)
+
+            # Coastal decorations
+            elif dec['type'] == 'shell':
+                # Small seashell
+                shell_color = (240 + var, 220 + var, 200)
+                pygame.draw.ellipse(surface, shell_color, (screen_x - 3, screen_y - 2, 6, 4))
+                pygame.draw.arc(surface, (200 + var, 180 + var, 160), (screen_x - 3, screen_y - 2, 6, 4), 0, 3.14, 1)
+
+            elif dec['type'] == 'driftwood':
+                # Small piece of driftwood
+                wood_color = (140 + var, 120 + var, 100)
+                pygame.draw.line(surface, wood_color, (screen_x - 4, screen_y), (screen_x + 4, screen_y - 1), 2)
+
+            elif dec['type'] == 'beach_pebble':
+                # Smooth beach pebble
+                pebble_color = (180 + var, 175 + var, 165)
+                pygame.draw.ellipse(surface, pebble_color, (screen_x - 2, screen_y - 1, 4, 3))
+
+            # Mountain decorations
+            elif dec['type'] == 'small_rock':
+                # Angular small rock
+                rock_color = (100 + var, 95 + var, 90)
+                pygame.draw.polygon(surface, rock_color, [
+                    (screen_x, screen_y - 2), (screen_x + 3, screen_y), (screen_x + 2, screen_y + 2),
+                    (screen_x - 2, screen_y + 2), (screen_x - 3, screen_y)
+                ])
+
+            elif dec['type'] == 'lichen':
+                # Greenish-gray lichen patch
+                lichen_color = (100 + var, 120 + var, 90)
+                pygame.draw.circle(surface, lichen_color, (screen_x, screen_y), 3)
+                pygame.draw.circle(surface, (90 + var, 110 + var, 80), (screen_x + 1, screen_y - 1), 2)
+
+            elif dec['type'] == 'crystal_shard':
+                # Small crystal shard
+                crystal_color = (180 + var, 200 + var, 220)
+                pygame.draw.polygon(surface, crystal_color, [
+                    (screen_x, screen_y - 4), (screen_x + 2, screen_y + 1), (screen_x - 2, screen_y + 1)
+                ])
+                pygame.draw.polygon(surface, (200 + var, 220 + var, 240), [
+                    (screen_x - 1, screen_y - 2), (screen_x + 1, screen_y), (screen_x - 1, screen_y)
+                ])
 
     def draw_resource_indicators(self, surface: pygame.Surface,
                                   indicators: List[Dict[str, Any]],

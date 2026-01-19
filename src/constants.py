@@ -479,22 +479,31 @@ STARTING_GOLD = 150
 ZONE_CAFE_GROUNDS = 'cafe_grounds'
 ZONE_MEADOW_FIELDS = 'meadow_fields'
 ZONE_FOREST_DEPTHS = 'forest_depths'
+ZONE_COASTAL_SHORE = 'coastal_shore'
+ZONE_MOUNTAIN_PASS = 'mountain_pass'
 
 # All zones for iteration
-ALL_ZONES = [ZONE_CAFE_GROUNDS, ZONE_MEADOW_FIELDS, ZONE_FOREST_DEPTHS]
+ALL_ZONES = [
+    ZONE_CAFE_GROUNDS, ZONE_MEADOW_FIELDS, ZONE_FOREST_DEPTHS,
+    ZONE_COASTAL_SHORE, ZONE_MOUNTAIN_PASS,
+]
 
 # Zone unlock requirements (dragon stage)
 ZONE_UNLOCK_REQUIREMENTS = {
     ZONE_CAFE_GROUNDS: None,  # Always unlocked
     ZONE_MEADOW_FIELDS: DRAGON_STAGE_HATCHLING,
     ZONE_FOREST_DEPTHS: DRAGON_STAGE_JUVENILE,
+    ZONE_COASTAL_SHORE: DRAGON_STAGE_JUVENILE,  # Same as Forest
+    ZONE_MOUNTAIN_PASS: DRAGON_STAGE_ADOLESCENT,  # Requires Adolescent
 }
 
 # Zone connections (which zones connect to which)
 ZONE_CONNECTIONS = {
     ZONE_CAFE_GROUNDS: [ZONE_MEADOW_FIELDS],
-    ZONE_MEADOW_FIELDS: [ZONE_CAFE_GROUNDS, ZONE_FOREST_DEPTHS],
-    ZONE_FOREST_DEPTHS: [ZONE_MEADOW_FIELDS],
+    ZONE_MEADOW_FIELDS: [ZONE_CAFE_GROUNDS, ZONE_FOREST_DEPTHS, ZONE_MOUNTAIN_PASS],
+    ZONE_FOREST_DEPTHS: [ZONE_MEADOW_FIELDS, ZONE_COASTAL_SHORE],
+    ZONE_COASTAL_SHORE: [ZONE_FOREST_DEPTHS],
+    ZONE_MOUNTAIN_PASS: [ZONE_MEADOW_FIELDS],
 }
 
 # Zone map sizes (tiles)
@@ -631,6 +640,8 @@ QUALITY_WEATHER_BONUS = {
 ABILITY_BURROW = 'burrow_fetch'
 ABILITY_SNIFF = 'sniff_track'
 ABILITY_SMASH = 'rock_smash'
+ABILITY_GLIDE = 'glide'
+ABILITY_FLIGHT = 'full_flight'
 
 # =============================================================================
 # INGREDIENT DEFINITIONS
@@ -665,6 +676,22 @@ INGREDIENTS = {
     'stardust_petal': ('Stardust Petal', ITEM_SPECIAL, 100, 3, (0.8, 0.6, 0.9)),  # Meteor shower
     'rainbow_essence': ('Rainbow Essence', ITEM_SPECIAL, 120, 0, (0.7, 0.7, 0.7)),  # Rainbow, never spoils
     'moonbeam_honey': ('Moonbeam Honey', ITEM_SPECIAL, 90, 0, (0.6, 0.7, 0.9)),  # Harvest moon, never spoils
+
+    # Coastal Shore ingredients - Seafood and beach finds
+    'sea_salt': ('Sea Salt', ITEM_SPICE, 12, 0, (0.9, 0.9, 0.9)),  # Never spoils
+    'fresh_seaweed': ('Fresh Seaweed', ITEM_VEGETABLE, 15, 2, (0.2, 0.5, 0.3)),
+    'coastal_crab': ('Coastal Crab', ITEM_SEAFOOD, 35, 1, (0.8, 0.4, 0.3)),
+    'pearl_oyster': ('Pearl Oyster', ITEM_SEAFOOD, 50, 1, (0.7, 0.7, 0.8)),
+    'tidal_clam': ('Tidal Clam', ITEM_SEAFOOD, 25, 1, (0.6, 0.5, 0.5)),
+    'beach_berry': ('Beach Berry', ITEM_FRUIT, 18, 2, (0.6, 0.2, 0.4)),
+
+    # Mountain Pass ingredients - Rare herbs and minerals
+    'mountain_herb': ('Mountain Herb', ITEM_SPICE, 28, 3, (0.3, 0.7, 0.5)),
+    'rock_honey': ('Rock Honey', ITEM_SPECIAL, 40, 0, (0.8, 0.6, 0.2)),  # Never spoils
+    'mineral_crystal': ('Mineral Crystal', ITEM_SPECIAL, 55, 0, (0.6, 0.8, 0.9)),  # Never spoils
+    'alpine_flower': ('Alpine Flower', ITEM_SPECIAL, 35, 2, (0.9, 0.5, 0.7)),
+    'mountain_moss': ('Mountain Moss', ITEM_VEGETABLE, 22, 3, (0.4, 0.6, 0.3)),
+    'hot_spring_egg': ('Hot Spring Egg', ITEM_SPECIAL, 45, 0, (0.9, 0.9, 0.7)),  # Never spoils
 }
 
 # Spawn point definitions per zone: list of (id, name, x, y, ingredient_id, rarity, ability_required)
@@ -696,6 +723,26 @@ ZONE_SPAWN_POINTS = {
         ('fd_crystal_1', 'Crystal Cave', 18, 13, 'crystal_shard', SPAWN_RARITY_RARE, ABILITY_SMASH),
         ('fd_truffle_1', 'Truffle Spot', 8, 3, 'hidden_truffle', SPAWN_RARITY_RARE, ABILITY_SNIFF),
     ],
+    ZONE_COASTAL_SHORE: [
+        ('cs_salt_1', 'Salt Flats', 4, 6, 'sea_salt', SPAWN_RARITY_COMMON, None),
+        ('cs_seaweed_1', 'Seaweed Bed', 8, 10, 'fresh_seaweed', SPAWN_RARITY_COMMON, None),
+        ('cs_seaweed_2', 'Kelp Grove', 14, 8, 'fresh_seaweed', SPAWN_RARITY_UNCOMMON, None),
+        ('cs_crab_1', 'Crab Rocks', 6, 12, 'coastal_crab', SPAWN_RARITY_UNCOMMON, ABILITY_SNIFF),
+        ('cs_oyster_1', 'Pearl Beds', 16, 5, 'pearl_oyster', SPAWN_RARITY_RARE, ABILITY_BURROW),
+        ('cs_clam_1', 'Tidal Pool', 10, 4, 'tidal_clam', SPAWN_RARITY_UNCOMMON, None),
+        ('cs_clam_2', 'Sandy Shallows', 18, 12, 'tidal_clam', SPAWN_RARITY_COMMON, None),
+        ('cs_berry_1', 'Dune Shrubs', 3, 14, 'beach_berry', SPAWN_RARITY_UNCOMMON, None),
+    ],
+    ZONE_MOUNTAIN_PASS: [
+        ('mp_herb_1', 'Alpine Meadow', 5, 5, 'mountain_herb', SPAWN_RARITY_COMMON, None),
+        ('mp_herb_2', 'Cliff Edge', 15, 3, 'mountain_herb', SPAWN_RARITY_UNCOMMON, None),
+        ('mp_honey_1', 'Rock Hive', 10, 8, 'rock_honey', SPAWN_RARITY_RARE, ABILITY_SMASH),
+        ('mp_crystal_1', 'Crystal Vein', 18, 10, 'mineral_crystal', SPAWN_RARITY_RARE, ABILITY_SMASH),
+        ('mp_flower_1', 'Alpine Garden', 7, 12, 'alpine_flower', SPAWN_RARITY_UNCOMMON, None),
+        ('mp_flower_2', 'Summit Bloom', 14, 6, 'alpine_flower', SPAWN_RARITY_RARE, ABILITY_GLIDE),
+        ('mp_moss_1', 'Mossy Rocks', 3, 9, 'mountain_moss', SPAWN_RARITY_COMMON, None),
+        ('mp_egg_1', 'Hot Springs', 12, 14, 'hot_spring_egg', SPAWN_RARITY_RARE, None),
+    ],
 }
 
 # Weather-conditional spawn points (only appear during specific weather)
@@ -714,6 +761,17 @@ WEATHER_SPAWN_POINTS = {
         ('fd_storm_2', 'Thunder Tree', 5, 10, 'lightning_crystal', SPAWN_RARITY_UNCOMMON, None, WEATHER_STORMY),
         ('fd_special_1', 'Rainbow Pool', 16, 6, 'rainbow_essence', SPAWN_RARITY_RARE, None, WEATHER_SPECIAL),
         ('fd_special_2', 'Moonlit Hollow', 3, 8, 'moonbeam_honey', SPAWN_RARITY_RARE, None, WEATHER_SPECIAL),
+    ],
+    ZONE_COASTAL_SHORE: [
+        ('cs_storm_1', 'Storm Surge Pool', 8, 8, 'storm_flower', SPAWN_RARITY_UNCOMMON, None, WEATHER_STORMY),
+        ('cs_storm_2', 'Lightning Tide', 14, 10, 'lightning_crystal', SPAWN_RARITY_RARE, None, WEATHER_STORMY),
+        ('cs_special_1', 'Moonlit Cove', 6, 5, 'moonbeam_honey', SPAWN_RARITY_RARE, None, WEATHER_SPECIAL),
+    ],
+    ZONE_MOUNTAIN_PASS: [
+        ('mp_storm_1', 'Thunder Peak', 10, 4, 'lightning_crystal', SPAWN_RARITY_UNCOMMON, None, WEATHER_STORMY),
+        ('mp_storm_2', 'Storm Ridge', 16, 8, 'storm_flower', SPAWN_RARITY_UNCOMMON, None, WEATHER_STORMY),
+        ('mp_special_1', 'Starlit Summit', 12, 2, 'stardust_petal', SPAWN_RARITY_RARE, None, WEATHER_SPECIAL),
+        ('mp_special_2', 'Aurora Pool', 8, 12, 'rainbow_essence', SPAWN_RARITY_RARE, None, WEATHER_SPECIAL),
     ],
 }
 

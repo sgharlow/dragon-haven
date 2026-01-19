@@ -1,10 +1,10 @@
 # Tasks
 
 > Last updated: 2026-01-18
-> Progress: 40/45 complete (Phase 1 done, Phase 2 in progress)
+> Progress: 41/45 complete (Phase 1 done, Phase 2 in progress)
 
 ## Ready
-- [ ] `041` Additional world zones
+- [ ] `042` Additional recipes
 - [ ] `043` Evening service period
 - [ ] `044` Additional story chapters
 - [ ] `045` Character affinity system
@@ -12,9 +12,9 @@
 ## In Progress
 
 ## Blocked
-- [ ] `042` Additional recipes (depends: 041)
 
 ## Done (Phase 2)
+- [x] `041` Additional world zones ✓
 - [x] `040` Additional dragon abilities ✓
 - [x] `039` Adolescent & Adult dragon stages ✓
 - [x] `038` Stormy & Special weather ✓
