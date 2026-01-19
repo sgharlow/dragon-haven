@@ -1,0 +1,127 @@
+{
+  "id": "thomas_confides",
+  "name": "Thomas's Regret",
+  "start_id": "thomas_late_visit",
+  "nodes": {
+    "thomas_late_visit": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Thomas comes in late, after Elena has left. He orders mechanically, his mind clearly elsewhere. He looks exhausted - the kind of tired that sleep can't fix.",
+      "next_id": "thomas_stares"
+    },
+    "thomas_stares": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "*He stares at Elena's empty booth* She sat there again today, didn't she? Did she... did she seem okay?",
+      "next_id": "player_honest"
+    },
+    "player_honest": {
+      "speaker": "You",
+      "portrait": "player",
+      "text": "She's been here a lot. I think she finds some peace here.",
+      "next_id": "thomas_relieved"
+    },
+    "thomas_relieved": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "Good. That's... good. *He lets out a heavy breath* She deserves peace. More than anyone I know.",
+      "next_id": "player_question"
+    },
+    "player_question": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Do you ask him about it?",
+      "choices": [
+        {
+          "text": "What happened between you two?",
+          "next_id": "thomas_opens"
+        },
+        {
+          "text": "You clearly love your sister very much.",
+          "next_id": "thomas_emotional"
+        }
+      ]
+    },
+    "thomas_opens": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "*He laughs bitterly* I destroyed my family for a woman who never loved me. That's what happened. Simple as that.",
+      "next_id": "thomas_story"
+    },
+    "thomas_emotional": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "*His voice cracks* I do. I always did. That's what makes this so... *He takes a shaky breath* I threw away the one person who truly cared about me.",
+      "next_id": "thomas_story"
+    },
+    "thomas_story": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "Elena tried to warn me about Margot. Again and again. And I called her jealous. Possessive. I said terrible things. Things no one should say to family.",
+      "next_id": "thomas_the_worst"
+    },
+    "thomas_the_worst": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "The worst part? I knew, somewhere deep down, that she was right. But admitting it meant admitting I'd made a mistake. That my marriage was a lie. I couldn't face it.",
+      "next_id": "thomas_chose"
+    },
+    "thomas_chose": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "So I chose the lie. I chose comfort over truth. And by the time the lie fell apart on its own... Elena was gone. Our parents had passed. I was alone with my pride.",
+      "next_id": "thomas_regret"
+    },
+    "thomas_regret": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "*His hands tremble* I spent two years trying to find her. Two years composing apologies I knew would never be enough. And now that I've found her...",
+      "next_id": "thomas_fear"
+    },
+    "thomas_fear": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "...she can barely look at me. And I don't blame her. I wouldn't forgive me either. *He meets your eyes* But I have to try. I HAVE to. She's all I have left.",
+      "next_id": "player_advice"
+    },
+    "player_advice": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "What advice do you offer?",
+      "choices": [
+        {
+          "text": "Give her time. Show up consistently. Actions speak louder than apologies.",
+          "next_id": "thomas_takes_advice"
+        },
+        {
+          "text": "Sometimes the people we hurt the deepest are the ones who loved us most.",
+          "next_id": "thomas_reflects"
+        }
+      ]
+    },
+    "thomas_takes_advice": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "*He nods slowly* You're right. Words are cheap. I've got a lot of time to make up for. I can wait. I can show her I've changed.",
+      "next_id": "thomas_confides_end"
+    },
+    "thomas_reflects": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "*Tears well up* She did love me. More than anyone. And I repaid that love with betrayal. *He wipes his eyes* I have to make this right. Somehow.",
+      "next_id": "thomas_confides_end"
+    },
+    "thomas_confides_end": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "Thank you for listening. And for... whatever you've done for Elena. She seems different since coming here. Less hard. Maybe there's hope for us yet.",
+      "set_flags": ["thomas_confided"],
+      "next_id": "thomas_departs"
+    },
+    "thomas_departs": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "He leaves money on the counter - far more than his meal cost - and walks out into the evening. Your dragon watches him go, then looks at you as if asking what comes next."
+    }
+  }
+}

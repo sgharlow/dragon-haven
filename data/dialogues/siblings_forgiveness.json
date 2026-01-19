@@ -1,0 +1,127 @@
+{
+  "id": "siblings_forgiveness",
+  "name": "Family Restored",
+  "start_id": "weeks_later",
+  "nodes": {
+    "weeks_later": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The cafe has become their meeting ground. Every few days, Elena and Thomas sit together. Sometimes they talk. Sometimes they sit in comfortable silence. Today, something feels different.",
+      "next_id": "elena_arrives"
+    },
+    "elena_arrives": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Elena arrives carrying a small, worn box. She sets it on the table with trembling hands, waiting for Thomas.",
+      "next_id": "thomas_arrives"
+    },
+    "thomas_arrives": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "*He slides into his seat, notices the box* What's this?",
+      "next_id": "elena_explains"
+    },
+    "elena_explains": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "I've been holding onto this for five years. Carrying it from apartment to apartment like some kind of... punishment. I think it's time.",
+      "next_id": "elena_opens"
+    },
+    "elena_opens": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "She opens the box. Inside are photographs, old letters, small treasures from their childhood. A family preserved in paper and memories.",
+      "next_id": "thomas_emotional"
+    },
+    "thomas_emotional": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "*His breath catches* Is that... the picture from when we built the treehouse?",
+      "next_id": "elena_confirms"
+    },
+    "elena_confirms": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "*Nodding* And Mother's recipe cards. And the letter Father wrote us when we graduated. And... *she pulls out two small stones* The wishing stones from the river.",
+      "next_id": "thomas_remembers"
+    },
+    "thomas_remembers": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "*His eyes fill with tears* I thought these were lost forever. I thought... I thought I'd lost everything.",
+      "next_id": "elena_gift"
+    },
+    "elena_gift": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "*She pushes one of the stones toward him* I've been the keeper of our family's memories for too long. Holding them like weapons instead of treasures. *Her voice shakes* I want you to have half.",
+      "next_id": "thomas_overwhelmed"
+    },
+    "thomas_overwhelmed": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "*He picks up the stone, clutching it like something precious* Elena... I don't deserve this.",
+      "next_id": "elena_truth"
+    },
+    "elena_truth": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "Maybe not. But I'm tired of keeping score. *She takes a deep breath* I forgive you, Thomas.",
+      "next_id": "thomas_disbelief"
+    },
+    "thomas_disbelief": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "*Stunned silence, then a whisper* What?",
+      "next_id": "elena_repeats"
+    },
+    "elena_repeats": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "I forgive you. *Tears stream down her face* Not because you earned it. Not because the past doesn't matter. But because I want my brother back more than I want to be right.",
+      "next_id": "thomas_breaks"
+    },
+    "thomas_breaks": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "*He breaks down completely* I'm so sorry. I'm so sorry. I'll spend every day proving you made the right choice. I promise, Elena. I promise.",
+      "next_id": "elena_reaches"
+    },
+    "elena_reaches": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "For the first time in five years, Elena reaches across the table and takes her brother's hand.",
+      "next_id": "elena_final"
+    },
+    "elena_final": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "*Through tears, but smiling* We've got a lot of lost time to make up for, little brother. Think you can handle having an overprotective big sister again?",
+      "next_id": "thomas_laughs"
+    },
+    "thomas_laughs": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "*Half-laughing, half-crying* I wouldn't have it any other way.",
+      "set_flags": ["siblings_forgiven"],
+      "next_id": "player_gift"
+    },
+    "player_gift": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "*She turns to you, composing herself* We have something for you. For giving us a place to find each other again.",
+      "next_id": "thomas_recipe"
+    },
+    "thomas_recipe": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "*He produces a worn piece of paper* Our mother's recipes. She used to say food brings families together. *He and Elena share a look* We want you to have them. All of them.",
+      "next_id": "dragon_celebrates"
+    },
+    "dragon_celebrates": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Your dragon practically dances with joy, moving between the siblings as they embrace for the first time in five years. Some wounds never fully heal - but sometimes, they can become scars that remind us how strong love really is."
+    }
+  }
+}

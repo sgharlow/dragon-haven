@@ -1,0 +1,85 @@
+{
+  "id": "siblings_confrontation",
+  "name": "Old Wounds",
+  "start_id": "return_separately",
+  "nodes": {
+    "return_separately": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Elena sits in her corner booth. Thomas enters moments later and hesitates at the counter. They're both here, but neither approaches the other.",
+      "next_id": "elena_ignoring"
+    },
+    "elena_ignoring": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Elena stares pointedly out the window. Thomas orders at the counter, stealing glances her direction. The silence between them fills the entire cafe.",
+      "next_id": "tension_breaks"
+    },
+    "tension_breaks": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "*Finally, he can't take it anymore* You can't keep avoiding me forever, Elena. We live in the same town. We-",
+      "next_id": "elena_snaps"
+    },
+    "elena_snaps": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "*She whirls on him* I avoided you for five years. I can avoid you for fifty more. You made your choice, Thomas. You believed HER over your own sister!",
+      "next_id": "thomas_defends"
+    },
+    "thomas_defends": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "She was my wife! What was I supposed to do? Take your side against my own wife?",
+      "next_id": "elena_bitter"
+    },
+    "elena_bitter": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "*Bitterly* The truth, Thomas. You were supposed to see the truth. That she manipulated everyone. That she drove a wedge between us on purpose. That she took EVERYTHING!",
+      "next_id": "thomas_regret"
+    },
+    "thomas_regret": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "*His voice drops* I know. I know that now. Why do you think she left me? Once there was nothing left to take, no more family to isolate me from... she was gone.",
+      "next_id": "elena_shocked"
+    },
+    "elena_shocked": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "*A flash of surprise breaks through her anger* She... left you?",
+      "next_id": "thomas_admits"
+    },
+    "thomas_admits": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "Two years ago. Took everything she could carry and vanished. And I sat in an empty house, with no wife, no sister, no family... realizing I'd been a fool.",
+      "next_id": "elena_conflicted"
+    },
+    "elena_conflicted": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "*Her anger wavers, replaced by something more complicated* That doesn't... that doesn't make up for what you said. What you did. You called me jealous. Petty. You said I couldn't stand to see you happy.",
+      "next_id": "thomas_shame"
+    },
+    "thomas_shame": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "*He covers his face* I know. I was blind, Elena. Completely blind. And by the time I could see... you were gone. You'd moved away. Changed your number.",
+      "next_id": "elena_guards"
+    },
+    "elena_guards": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "*Her walls come back up, but there are cracks now* Don't expect me to feel sorry for you. *She pauses* But I won't... I won't avoid the cafe because you're here.",
+      "set_flags": ["siblings_confronted"],
+      "next_id": "small_progress"
+    },
+    "small_progress": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "It's not forgiveness. It's not reconciliation. But it's the first time they've been in the same room without one of them leaving. Perhaps that's a start."
+    }
+  }
+}

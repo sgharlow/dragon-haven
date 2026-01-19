@@ -1,0 +1,127 @@
+[
+  {
+    "id": "ch6_elena_arrives",
+    "chapter": "chapter6",
+    "sequence_order": 1,
+    "name": "The Proud Sister",
+    "description": "Elena arrives at the cafe seeking refuge",
+    "conditions": [
+      {"type": "chapter", "value": "chapter6"},
+      {"type": "reputation_min", "value": 500},
+      {"type": "not_flag", "value": "elena_met"}
+    ],
+    "dialogue_id": "elena_arrival",
+    "outcomes": [
+      {"type": "set_flag", "value": "elena_met"},
+      {"type": "set_flag", "value": "ch6_started"}
+    ]
+  },
+  {
+    "id": "ch6_thomas_arrives",
+    "chapter": "chapter6",
+    "sequence_order": 2,
+    "name": "The Regretful Brother",
+    "description": "Thomas comes looking for his sister",
+    "conditions": [
+      {"type": "flag", "value": "elena_met"},
+      {"type": "day_min", "value": 55}
+    ],
+    "dialogue_id": "thomas_arrival",
+    "outcomes": [
+      {"type": "set_flag", "value": "thomas_met"}
+    ]
+  },
+  {
+    "id": "ch6_confrontation",
+    "chapter": "chapter6",
+    "sequence_order": 3,
+    "name": "Old Wounds",
+    "description": "The siblings' tension comes to a head",
+    "conditions": [
+      {"type": "flag", "value": "thomas_met"},
+      {"type": "day_min", "value": 58}
+    ],
+    "dialogue_id": "siblings_confrontation",
+    "outcomes": [
+      {"type": "set_flag", "value": "siblings_confronted"}
+    ]
+  },
+  {
+    "id": "ch6_elena_confides",
+    "chapter": "chapter6",
+    "sequence_order": 4,
+    "name": "Elena's Pain",
+    "description": "Elena opens up about her side of the story",
+    "conditions": [
+      {"type": "flag", "value": "siblings_confronted"},
+      {"type": "day_min", "value": 62}
+    ],
+    "dialogue_id": "elena_confides",
+    "outcomes": [
+      {"type": "set_flag", "value": "elena_confided"}
+    ]
+  },
+  {
+    "id": "ch6_thomas_confides",
+    "chapter": "chapter6",
+    "sequence_order": 5,
+    "name": "Thomas's Regret",
+    "description": "Thomas reveals his side of the story",
+    "conditions": [
+      {"type": "flag", "value": "elena_confided"},
+      {"type": "day_min", "value": 66}
+    ],
+    "dialogue_id": "thomas_confides",
+    "outcomes": [
+      {"type": "set_flag", "value": "thomas_confided"}
+    ]
+  },
+  {
+    "id": "ch6_reconciliation",
+    "chapter": "chapter6",
+    "sequence_order": 6,
+    "name": "Finding Common Ground",
+    "description": "The player helps bridge the gap",
+    "conditions": [
+      {"type": "flag", "value": "thomas_confided"},
+      {"type": "day_min", "value": 70}
+    ],
+    "dialogue_id": "siblings_reconciliation",
+    "outcomes": [
+      {"type": "set_flag", "value": "siblings_reconciling"},
+      {"type": "reputation_change", "value": 40}
+    ]
+  },
+  {
+    "id": "ch6_forgiveness",
+    "chapter": "chapter6",
+    "sequence_order": 7,
+    "name": "Family Restored",
+    "description": "Elena and Thomas forgive each other",
+    "conditions": [
+      {"type": "flag", "value": "siblings_reconciling"},
+      {"type": "day_min", "value": 74}
+    ],
+    "dialogue_id": "siblings_forgiveness",
+    "outcomes": [
+      {"type": "set_flag", "value": "siblings_forgiven"},
+      {"type": "reputation_change", "value": 35}
+    ]
+  },
+  {
+    "id": "ch6_complete",
+    "chapter": "chapter6",
+    "sequence_order": 10,
+    "name": "Chapter 6 Complete",
+    "description": "Chapter 6 concludes",
+    "conditions": [
+      {"type": "flag", "value": "siblings_forgiven"},
+      {"type": "reputation_min", "value": 600}
+    ],
+    "dialogue_id": "chapter6_end",
+    "outcomes": [
+      {"type": "set_chapter", "value": "chapter7"},
+      {"type": "set_flag", "value": "chapter7_unlocked"}
+    ]
+  }
+]
