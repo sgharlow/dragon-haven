@@ -20,9 +20,13 @@ from constants import (
     NOTIFICATION_COLORS,
     SEASON_ICONS, WEATHER_ICONS, MOOD_FACES,
     UI_TEXT, UI_TEXT_DIM, WHITE, CAFE_CREAM, CAFE_WARM,
-    WEATHER_SUNNY, WEATHER_CLOUDY, WEATHER_RAINY,
+    WEATHER_SUNNY, WEATHER_CLOUDY, WEATHER_RAINY, WEATHER_STORMY, WEATHER_SPECIAL,
+    SERVICE_PERIOD_MORNING, SERVICE_PERIOD_EVENING,
+    CAFE_STATE_PREP, CAFE_STATE_SERVICE, CAFE_STATE_CLEANUP, CAFE_STATE_CLOSED,
 )
+import math
 from ui.status_bars import DragonStatusBars, QuickInventoryBar
+from systems.cafe import get_cafe_manager
 
 
 @dataclass
@@ -151,7 +155,7 @@ class HUD:
         self._weather = weather
 
     def set_dragon_stats(self, hunger: float, stamina: float, happiness: float,
-                         name: str = None, mood: str = None):
+                         name: str = None, mood: str = None, stage: str = None):
         """
         Update dragon status display.
 
@@ -161,8 +165,9 @@ class HUD:
             happiness: Happiness value (0-100)
             name: Dragon name (optional)
             mood: Dragon mood (optional)
+            stage: Dragon stage (optional)
         """
-        self.dragon_bars.set_dragon_stats(hunger, stamina, happiness, name, mood)
+        self.dragon_bars.set_dragon_stats(hunger, stamina, happiness, name, mood, stage)
 
     def set_quick_inventory(self, items: List[Dict[str, Any]]):
         """
@@ -390,6 +395,23 @@ class HUD:
             # Rain drops
             pygame.draw.line(surface, (100, 140, 200), (x - 3, y + 2), (x - 4, y + 6), 1)
             pygame.draw.line(surface, (100, 140, 200), (x + 2, y + 2), (x + 1, y + 6), 1)
+        elif weather == WEATHER_STORMY:
+            # Dark cloud
+            pygame.draw.ellipse(surface, (80, 70, 100), (x - 7, y - 5, 14, 7))
+            pygame.draw.ellipse(surface, (60, 50, 80), (x - 9, y - 2, 12, 6))
+            # Lightning bolt
+            pygame.draw.line(surface, (255, 255, 100), (x, y + 2), (x - 2, y + 5), 2)
+            pygame.draw.line(surface, (255, 255, 100), (x - 2, y + 5), (x + 1, y + 5), 2)
+            pygame.draw.line(surface, (255, 255, 100), (x + 1, y + 5), (x - 1, y + 9), 2)
+        elif weather == WEATHER_SPECIAL:
+            # Magical star/sparkle
+            star_color = (220, 200, 255)
+            # Draw a simple star shape
+            pygame.draw.line(surface, star_color, (x, y - 6), (x, y + 6), 2)
+            pygame.draw.line(surface, star_color, (x - 6, y), (x + 6, y), 2)
+            # Diagonal lines for sparkle effect
+            pygame.draw.line(surface, (255, 220, 255), (x - 4, y - 4), (x + 4, y + 4), 1)
+            pygame.draw.line(surface, (255, 220, 255), (x + 4, y - 4), (x - 4, y + 4), 1)
 
     def _draw_notifications(self, surface: pygame.Surface):
         """Draw notification messages (top-center)."""
@@ -443,22 +465,100 @@ class HUD:
 
     def _draw_cafe_info(self, surface: pygame.Surface):
         """Draw cafe-specific HUD elements (cafe mode only)."""
+        cafe = get_cafe_manager()
+
         # Bottom-left: Service status instead of dragon bars
-        panel_width = 200
-        panel_height = 60
+        panel_width = 220
+        panel_height = 95
         panel_x = HUD_DRAGON_X
-        panel_y = HUD_DRAGON_Y
+        panel_y = HUD_DRAGON_Y - 35  # Move up to accommodate larger panel
 
         panel_surface = pygame.Surface((panel_width, panel_height), pygame.SRCALPHA)
         pygame.draw.rect(panel_surface, (30, 28, 40, HUD_BG_ALPHA), panel_surface.get_rect(), border_radius=6)
         pygame.draw.rect(panel_surface, (60, 55, 75, 200), panel_surface.get_rect(), 1, border_radius=6)
         surface.blit(panel_surface, (panel_x, panel_y))
 
-        # Cafe mode text
-        text = "Cafe Mode"
-        text_surface = self.text_font.render(text, True, CAFE_CREAM)
-        surface.blit(text_surface, (panel_x + 10, panel_y + 10))
+        # Current service status
+        cafe_state = cafe.get_state()
+        current_period = cafe.get_current_service_period()
 
-        hint = "Press TAB to toggle HUD"
-        hint_surface = self.small_font.render(hint, True, UI_TEXT_DIM)
-        surface.blit(hint_surface, (panel_x + 10, panel_y + 35))
+        # Status text and color
+        if cafe_state == CAFE_STATE_SERVICE:
+            period_name = "Morning" if current_period == SERVICE_PERIOD_MORNING else "Evening"
+            status_text = f"{period_name} Service"
+            status_color = (100, 200, 100)  # Green for active service
+        elif cafe_state == CAFE_STATE_PREP:
+            period_name = "Morning" if current_period == SERVICE_PERIOD_MORNING else "Evening"
+            status_text = f"{period_name} Prep"
+            status_color = (200, 180, 100)  # Yellow for prep
+        elif cafe_state == CAFE_STATE_CLEANUP:
+            period_name = "Morning" if current_period == SERVICE_PERIOD_MORNING else "Evening"
+            status_text = f"{period_name} Cleanup"
+            status_color = (150, 150, 180)  # Grey for cleanup
+        else:
+            status_text = "Closed"
+            status_color = (150, 100, 100)  # Red for closed
+
+        text_surface = self.text_font.render(status_text, True, status_color)
+        surface.blit(text_surface, (panel_x + 10, panel_y + 8))
+
+        # Service period indicators
+        y_offset = panel_y + 32
+
+        # Morning service indicator
+        morning_color = self._get_service_indicator_color(
+            cafe.is_morning_completed(), cafe.is_morning_skipped(),
+            current_period == SERVICE_PERIOD_MORNING and cafe_state == CAFE_STATE_SERVICE
+        )
+        pygame.draw.circle(surface, morning_color, (panel_x + 18, y_offset + 8), 6)
+        morning_label = "Morning (10-14)"
+        if cafe.is_morning_completed():
+            morning_label += " ✓"
+        elif cafe.is_morning_skipped():
+            morning_label += " ✗"
+        morning_surface = self.small_font.render(morning_label, True, UI_TEXT)
+        surface.blit(morning_surface, (panel_x + 30, y_offset))
+
+        # Evening service indicator
+        y_offset += 18
+        evening_color = self._get_service_indicator_color(
+            cafe.is_evening_completed(), cafe.is_evening_skipped(),
+            current_period == SERVICE_PERIOD_EVENING and cafe_state == CAFE_STATE_SERVICE
+        )
+        pygame.draw.circle(surface, evening_color, (panel_x + 18, y_offset + 8), 6)
+        evening_label = "Evening (17-21)"
+        if cafe.is_evening_completed():
+            evening_label += " ✓"
+        elif cafe.is_evening_skipped():
+            evening_label += " ✗"
+        evening_surface = self.small_font.render(evening_label, True, UI_TEXT)
+        surface.blit(evening_surface, (panel_x + 30, y_offset))
+
+        # Time until next service
+        y_offset += 20
+        time_until = cafe.get_time_until_service()
+        if cafe_state == CAFE_STATE_SERVICE:
+            time_until_close = cafe.get_time_until_close()
+            time_text = f"Closes in: {time_until_close:.1f}h"
+        elif time_until > 0:
+            next_period = cafe.get_next_service_period()
+            if next_period:
+                period_name = "Morning" if next_period == SERVICE_PERIOD_MORNING else "Evening"
+                time_text = f"{period_name} in: {time_until:.1f}h"
+            else:
+                time_text = "No more services today"
+        else:
+            time_text = "Service starting"
+        time_surface = self.small_font.render(time_text, True, UI_TEXT_DIM)
+        surface.blit(time_surface, (panel_x + 10, y_offset))
+
+    def _get_service_indicator_color(self, completed: bool, skipped: bool, active: bool) -> Tuple[int, int, int]:
+        """Get indicator color for a service period."""
+        if completed:
+            return (100, 200, 100)  # Green for completed
+        elif skipped:
+            return (200, 100, 100)  # Red for skipped
+        elif active:
+            return (100, 200, 255)  # Blue for active
+        else:
+            return (100, 100, 100)  # Grey for pending

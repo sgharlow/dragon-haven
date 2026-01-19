@@ -72,5 +72,55 @@
       "lily_secret_recipe": 100
     },
     "met": false
+  },
+  {
+    "id": "vera",
+    "name": "Captain Vera",
+    "portrait_id": "vera",
+    "description": "A retired ship captain with weathered features and salt-streaked hair. She carries the weight of past adventures and decisions.",
+    "chapter": "chapter4",
+    "affinity": 0,
+    "favorite_recipes": ["coastal_chowder", "crab_cakes", "grilled_oysters"],
+    "liked_recipes": ["ocean_medley", "seaweed_salad", "salt_crusted_fish"],
+    "disliked_recipes": ["mountain_stew", "hearty_root_stew", "alpine_tea"],
+    "gift_preferences": {
+      "pearl_oyster": 15,
+      "coastal_crab": 10,
+      "sea_salt": 5,
+      "compass": 12,
+      "ancient_map": 8
+    },
+    "unlocked_dialogues": {
+      "vera_sailing_tales": 25,
+      "vera_last_voyage": 50,
+      "vera_regret": 75,
+      "vera_new_horizon": 100
+    },
+    "met": false
+  },
+  {
+    "id": "noble",
+    "name": "The Masked Noble",
+    "portrait_id": "noble",
+    "description": "A mysterious visitor who always wears an ornate half-mask. They speak with refined elegance but seem burdened by secrets.",
+    "chapter": "chapter5",
+    "affinity": 0,
+    "favorite_recipes": ["crystal_infused_dessert", "gourmet_special", "refined_tea"],
+    "liked_recipes": ["honey_glazed_game", "delicate_pastry", "cream_puff"],
+    "disliked_recipes": ["simple_gruel", "campfire_bread", "trail_mix"],
+    "gift_preferences": {
+      "rare_gem": 15,
+      "exotic_fruit": 12,
+      "rare_flower": 10,
+      "fine_silk": 15,
+      "gold_coin": 8
+    },
+    "unlocked_dialogues": {
+      "noble_refined_taste": 25,
+      "noble_court_life": 50,
+      "noble_true_self": 75,
+      "noble_unmasked": 100
+    },
+    "met": false
   }
 ]

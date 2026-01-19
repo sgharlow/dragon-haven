@@ -1,0 +1,113 @@
+[
+  {
+    "id": "ch5_noble_arrives",
+    "chapter": "chapter5",
+    "sequence_order": 1,
+    "name": "The Masked Visitor",
+    "description": "A mysterious noble visits the cafe",
+    "conditions": [
+      {"type": "reputation_min", "value": 200},
+      {"type": "not_flag", "value": "noble_met"}
+    ],
+    "dialogue_id": "noble_arrival",
+    "outcomes": [
+      {"type": "set_flag", "value": "noble_met"},
+      {"type": "set_flag", "value": "ch5_started"}
+    ]
+  },
+  {
+    "id": "ch5_noble_tastes",
+    "chapter": "chapter5",
+    "sequence_order": 2,
+    "name": "Refined Palate",
+    "description": "The noble returns seeking specific dishes",
+    "conditions": [
+      {"type": "flag", "value": "noble_met"},
+      {"type": "day_min", "value": 20}
+    ],
+    "dialogue_id": "noble_tastes",
+    "outcomes": [
+      {"type": "set_flag", "value": "noble_regular"}
+    ]
+  },
+  {
+    "id": "ch5_noble_slip",
+    "chapter": "chapter5",
+    "sequence_order": 3,
+    "name": "A Glimpse Behind the Mask",
+    "description": "The noble's facade briefly slips",
+    "conditions": [
+      {"type": "flag", "value": "noble_regular"},
+      {"type": "day_min", "value": 23}
+    ],
+    "dialogue_id": "noble_slip",
+    "outcomes": [
+      {"type": "set_flag", "value": "noble_slip_seen"},
+      {"type": "unlock_recipe", "value": "crystal_infused_dessert"}
+    ]
+  },
+  {
+    "id": "ch5_noble_confession",
+    "chapter": "chapter5",
+    "sequence_order": 4,
+    "name": "The Weight of the Crown",
+    "description": "The noble reveals their true burden",
+    "conditions": [
+      {"type": "flag", "value": "noble_slip_seen"},
+      {"type": "reputation_min", "value": 225}
+    ],
+    "dialogue_id": "noble_confession",
+    "outcomes": [
+      {"type": "set_flag", "value": "noble_truth_known"}
+    ]
+  },
+  {
+    "id": "ch5_noble_choice",
+    "chapter": "chapter5",
+    "sequence_order": 5,
+    "name": "To Be Oneself",
+    "description": "Help the noble decide their path",
+    "conditions": [
+      {"type": "flag", "value": "noble_truth_known"},
+      {"type": "day_min", "value": 26}
+    ],
+    "dialogue_id": "noble_choice",
+    "outcomes": [
+      {"type": "set_flag", "value": "noble_chose_freedom"}
+    ]
+  },
+  {
+    "id": "ch5_noble_resolution",
+    "chapter": "chapter5",
+    "sequence_order": 6,
+    "name": "Unmasked",
+    "description": "The noble embraces their true self",
+    "conditions": [
+      {"type": "flag", "value": "noble_chose_freedom"},
+      {"type": "day_min", "value": 28}
+    ],
+    "dialogue_id": "noble_resolution",
+    "outcomes": [
+      {"type": "set_flag", "value": "noble_resolved"},
+      {"type": "reputation_change", "value": 40},
+      {"type": "gold_reward", "value": 500},
+      {"type": "unlock_recipe", "value": "honey_glazed_game"}
+    ]
+  },
+  {
+    "id": "ch5_complete",
+    "chapter": "chapter5",
+    "sequence_order": 10,
+    "name": "Chapter 5 Complete",
+    "description": "Chapter 5 concludes",
+    "conditions": [
+      {"type": "flag", "value": "noble_resolved"},
+      {"type": "reputation_min", "value": 250}
+    ],
+    "dialogue_id": "chapter5_end",
+    "outcomes": [
+      {"type": "set_chapter", "value": "epilogue"},
+      {"type": "set_flag", "value": "epilogue_unlocked"}
+    ]
+  }
+]

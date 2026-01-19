@@ -1,0 +1,67 @@
+{
+  "id": "noble_resolution",
+  "name": "Unmasked",
+  "start_id": "noble_transformed",
+  "nodes": {
+    "noble_transformed": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The door opens, and you barely recognize the figure that enters. The Masked Noble stands tall, but for the first time, they are not wearing their mask.",
+      "next_id": "noble_revealed"
+    },
+    "noble_revealed": {
+      "speaker": "The Noble",
+      "portrait": "noble",
+      "text": "*They smile openly, their full face visible for the first time* I know. It's strange, isn't it? After all this time hiding, here I am. Just me.",
+      "next_id": "noble_announcement_final"
+    },
+    "noble_announcement_final": {
+      "speaker": "The Noble",
+      "portrait": "noble",
+      "text": "I returned home. Addressed the council. Told them I would accept my duties... but on my terms. Do you know what they said?",
+      "next_id": "player_asks"
+    },
+    "player_asks": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You ask what they said.",
+      "next_id": "noble_outcome"
+    },
+    "noble_outcome": {
+      "speaker": "The Noble",
+      "portrait": "noble",
+      "text": "*They laugh* They were relieved! Not because I returned, but because I finally spoke as a person, not a portrait. They'd been waiting for me to find my voice.",
+      "next_id": "noble_changes"
+    },
+    "noble_changes": {
+      "speaker": "The Noble",
+      "portrait": "noble",
+      "text": "I've already begun changes. Royal kitchens are now required to source from local farms. Court sessions include common petitioners. Small steps, but real ones.",
+      "next_id": "noble_gratitude"
+    },
+    "noble_gratitude": {
+      "speaker": "The Noble",
+      "portrait": "noble",
+      "text": "*They take your hands* None of it would have happened without you. Without this place. You showed me that authenticity isn't weakness - it's the truest strength.",
+      "set_flags": ["noble_resolved"],
+      "next_id": "noble_gift_final"
+    },
+    "noble_gift_final": {
+      "speaker": "The Noble",
+      "portrait": "noble",
+      "text": "*They produce a royal purse and an elegant recipe scroll* For you. A gift of gold and a honey glazed game recipe from the royal hunt. And a promise - Dragon Haven will forever have the crown's protection.",
+      "next_id": "noble_farewell"
+    },
+    "noble_farewell": {
+      "speaker": "The Noble",
+      "portrait": "noble",
+      "text": "I can't visit as often now, but know this: whenever I feel the mask trying to grow back, I'll think of this cafe. Of you. Of who I am beneath the crown.",
+      "next_id": "noble_final"
+    },
+    "noble_final": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The noble, no longer masked, embraces you briefly before departing. They leave behind not just gifts, but the proof that authenticity can transform even the highest of stations."
+    }
+  }
+}

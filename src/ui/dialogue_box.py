@@ -9,8 +9,10 @@ from constants import (
     SCREEN_WIDTH, SCREEN_HEIGHT,
     UI_PANEL, UI_BORDER, UI_TEXT, UI_TEXT_DIM,
     CAFE_CREAM, CAFE_WARM, BLACK,
+    AFFINITY_LEVELS, AFFINITY_MAX,
 )
 from systems.dialogue import DialogueNode, DialogueChoice
+from entities.story_character import get_character_manager
 
 
 class DialogueBox:
@@ -327,6 +329,9 @@ class DialogueBox:
         # Draw portrait placeholder (or actual portrait)
         self._draw_portrait(dialogue_surface, portrait_x, portrait_y, alpha)
 
+        # Draw affinity bar for story characters
+        self._draw_affinity_bar(dialogue_surface, portrait_x, portrait_y + self.PORTRAIT_SIZE - 25, alpha)
+
         # Draw speaker name
         text_x = self.PORTRAIT_SIZE + self.PADDING * 2
         speaker_color = (255, 245, 220, alpha)
@@ -372,12 +377,28 @@ class DialogueBox:
             return
 
         # Draw simple character representation based on portrait ID
-        if 'dragon' in self._portrait_id.lower():
+        portrait_lower = self._portrait_id.lower()
+        if 'dragon' in portrait_lower:
             # Dragon portrait
             self._draw_dragon_portrait(surface, center_x, center_y, alpha)
-        elif 'player' in self._portrait_id.lower():
+        elif 'player' in portrait_lower:
             # Player portrait
             self._draw_player_portrait(surface, center_x, center_y, alpha)
+        elif portrait_lower == 'vera':
+            # Captain Vera - weathered sea captain
+            self._draw_vera_portrait(surface, center_x, center_y, alpha)
+        elif portrait_lower == 'noble':
+            # The Masked Noble - mysterious aristocrat
+            self._draw_noble_portrait(surface, center_x, center_y, alpha)
+        elif portrait_lower == 'marcus':
+            # Marcus the Wanderer
+            self._draw_marcus_portrait(surface, center_x, center_y, alpha)
+        elif portrait_lower == 'lily':
+            # Lily the Perfectionist
+            self._draw_lily_portrait(surface, center_x, center_y, alpha)
+        elif portrait_lower == 'mother':
+            # Mother
+            self._draw_mother_portrait(surface, center_x, center_y, alpha)
         else:
             # Generic NPC portrait
             self._draw_npc_portrait(surface, center_x, center_y, alpha)
@@ -421,6 +442,188 @@ class DialogueBox:
         pygame.draw.circle(surface, (60, 60, 60), (cx + 10, cy - 8), 4)
         # Mouth
         pygame.draw.line(surface, (60, 60, 60), (cx - 8, cy + 8), (cx + 8, cy + 8), 2)
+
+    def _draw_vera_portrait(self, surface: pygame.Surface, cx: int, cy: int, alpha: int):
+        """Draw Captain Vera - weathered sea captain with salt-streaked gray hair."""
+        # Weathered skin tone
+        skin_color = (195, 165, 140)
+        # Head
+        pygame.draw.circle(surface, skin_color, (cx, cy - 5), 25)
+        # Gray-white streaked hair (pulled back)
+        pygame.draw.ellipse(surface, (160, 160, 170), (cx - 25, cy - 35, 50, 28))
+        pygame.draw.ellipse(surface, (130, 130, 140), (cx - 20, cy - 30, 20, 15))
+        # Hair bun at back
+        pygame.draw.circle(surface, (140, 140, 150), (cx + 15, cy - 25), 10)
+        # Deep-set eyes (experienced)
+        pygame.draw.ellipse(surface, (45, 50, 55), (cx - 14, cy - 10, 10, 6))
+        pygame.draw.ellipse(surface, (45, 50, 55), (cx + 4, cy - 10, 10, 6))
+        # Weathered lines (crow's feet)
+        pygame.draw.line(surface, (160, 130, 110), (cx - 20, cy - 8), (cx - 24, cy - 5), 1)
+        pygame.draw.line(surface, (160, 130, 110), (cx + 20, cy - 8), (cx + 24, cy - 5), 1)
+        # Stern but kind mouth
+        pygame.draw.arc(surface, (120, 80, 70), (cx - 8, cy + 2, 16, 10), 3.14, 6.28, 2)
+        # Captain's collar hint
+        pygame.draw.rect(surface, (50, 60, 80), (cx - 15, cy + 20, 30, 10))
+        pygame.draw.rect(surface, (180, 160, 100), (cx - 3, cy + 22, 6, 6))  # brass button
+
+    def _draw_noble_portrait(self, surface: pygame.Surface, cx: int, cy: int, alpha: int):
+        """Draw The Masked Noble - mysterious aristocrat with ornate half-mask."""
+        # Pale aristocratic skin
+        skin_color = (245, 230, 220)
+        # Head
+        pygame.draw.circle(surface, skin_color, (cx, cy - 5), 25)
+        # Elegant dark hair
+        pygame.draw.ellipse(surface, (40, 30, 35), (cx - 25, cy - 35, 50, 30))
+        pygame.draw.ellipse(surface, (35, 25, 30), (cx - 28, cy - 28, 20, 25))
+        pygame.draw.ellipse(surface, (35, 25, 30), (cx + 8, cy - 28, 20, 25))
+        # Ornate half-mask (covers upper face)
+        mask_color = (200, 180, 140)
+        pygame.draw.ellipse(surface, mask_color, (cx - 22, cy - 20, 44, 22))
+        # Mask decoration (silver filigree)
+        pygame.draw.arc(surface, (220, 220, 230), (cx - 18, cy - 18, 36, 18), 0, 3.14, 2)
+        pygame.draw.circle(surface, (220, 220, 230), (cx - 12, cy - 12), 3)
+        pygame.draw.circle(surface, (220, 220, 230), (cx + 12, cy - 12), 3)
+        # Eye holes in mask (mysterious dark eyes)
+        pygame.draw.ellipse(surface, (30, 30, 40), (cx - 15, cy - 12, 10, 7))
+        pygame.draw.ellipse(surface, (30, 30, 40), (cx + 5, cy - 12, 10, 7))
+        # Refined nose visible below mask
+        pygame.draw.line(surface, (220, 200, 190), (cx, cy - 2), (cx, cy + 5), 2)
+        # Elegant, controlled expression
+        pygame.draw.arc(surface, (180, 120, 120), (cx - 7, cy + 5, 14, 8), 3.14, 6.28, 2)
+        # High collar
+        pygame.draw.polygon(surface, (60, 40, 80), [
+            (cx - 20, cy + 18), (cx - 25, cy + 30), (cx + 25, cy + 30), (cx + 20, cy + 18)
+        ])
+        pygame.draw.line(surface, (180, 160, 100), (cx - 15, cy + 22), (cx + 15, cy + 22), 2)
+
+    def _draw_marcus_portrait(self, surface: pygame.Surface, cx: int, cy: int, alpha: int):
+        """Draw Marcus the Wanderer - dusty traveler with weathered features."""
+        # Tanned skin
+        skin_color = (210, 175, 145)
+        # Head
+        pygame.draw.circle(surface, skin_color, (cx, cy - 5), 25)
+        # Messy brown hair
+        pygame.draw.ellipse(surface, (90, 60, 40), (cx - 27, cy - 35, 54, 32))
+        pygame.draw.ellipse(surface, (100, 70, 45), (cx - 22, cy - 30, 15, 20))
+        pygame.draw.ellipse(surface, (100, 70, 45), (cx + 10, cy - 32, 18, 18))
+        # Tired but kind eyes
+        pygame.draw.ellipse(surface, (70, 70, 60), (cx - 14, cy - 10, 10, 7))
+        pygame.draw.ellipse(surface, (70, 70, 60), (cx + 4, cy - 10, 10, 7))
+        # Stubble
+        for i in range(8):
+            sx = cx - 10 + (i * 3)
+            sy = cy + 10 + (i % 2) * 2
+            pygame.draw.circle(surface, (80, 60, 50), (sx, sy), 1)
+        # Weary smile
+        pygame.draw.arc(surface, (80, 60, 50), (cx - 8, cy + 3, 16, 10), 3.14, 6.28, 2)
+        # Travel cloak collar
+        pygame.draw.polygon(surface, (80, 70, 60), [
+            (cx - 20, cy + 18), (cx - 28, cy + 30), (cx + 28, cy + 30), (cx + 20, cy + 18)
+        ])
+
+    def _draw_lily_portrait(self, surface: pygame.Surface, cx: int, cy: int, alpha: int):
+        """Draw Lily the Perfectionist - elegant chef with precise features."""
+        # Fair skin
+        skin_color = (250, 230, 215)
+        # Head
+        pygame.draw.circle(surface, skin_color, (cx, cy - 5), 25)
+        # Neat auburn hair in bun
+        pygame.draw.ellipse(surface, (140, 70, 50), (cx - 25, cy - 35, 50, 28))
+        pygame.draw.circle(surface, (130, 60, 45), (cx, cy - 35), 12)  # top bun
+        # Sharp, appraising eyes
+        pygame.draw.ellipse(surface, (60, 80, 60), (cx - 14, cy - 10, 10, 6))
+        pygame.draw.ellipse(surface, (60, 80, 60), (cx + 4, cy - 10, 10, 6))
+        # Arched eyebrows
+        pygame.draw.arc(surface, (110, 50, 40), (cx - 16, cy - 18, 12, 8), 0, 3.14, 2)
+        pygame.draw.arc(surface, (110, 50, 40), (cx + 4, cy - 18, 12, 8), 0, 3.14, 2)
+        # Slightly pursed lips (critical)
+        pygame.draw.ellipse(surface, (200, 130, 130), (cx - 5, cy + 5, 10, 6))
+        # Chef's collar
+        pygame.draw.rect(surface, (255, 255, 255), (cx - 18, cy + 18, 36, 12))
+        pygame.draw.line(surface, (200, 200, 200), (cx, cy + 18), (cx, cy + 30), 2)
+
+    def _draw_mother_portrait(self, surface: pygame.Surface, cx: int, cy: int, alpha: int):
+        """Draw Mother - warm, kind features."""
+        # Warm skin tone
+        skin_color = (235, 200, 175)
+        # Head
+        pygame.draw.circle(surface, skin_color, (cx, cy - 5), 25)
+        # Soft brown hair with gray streaks
+        pygame.draw.ellipse(surface, (120, 90, 70), (cx - 25, cy - 35, 50, 30))
+        pygame.draw.ellipse(surface, (150, 140, 130), (cx - 18, cy - 32, 12, 15))  # gray streak
+        # Kind, warm eyes
+        pygame.draw.ellipse(surface, (80, 65, 50), (cx - 14, cy - 10, 10, 7))
+        pygame.draw.ellipse(surface, (80, 65, 50), (cx + 4, cy - 10, 10, 7))
+        # Smile lines
+        pygame.draw.arc(surface, (200, 170, 150), (cx - 22, cy - 6, 8, 12), 1.5, 3.14, 1)
+        pygame.draw.arc(surface, (200, 170, 150), (cx + 14, cy - 6, 8, 12), 0, 1.5, 1)
+        # Warm smile
+        pygame.draw.arc(surface, (180, 120, 100), (cx - 10, cy + 2, 20, 14), 3.14, 6.28, 2)
+        # Simple dress collar
+        pygame.draw.polygon(surface, (130, 100, 120), [
+            (cx - 18, cy + 18), (cx - 22, cy + 30), (cx + 22, cy + 30), (cx + 18, cy + 18)
+        ])
+
+    def _draw_affinity_bar(self, surface: pygame.Surface, x: int, y: int, alpha: int):
+        """
+        Draw an affinity bar for story characters.
+
+        Args:
+            surface: Surface to draw on
+            x: X position (aligned with portrait)
+            y: Y position (below portrait)
+            alpha: Current alpha for fading
+        """
+        # Check if this is a story character
+        char_mgr = get_character_manager()
+        character = char_mgr.get_character(self._portrait_id.lower()) if self._portrait_id else None
+
+        if not character or not character.met:
+            return
+
+        # Bar dimensions
+        bar_width = self.PORTRAIT_SIZE
+        bar_height = 8
+        padding = 2
+
+        # Background
+        bg_color = (30, 25, 40, min(180, alpha))
+        pygame.draw.rect(surface, bg_color, (x, y, bar_width, bar_height + 12), border_radius=3)
+
+        # Get affinity level and color
+        affinity = character.affinity
+        affinity_level = character.get_affinity_level()
+        level_name = character.get_affinity_level_name()
+
+        # Color based on level
+        level_colors = {
+            'acquaintance': (120, 120, 140),   # Gray-blue
+            'friendly': (100, 180, 120),        # Green
+            'close': (180, 140, 80),            # Gold
+            'best_friend': (200, 100, 150),     # Pink/rose
+        }
+        bar_color = level_colors.get(affinity_level, (120, 120, 140))
+
+        # Draw bar background
+        bar_bg = (50, 45, 60, alpha)
+        pygame.draw.rect(surface, bar_bg,
+                        (x + padding, y + padding, bar_width - padding * 2, bar_height),
+                        border_radius=2)
+
+        # Draw filled portion
+        fill_width = int((bar_width - padding * 2) * (affinity / 100.0))
+        if fill_width > 0:
+            pygame.draw.rect(surface, bar_color,
+                           (x + padding, y + padding, fill_width, bar_height),
+                           border_radius=2)
+
+        # Draw level name below bar
+        level_font = pygame.font.Font(None, 16)
+        level_text = level_font.render(level_name, True, bar_color)
+        level_text.set_alpha(alpha)
+        # Center the text under the bar
+        text_x = x + (bar_width - level_text.get_width()) // 2
+        surface.blit(level_text, (text_x, y + bar_height + padding))
 
     def _draw_wrapped_text(self, surface: pygame.Surface, text: str,
                           x: int, y: int, max_width: int, color: Tuple, alpha: int):

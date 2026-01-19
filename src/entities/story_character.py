@@ -8,12 +8,17 @@ from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, field
 from pathlib import Path
 
-
-# Affinity level thresholds
-AFFINITY_LEVEL_LOW = 25
-AFFINITY_LEVEL_MEDIUM = 50
-AFFINITY_LEVEL_HIGH = 75
-AFFINITY_LEVEL_MAX = 100
+from constants import (
+    AFFINITY_MIN, AFFINITY_MAX,
+    AFFINITY_LEVEL_ACQUAINTANCE, AFFINITY_LEVEL_FRIENDLY,
+    AFFINITY_LEVEL_CLOSE, AFFINITY_LEVEL_BEST_FRIEND,
+    AFFINITY_LEVELS,
+    AFFINITY_COOK_BASE, AFFINITY_COOK_QUALITY_BONUS,
+    AFFINITY_COOK_FAVORITE, AFFINITY_COOK_LIKED, AFFINITY_COOK_DISLIKED,
+    AFFINITY_UNLOCK_PERSONAL_STORY, AFFINITY_UNLOCK_SECRET_RECIPE,
+    AFFINITY_UNLOCK_SPECIAL_EVENT,
+    CHARACTER_SECRET_RECIPES,
+)
 
 
 @dataclass
@@ -50,14 +55,15 @@ class StoryCharacter:
 
     def get_affinity_level(self) -> str:
         """Get the affinity level as a string."""
-        if self.affinity >= AFFINITY_LEVEL_MAX:
-            return "max"
-        elif self.affinity >= AFFINITY_LEVEL_HIGH:
-            return "high"
-        elif self.affinity >= AFFINITY_LEVEL_MEDIUM:
-            return "medium"
-        else:
-            return "low"
+        for level_id, level_data in AFFINITY_LEVELS.items():
+            if level_data['min'] <= self.affinity <= level_data['max']:
+                return level_id
+        return AFFINITY_LEVEL_ACQUAINTANCE
+
+    def get_affinity_level_name(self) -> str:
+        """Get the affinity level display name."""
+        level = self.get_affinity_level()
+        return AFFINITY_LEVELS.get(level, {}).get('name', 'Unknown')
 
     def get_affinity_percent(self) -> float:
         """Get affinity as a percentage (0.0-1.0)."""
@@ -73,7 +79,7 @@ class StoryCharacter:
         Returns:
             New affinity value
         """
-        self.affinity = max(0, min(100, self.affinity + amount))
+        self.affinity = max(AFFINITY_MIN, min(AFFINITY_MAX, self.affinity + amount))
         return self.affinity
 
     def get_recipe_reaction(self, recipe_id: str) -> str:
@@ -104,20 +110,20 @@ class StoryCharacter:
         """
         reaction = self.get_recipe_reaction(recipe_id)
 
-        # Base amounts
+        # Base amounts from constants
         if reaction == 'favorite':
-            base = 15
+            base = AFFINITY_COOK_FAVORITE
         elif reaction == 'liked':
-            base = 8
+            base = AFFINITY_COOK_LIKED
         elif reaction == 'disliked':
-            base = -5
+            base = AFFINITY_COOK_DISLIKED
         else:
-            base = 5
+            base = AFFINITY_COOK_BASE
 
-        # Quality modifier
-        quality_mod = (quality - 3) * 2  # -4 to +4
+        # Quality bonus for high quality (4-5 stars)
+        quality_bonus = AFFINITY_COOK_QUALITY_BONUS if quality >= 4 else 0
 
-        return base + quality_mod
+        return base + quality_bonus
 
     def get_gift_affinity_bonus(self, item_id: str) -> int:
         """
@@ -137,6 +143,24 @@ class StoryCharacter:
             dialogue_id for dialogue_id, required in self.unlocked_dialogues.items()
             if self.affinity >= required
         ]
+
+    def can_unlock_personal_story(self) -> bool:
+        """Check if personal stories are unlocked (Friendly level)."""
+        return self.affinity >= AFFINITY_UNLOCK_PERSONAL_STORY
+
+    def can_unlock_secret_recipe(self) -> bool:
+        """Check if secret recipe is unlocked (Close level)."""
+        return self.affinity >= AFFINITY_UNLOCK_SECRET_RECIPE
+
+    def can_unlock_special_event(self) -> bool:
+        """Check if special events are unlocked (Best Friend level)."""
+        return self.affinity >= AFFINITY_UNLOCK_SPECIAL_EVENT
+
+    def get_secret_recipe(self) -> Optional[str]:
+        """Get the character's secret recipe ID if unlocked."""
+        if self.can_unlock_secret_recipe():
+            return CHARACTER_SECRET_RECIPES.get(self.id)
+        return None
 
     def mark_met(self):
         """Mark that the player has met this character."""

@@ -9,7 +9,9 @@ from constants import (
     STATUS_BAR_WIDTH, STATUS_BAR_HEIGHT,
     HUD_BORDER_COLOR, HUD_PANEL_COLOR,
     HUNGER_ORANGE, STAMINA_YELLOW, HAPPINESS_PINK, HEALTH_GREEN,
-    UI_TEXT, UI_TEXT_DIM, WHITE, BLACK
+    UI_TEXT, UI_TEXT_DIM, WHITE, BLACK,
+    DRAGON_STAGE_EGG, DRAGON_STAGE_HATCHLING, DRAGON_STAGE_JUVENILE,
+    DRAGON_STAGE_ADOLESCENT, DRAGON_STAGE_ADULT,
 )
 
 
@@ -172,16 +174,17 @@ class DragonStatusBars:
 
         self.bars = [self.hunger_bar, self.stamina_bar, self.happiness_bar]
 
-        # Dragon name/mood display
+        # Dragon name/mood/stage display
         self.dragon_name = "Dragon"
         self.dragon_mood = "content"
+        self.dragon_stage = DRAGON_STAGE_EGG
 
         # Fonts
         self.name_font = pygame.font.Font(None, 24)
         self.mood_font = pygame.font.Font(None, 20)
 
     def set_dragon_stats(self, hunger: float, stamina: float, happiness: float,
-                         name: str = None, mood: str = None):
+                         name: str = None, mood: str = None, stage: str = None):
         """
         Update all dragon stats.
 
@@ -191,6 +194,7 @@ class DragonStatusBars:
             happiness: Happiness value (0-100)
             name: Dragon name (optional)
             mood: Dragon mood (optional)
+            stage: Dragon stage (optional)
         """
         self.hunger_bar.set_value(hunger)
         self.stamina_bar.set_value(stamina)
@@ -200,6 +204,8 @@ class DragonStatusBars:
             self.dragon_name = name
         if mood:
             self.dragon_mood = mood
+        if stage:
+            self.dragon_stage = stage
 
     def update(self, dt: float):
         """Update all bars."""
@@ -219,9 +225,12 @@ class DragonStatusBars:
         pygame.draw.rect(panel_surface, (60, 55, 75, 200), panel_surface.get_rect(), 1, border_radius=6)
         surface.blit(panel_surface, panel_rect)
 
-        # Draw dragon name
+        # Draw small dragon stage icon
+        self._draw_dragon_icon(surface, self.x + 5, self.y - 18)
+
+        # Draw dragon name (offset for icon)
         name_surface = self.name_font.render(self.dragon_name, True, UI_TEXT)
-        surface.blit(name_surface, (self.x, self.y - 20))
+        surface.blit(name_surface, (self.x + 25, self.y - 20))
 
         # Draw mood indicator
         mood_colors = {
@@ -243,6 +252,42 @@ class DragonStatusBars:
         # Draw bars
         for bar in self.bars:
             bar.draw(surface)
+
+    def _draw_dragon_icon(self, surface: pygame.Surface, x: int, y: int):
+        """Draw a small dragon stage icon."""
+        if self.dragon_stage == DRAGON_STAGE_EGG:
+            # Egg icon
+            pygame.draw.ellipse(surface, (200, 180, 160), (x, y - 2, 12, 16))
+            pygame.draw.ellipse(surface, (180, 160, 140), (x, y - 2, 12, 16), 1)
+            pygame.draw.circle(surface, (170, 150, 130), (x + 4, y + 4), 2)
+        elif self.dragon_stage == DRAGON_STAGE_HATCHLING:
+            # Tiny dragon head
+            pygame.draw.ellipse(surface, (120, 180, 120), (x, y, 14, 12))
+            pygame.draw.circle(surface, (255, 255, 255), (x + 9, y + 3), 3)
+            pygame.draw.circle(surface, (40, 40, 40), (x + 10, y + 3), 1)
+        elif self.dragon_stage == DRAGON_STAGE_JUVENILE:
+            # Small dragon with horns
+            pygame.draw.ellipse(surface, (100, 160, 200), (x, y, 14, 12))
+            pygame.draw.polygon(surface, (80, 140, 180), [(x + 3, y), (x + 2, y - 5), (x + 6, y)])
+            pygame.draw.circle(surface, (255, 255, 255), (x + 9, y + 3), 3)
+            pygame.draw.circle(surface, (40, 40, 40), (x + 10, y + 3), 1)
+        elif self.dragon_stage == DRAGON_STAGE_ADOLESCENT:
+            # Larger dragon with wing buds
+            pygame.draw.ellipse(surface, (160, 100, 180), (x, y, 16, 12))
+            pygame.draw.polygon(surface, (140, 80, 160), [(x + 3, y), (x + 1, y - 6), (x + 7, y)])
+            pygame.draw.ellipse(surface, (140, 80, 160), (x - 2, y - 2, 8, 5))  # Wing bud
+            pygame.draw.circle(surface, (255, 255, 255), (x + 11, y + 3), 3)
+            pygame.draw.circle(surface, (40, 40, 40), (x + 12, y + 3), 1)
+        else:  # DRAGON_STAGE_ADULT
+            # Majestic dragon with wings
+            pygame.draw.ellipse(surface, (200, 80, 80), (x, y, 16, 12))
+            pygame.draw.polygon(surface, (180, 60, 60), [(x + 4, y), (x + 2, y - 7), (x + 8, y)])
+            pygame.draw.polygon(surface, (180, 100, 100), [(x - 3, y - 3), (x - 6, y - 8), (x + 2, y)])  # Wing
+            pygame.draw.circle(surface, (255, 255, 255), (x + 11, y + 3), 3)
+            pygame.draw.circle(surface, (180, 50, 50), (x + 11, y + 3), 2)
+            pygame.draw.circle(surface, (40, 40, 40), (x + 12, y + 3), 1)
+            # Fire glow
+            pygame.draw.circle(surface, (255, 150, 50), (x + 16, y + 5), 2)
 
 
 class QuickInventorySlot:

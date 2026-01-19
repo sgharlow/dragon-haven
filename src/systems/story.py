@@ -8,6 +8,8 @@ from typing import Dict, List, Optional, Any, Callable
 from dataclasses import dataclass, field
 from pathlib import Path
 from systems.dialogue import get_dialogue_manager
+from constants import DRAGON_STAGES
+from entities.story_character import get_character_manager
 
 
 @dataclass
@@ -128,8 +130,8 @@ class StoryManager:
         manager.complete_current_event()
     """
 
-    # Chapter order
-    CHAPTERS = ['prologue', 'chapter1', 'chapter2', 'chapter3', 'epilogue']
+    # Chapter order (5 main chapters + prologue and epilogue)
+    CHAPTERS = ['prologue', 'chapter1', 'chapter2', 'chapter3', 'chapter4', 'chapter5', 'epilogue']
 
     def __init__(self):
         """Initialize the story manager."""
@@ -318,9 +320,9 @@ class StoryManager:
         elif ctype == 'dragon_stage':
             # Value is required stage
             dragon_stage = game_state.get('dragon_stage', '')
-            stages = ['egg', 'hatchling', 'juvenile']
-            if dragon_stage in stages and value in stages:
-                return stages.index(dragon_stage) >= stages.index(value)
+            # Use DRAGON_STAGES from constants for all 5 stages
+            if dragon_stage in DRAGON_STAGES and value in DRAGON_STAGES:
+                return DRAGON_STAGES.index(dragon_stage) >= DRAGON_STAGES.index(value)
             return dragon_stage == value
 
         elif ctype == 'events_completed':
@@ -345,6 +347,35 @@ class StoryManager:
         elif ctype == 'chapter':
             # Value is chapter that must be current
             return self._current_chapter == value
+
+        elif ctype == 'affinity_min':
+            # Value is {'character': char_id, 'amount': min_affinity}
+            if isinstance(value, dict):
+                char_id = value.get('character', '')
+                min_affinity = value.get('amount', 0)
+                char_mgr = get_character_manager()
+                return char_mgr.get_affinity(char_id) >= min_affinity
+            return False
+
+        elif ctype == 'affinity_level':
+            # Value is {'character': char_id, 'level': 'friendly'/'close'/'best_friend'}
+            if isinstance(value, dict):
+                char_id = value.get('character', '')
+                required_level = value.get('level', 'acquaintance')
+                char_mgr = get_character_manager()
+                char = char_mgr.get_character(char_id)
+                if char:
+                    from constants import AFFINITY_LEVELS
+                    current_min = AFFINITY_LEVELS.get(char.get_affinity_level(), {}).get('min', 0)
+                    required_min = AFFINITY_LEVELS.get(required_level, {}).get('min', 0)
+                    return current_min >= required_min
+            return False
+
+        elif ctype == 'character_met':
+            # Value is character ID that must be met
+            char_mgr = get_character_manager()
+            char = char_mgr.get_character(value)
+            return char.met if char else False
 
         return False
 

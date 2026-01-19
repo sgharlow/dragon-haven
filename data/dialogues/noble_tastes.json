@@ -1,0 +1,65 @@
+{
+  "id": "noble_tastes",
+  "name": "Refined Palate",
+  "start_id": "noble_returns",
+  "nodes": {
+    "noble_returns": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The Masked Noble has become a regular visitor, always arriving precisely as the afternoon light turns golden. Today, they seem particularly interested in your menu.",
+      "next_id": "noble_request"
+    },
+    "noble_request": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "Your cuisine has been... unexpectedly delightful. Tell me, do you ever prepare dishes that require more... refined ingredients? I tire of the same offerings everywhere.",
+      "next_id": "player_respond_cuisine"
+    },
+    "player_respond_cuisine": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "How do you respond?",
+      "choices": [
+        {
+          "text": "I pride myself on using the finest ingredients. What did you have in mind?",
+          "next_id": "noble_impressed"
+        },
+        {
+          "text": "Simple food, made with care, can rival any royal feast.",
+          "next_id": "noble_thoughtful",
+          "set_flags": ["noble_humbled"]
+        }
+      ]
+    },
+    "noble_impressed": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "Excellent. I confess, in my previous life... *They pause* In other establishments, I was surrounded by the finest chefs. Yet none made food that felt like... this. Real.",
+      "next_id": "noble_musing"
+    },
+    "noble_thoughtful": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "*They fall silent for a moment* You're right, of course. The palace kitchens... *They stop abruptly* That is... the finest restaurants often miss that simplicity.",
+      "next_id": "noble_musing"
+    },
+    "noble_musing": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "*They stare at their plate* Do you know what I envy most about common folk? No, don't look offended. I mean the freedom. To eat what you want, wear what you want, be who you want.",
+      "next_id": "noble_slip"
+    },
+    "noble_slip": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "*Their voice drops* To choose your own path rather than have it chosen for you. To be valued for who you are, not what you represent.",
+      "set_flags": ["noble_regular"],
+      "next_id": "noble_recover"
+    },
+    "noble_recover": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "*They straighten, composure returning* Forgive me. The atmosphere here invites... reflection. I shall return. This place has become... necessary."
+    }
+  }
+}

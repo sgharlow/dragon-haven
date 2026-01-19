@@ -7,14 +7,15 @@ from typing import Dict, List, Optional, Tuple, Any
 from dataclasses import dataclass, field
 from constants import (
     DRAGON_STAGE_EGG, DRAGON_STAGE_HATCHLING, DRAGON_STAGE_JUVENILE,
-    DRAGON_EGG_DAYS, DRAGON_HATCHLING_DAYS,
-    DRAGON_STAT_MAX, DRAGON_BOND_MAX,
+    DRAGON_STAGE_ADOLESCENT, DRAGON_STAGE_ADULT,
+    DRAGON_EGG_DAYS, DRAGON_HATCHLING_DAYS, DRAGON_JUVENILE_DAYS, DRAGON_ADOLESCENT_DAYS,
+    DRAGON_STAT_MAX, DRAGON_BOND_MAX, DRAGON_STAGE_STAMINA_MAX,
     DRAGON_HUNGER_DECAY, DRAGON_HAPPINESS_DECAY, DRAGON_STAMINA_REGEN,
     DRAGON_HUNGER_WARNING, DRAGON_HAPPINESS_WARNING, DRAGON_STAMINA_LOW,
     DRAGON_FEED_HUNGER_RESTORE, DRAGON_FEED_HAPPINESS_BONUS, DRAGON_FEED_BOND_BONUS,
     DRAGON_PET_HAPPINESS, DRAGON_PET_BOND,
     DRAGON_COLOR_SHIFT_RATE,
-    DRAGON_ABILITY_COSTS, DRAGON_STAGE_ABILITIES,
+    DRAGON_ABILITY_COSTS, DRAGON_ABILITY_CONTINUOUS, DRAGON_STAGE_ABILITIES,
     DRAGON_NAME_MAX_LENGTH, DRAGON_NAME_DEFAULT,
     REAL_SECONDS_PER_GAME_HOUR
 )
@@ -112,6 +113,9 @@ class Dragon:
         self._last_fed_hour = 0.0
         self._times_fed_today = 0
 
+        # Active continuous ability (glide, full_flight)
+        self._active_continuous_ability: Optional[str] = None
+
         # Callbacks for stage change
         self._stage_change_callbacks = []
 
@@ -139,6 +143,9 @@ class Dragon:
         if self._stage != DRAGON_STAGE_EGG:
             self._update_stats(game_hours)
 
+        # Drain stamina for active continuous abilities
+        self._update_continuous_ability(dt)
+
     def _update_stats(self, game_hours: float):
         """Update stats based on time passed."""
         # Hunger decreases over time
@@ -154,25 +161,55 @@ class Dragon:
         self._happiness = max(0, self._happiness)
 
         # Stamina regenerates when resting, decays slowly otherwise
+        max_stamina = self.get_max_stamina()
         if self._is_resting:
             self._stamina += DRAGON_STAMINA_REGEN * game_hours
         else:
             self._stamina += DRAGON_STAMINA_REGEN * 0.3 * game_hours  # Slow regen when active
 
-        self._stamina = max(0, min(DRAGON_STAT_MAX, self._stamina))
+        self._stamina = max(0, min(max_stamina, self._stamina))
+
+    def _update_continuous_ability(self, dt: float):
+        """Update continuous ability stamina drain."""
+        if not self._active_continuous_ability:
+            return
+
+        # Get drain rate (stamina per second)
+        drain_rate = DRAGON_ABILITY_CONTINUOUS.get(self._active_continuous_ability, 0)
+        stamina_cost = drain_rate * dt
+
+        # Drain stamina
+        self._stamina -= stamina_cost
+
+        # If stamina depleted, deactivate ability
+        if self._stamina <= 0:
+            self._stamina = 0
+            self._active_continuous_ability = None
 
     def _check_stage_progression(self):
         """Check and handle stage transitions."""
         days_old = self.get_age_days()
         old_stage = self._stage
 
-        if days_old <= DRAGON_EGG_DAYS:
+        # Calculate stage thresholds
+        egg_end = DRAGON_EGG_DAYS
+        hatchling_end = egg_end + DRAGON_HATCHLING_DAYS
+        juvenile_end = hatchling_end + DRAGON_JUVENILE_DAYS
+        adolescent_end = juvenile_end + DRAGON_ADOLESCENT_DAYS
+
+        if days_old <= egg_end:
             self._stage = DRAGON_STAGE_EGG
-        elif days_old <= DRAGON_EGG_DAYS + DRAGON_HATCHLING_DAYS:
+        elif days_old <= hatchling_end:
             self._stage = DRAGON_STAGE_HATCHLING
             self._hatched = True
-        else:
+        elif days_old <= juvenile_end:
             self._stage = DRAGON_STAGE_JUVENILE
+            self._hatched = True
+        elif days_old <= adolescent_end:
+            self._stage = DRAGON_STAGE_ADOLESCENT
+            self._hatched = True
+        else:
+            self._stage = DRAGON_STAGE_ADULT
             self._hatched = True
 
         # Trigger callbacks if stage changed
@@ -196,8 +233,12 @@ class Dragon:
         return self._happiness
 
     def get_stamina(self) -> float:
-        """Get current stamina (0-100)."""
+        """Get current stamina (0-max based on stage)."""
         return self._stamina
+
+    def get_max_stamina(self) -> float:
+        """Get maximum stamina for current stage."""
+        return DRAGON_STAGE_STAMINA_MAX.get(self._stage, DRAGON_STAT_MAX)
 
     def get_bond(self) -> int:
         """Get lifetime bond level (0-1000)."""
@@ -237,10 +278,11 @@ class Dragon:
 
     def get_stat_percentages(self) -> Dict[str, float]:
         """Get all stats as percentages (0.0-1.0)."""
+        max_stamina = self.get_max_stamina()
         return {
             'hunger': self._hunger / DRAGON_STAT_MAX,
             'happiness': self._happiness / DRAGON_STAT_MAX,
-            'stamina': self._stamina / DRAGON_STAT_MAX,
+            'stamina': self._stamina / max_stamina,
             'bond': self._bond / DRAGON_BOND_MAX
         }
 
@@ -364,6 +406,10 @@ class Dragon:
         """Get list of abilities available at current stage."""
         return DRAGON_STAGE_ABILITIES.get(self._stage, [])
 
+    def is_continuous_ability(self, ability_name: str) -> bool:
+        """Check if an ability is a continuous drain ability."""
+        return ability_name in DRAGON_ABILITY_CONTINUOUS
+
     def can_use_ability(self, ability_name: str) -> bool:
         """
         Check if an ability can be used.
@@ -378,12 +424,19 @@ class Dragon:
         if ability_name not in available:
             return False
 
+        # For continuous abilities, check minimum stamina (1 second worth)
+        if self.is_continuous_ability(ability_name):
+            drain_rate = DRAGON_ABILITY_CONTINUOUS.get(ability_name, 0)
+            return self._stamina >= drain_rate
+
+        # For instant abilities, check full cost
         cost = DRAGON_ABILITY_COSTS.get(ability_name, 0)
         return self._stamina >= cost
 
     def use_ability(self, ability_name: str) -> bool:
         """
-        Use an ability, consuming stamina.
+        Use an instant ability, consuming stamina.
+        For continuous abilities, use start_continuous_ability() instead.
 
         Args:
             ability_name: Name of the ability to use
@@ -391,6 +444,10 @@ class Dragon:
         Returns:
             True if ability was used successfully
         """
+        # Continuous abilities use start/stop methods
+        if self.is_continuous_ability(ability_name):
+            return False
+
         if not self.can_use_ability(ability_name):
             return False
 
@@ -398,8 +455,55 @@ class Dragon:
         self._stamina -= cost
         return True
 
-    def get_ability_cost(self, ability_name: str) -> int:
-        """Get the stamina cost of an ability."""
+    def start_continuous_ability(self, ability_name: str) -> bool:
+        """
+        Start a continuous ability (glide, full_flight).
+
+        Args:
+            ability_name: Name of the continuous ability
+
+        Returns:
+            True if ability was started successfully
+        """
+        if not self.is_continuous_ability(ability_name):
+            return False
+
+        if not self.can_use_ability(ability_name):
+            return False
+
+        # Stop any currently active ability
+        self._active_continuous_ability = ability_name
+        return True
+
+    def stop_continuous_ability(self):
+        """Stop the currently active continuous ability."""
+        self._active_continuous_ability = None
+
+    def is_ability_active(self, ability_name: str = None) -> bool:
+        """
+        Check if a continuous ability is active.
+
+        Args:
+            ability_name: Specific ability to check, or None for any
+
+        Returns:
+            True if the ability (or any ability) is active
+        """
+        if ability_name is None:
+            return self._active_continuous_ability is not None
+        return self._active_continuous_ability == ability_name
+
+    def get_active_ability(self) -> Optional[str]:
+        """Get the currently active continuous ability."""
+        return self._active_continuous_ability
+
+    def get_ability_cost(self, ability_name: str) -> float:
+        """
+        Get the stamina cost of an ability.
+        For continuous abilities, returns per-second drain rate.
+        """
+        if self.is_continuous_ability(ability_name):
+            return DRAGON_ABILITY_CONTINUOUS.get(ability_name, 0)
         return DRAGON_ABILITY_COSTS.get(ability_name, 0)
 
     # =========================================================================
@@ -495,13 +599,25 @@ class Dragon:
         """
         days = self.get_age_days()
 
+        # Calculate stage thresholds
+        egg_end = DRAGON_EGG_DAYS
+        hatchling_end = egg_end + DRAGON_HATCHLING_DAYS
+        juvenile_end = hatchling_end + DRAGON_JUVENILE_DAYS
+        adolescent_end = juvenile_end + DRAGON_ADOLESCENT_DAYS
+
         if self._stage == DRAGON_STAGE_EGG:
             return min(1.0, days / DRAGON_EGG_DAYS)
         elif self._stage == DRAGON_STAGE_HATCHLING:
-            days_in_stage = days - DRAGON_EGG_DAYS
+            days_in_stage = days - egg_end
             return min(1.0, days_in_stage / DRAGON_HATCHLING_DAYS)
+        elif self._stage == DRAGON_STAGE_JUVENILE:
+            days_in_stage = days - hatchling_end
+            return min(1.0, days_in_stage / DRAGON_JUVENILE_DAYS)
+        elif self._stage == DRAGON_STAGE_ADOLESCENT:
+            days_in_stage = days - juvenile_end
+            return min(1.0, days_in_stage / DRAGON_ADOLESCENT_DAYS)
         else:
-            # Juvenile has no end, show bond progress instead
+            # Adult has no end, show bond progress instead
             return min(1.0, self._bond / DRAGON_BOND_MAX)
 
     def __repr__(self) -> str:

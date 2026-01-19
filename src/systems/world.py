@@ -8,11 +8,15 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Any, Tuple, Set
 from constants import (
     ZONE_CAFE_GROUNDS, ZONE_MEADOW_FIELDS, ZONE_FOREST_DEPTHS,
+    ZONE_COASTAL_SHORE, ZONE_MOUNTAIN_PASS,
     ALL_ZONES, ZONE_UNLOCK_REQUIREMENTS, ZONE_CONNECTIONS,
     ZONE_WIDTH, ZONE_HEIGHT, TILE_SIZE,
-    WEATHER_SUNNY, WEATHER_CLOUDY, WEATHER_RAINY,
+    WEATHER_SUNNY, WEATHER_CLOUDY, WEATHER_RAINY, WEATHER_STORMY, WEATHER_SPECIAL,
     ALL_WEATHER, WEATHER_PROBABILITIES, WEATHER_RESOURCE_MULTIPLIER,
-    DRAGON_STAGE_EGG, DRAGON_STAGE_HATCHLING, DRAGON_STAGE_JUVENILE
+    WEATHER_CLOSES_CAFE, WEATHER_DANGER_LEVEL,
+    SPECIAL_WEATHER_EVENTS, SPECIAL_WEATHER_DESCRIPTIONS,
+    DRAGON_STAGE_EGG, DRAGON_STAGE_HATCHLING, DRAGON_STAGE_JUVENILE,
+    DRAGON_STAGE_ADOLESCENT, DRAGON_STAGE_ADULT
 )
 
 
@@ -30,9 +34,19 @@ class TileType:
     BUSH = 'bush'
     FLOWER = 'flower'
     BUILDING = 'building'
+    # Coastal tiles
+    SAND = 'sand'
+    SHALLOW_WATER = 'shallow_water'
+    SEAWEED = 'seaweed'
+    TIDAL_POOL = 'tidal_pool'
+    # Mountain tiles
+    ROCK = 'rock'
+    SNOW = 'snow'
+    ALPINE_FLOWER = 'alpine_flower'
+    HOT_SPRING = 'hot_spring'
 
     # Walkable tiles
-    WALKABLE = {GRASS, DIRT, FLOWER}
+    WALKABLE = {GRASS, DIRT, FLOWER, SAND, SHALLOW_WATER, SEAWEED, TIDAL_POOL, ROCK, SNOW, ALPINE_FLOWER, HOT_SPRING}
     BLOCKING = {WATER, STONE, TREE, BUSH, BUILDING}
 
 
@@ -203,6 +217,11 @@ class WorldManager:
         self._unlocked_zones: Set[str] = {ZONE_CAFE_GROUNDS}
         self._discovered_resource_points: Set[str] = set()
 
+        # Special weather event tracking
+        self._special_weather_event: Optional[str] = None
+        self._pending_weather: Optional[str] = None  # For storm warnings
+        self._hours_until_weather_change: int = 0
+
         # Player position in current zone
         self._player_x: int = ZONE_WIDTH // 2
         self._player_y: int = ZONE_HEIGHT // 2
@@ -267,6 +286,114 @@ class WorldManager:
         ]
         self._zones[ZONE_FOREST_DEPTHS] = forest
 
+        # Coastal Shore - requires juvenile (same as forest)
+        coastal = Zone(
+            id=ZONE_COASTAL_SHORE,
+            name="Coastal Shore",
+            description="A sandy beach with tidal pools and ocean breezes.",
+            unlock_requirement=ZONE_UNLOCK_REQUIREMENTS[ZONE_COASTAL_SHORE],
+            connections=ZONE_CONNECTIONS[ZONE_COASTAL_SHORE]
+        )
+        coastal.resource_points = [
+            ResourcePoint('cs_salt_1', 'Salt Flats', 4, 6, 'salt', 4),
+            ResourcePoint('cs_seaweed_1', 'Seaweed Bed', 8, 10, 'seaweed', 5),
+            ResourcePoint('cs_crab_1', 'Crab Rocks', 6, 12, 'crab', 2),
+            ResourcePoint('cs_oyster_1', 'Pearl Beds', 16, 5, 'oyster', 2),
+            ResourcePoint('cs_clam_1', 'Tidal Pool', 10, 4, 'clam', 3),
+            ResourcePoint('cs_berry_1', 'Dune Shrubs', 3, 14, 'berry', 3),
+        ]
+        # Generate coastal-themed tile map
+        coastal.tile_map = self._generate_coastal_map()
+        self._zones[ZONE_COASTAL_SHORE] = coastal
+
+        # Mountain Pass - requires adolescent
+        mountain = Zone(
+            id=ZONE_MOUNTAIN_PASS,
+            name="Mountain Pass",
+            description="A high mountain path with alpine flora and hot springs.",
+            unlock_requirement=ZONE_UNLOCK_REQUIREMENTS[ZONE_MOUNTAIN_PASS],
+            connections=ZONE_CONNECTIONS[ZONE_MOUNTAIN_PASS]
+        )
+        mountain.resource_points = [
+            ResourcePoint('mp_herb_1', 'Alpine Meadow', 5, 5, 'herb', 4),
+            ResourcePoint('mp_honey_1', 'Rock Hive', 10, 8, 'honey', 2),
+            ResourcePoint('mp_crystal_1', 'Crystal Vein', 18, 10, 'crystal', 2),
+            ResourcePoint('mp_flower_1', 'Alpine Garden', 7, 12, 'flower', 4),
+            ResourcePoint('mp_moss_1', 'Mossy Rocks', 3, 9, 'moss', 3),
+            ResourcePoint('mp_egg_1', 'Hot Springs', 12, 14, 'egg', 2),
+        ]
+        # Generate mountain-themed tile map
+        mountain.tile_map = self._generate_mountain_map()
+        self._zones[ZONE_MOUNTAIN_PASS] = mountain
+
+    def _generate_coastal_map(self) -> List[List[str]]:
+        """Generate a coastal-themed tile map."""
+        tiles = []
+        for y in range(ZONE_HEIGHT):
+            row = []
+            for x in range(ZONE_WIDTH):
+                # Ocean on the right side
+                if x >= ZONE_WIDTH - 3:
+                    tile = TileType.WATER
+                elif x >= ZONE_WIDTH - 5:
+                    # Shallow water / tidal zone
+                    r = random.random()
+                    if r < 0.4:
+                        tile = TileType.SHALLOW_WATER
+                    elif r < 0.6:
+                        tile = TileType.TIDAL_POOL
+                    elif r < 0.8:
+                        tile = TileType.SEAWEED
+                    else:
+                        tile = TileType.SAND
+                elif x == 0 or y == 0 or y == ZONE_HEIGHT - 1:
+                    # Left/top/bottom border
+                    tile = random.choice([TileType.BUSH, TileType.STONE, TileType.TREE])
+                else:
+                    # Sandy beach area
+                    r = random.random()
+                    if r < 0.7:
+                        tile = TileType.SAND
+                    elif r < 0.85:
+                        tile = TileType.GRASS
+                    elif r < 0.92:
+                        tile = TileType.BUSH
+                    else:
+                        tile = TileType.STONE
+                row.append(tile)
+            tiles.append(row)
+        return tiles
+
+    def _generate_mountain_map(self) -> List[List[str]]:
+        """Generate a mountain-themed tile map."""
+        tiles = []
+        for y in range(ZONE_HEIGHT):
+            row = []
+            for x in range(ZONE_WIDTH):
+                # Border is rocky
+                if x == 0 or x == ZONE_WIDTH - 1 or y == 0 or y == ZONE_HEIGHT - 1:
+                    tile = TileType.STONE
+                else:
+                    # Mountain terrain
+                    r = random.random()
+                    if r < 0.4:
+                        tile = TileType.ROCK
+                    elif r < 0.6:
+                        tile = TileType.DIRT
+                    elif r < 0.7:
+                        tile = TileType.GRASS
+                    elif r < 0.8:
+                        tile = TileType.ALPINE_FLOWER
+                    elif r < 0.85:
+                        tile = TileType.SNOW
+                    elif r < 0.9:
+                        tile = TileType.HOT_SPRING
+                    else:
+                        tile = TileType.STONE
+                row.append(tile)
+            tiles.append(row)
+        return tiles
+
     # =========================================================================
     # ZONE MANAGEMENT
     # =========================================================================
@@ -293,7 +420,7 @@ class WorldManager:
             return True
 
         # Check dragon stage progression
-        stage_order = [DRAGON_STAGE_EGG, DRAGON_STAGE_HATCHLING, DRAGON_STAGE_JUVENILE]
+        stage_order = [DRAGON_STAGE_EGG, DRAGON_STAGE_HATCHLING, DRAGON_STAGE_JUVENILE, DRAGON_STAGE_ADOLESCENT, DRAGON_STAGE_ADULT]
         required_idx = stage_order.index(zone.unlock_requirement) if zone.unlock_requirement in stage_order else -1
         current_idx = stage_order.index(dragon_stage) if dragon_stage in stage_order else -1
 
@@ -387,30 +514,117 @@ class WorldManager:
         """Get current weather."""
         return self._weather
 
-    def roll_new_weather(self, season: str):
+    def roll_new_weather(self, season: str, with_warning: bool = False) -> Optional[str]:
         """
         Roll for new weather based on season probabilities.
 
         Args:
-            season: Current season ('spring' or 'summer')
+            season: Current season
+            with_warning: If True, schedule storm with warning instead of immediate change
+
+        Returns:
+            The new weather type, or None if scheduled for later
         """
         probs = WEATHER_PROBABILITIES.get(season, WEATHER_PROBABILITIES['spring'])
         roll = random.random()
         cumulative = 0.0
 
+        new_weather = WEATHER_SUNNY  # Default fallback
+
         for weather_type, prob in probs.items():
             cumulative += prob
             if roll < cumulative:
-                self._weather = weather_type
-                self._days_since_weather_change = 0
-                return
+                new_weather = weather_type
+                break
 
-        # Fallback
-        self._weather = WEATHER_SUNNY
+        # If rolling stormy weather and warnings enabled, schedule it
+        if with_warning and new_weather == WEATHER_STORMY:
+            self.schedule_weather_change(new_weather, 1, season)  # 1 hour warning
+            return None
+
+        # If special weather, pick a random event for the season
+        if new_weather == WEATHER_SPECIAL:
+            events = SPECIAL_WEATHER_EVENTS.get(season, ['rainbow'])
+            self._special_weather_event = random.choice(events)
+        else:
+            self._special_weather_event = None
+
+        self._weather = new_weather
+        self._days_since_weather_change = 0
+        return new_weather
 
     def get_resource_multiplier(self) -> float:
         """Get resource spawn multiplier based on weather."""
         return WEATHER_RESOURCE_MULTIPLIER.get(self._weather, 1.0)
+
+    def is_cafe_closed_by_weather(self) -> bool:
+        """Check if cafe should be closed due to weather."""
+        return WEATHER_CLOSES_CAFE.get(self._weather, False)
+
+    def get_weather_danger_level(self) -> int:
+        """Get the danger level of current weather (0 = safe, 2 = dangerous)."""
+        return WEATHER_DANGER_LEVEL.get(self._weather, 0)
+
+    def is_stormy(self) -> bool:
+        """Check if current weather is stormy."""
+        return self._weather == WEATHER_STORMY
+
+    def is_special_weather(self) -> bool:
+        """Check if current weather is special."""
+        return self._weather == WEATHER_SPECIAL
+
+    def get_special_weather_event(self) -> Optional[str]:
+        """Get the current special weather event name."""
+        return self._special_weather_event
+
+    def get_special_weather_description(self) -> Optional[str]:
+        """Get the description for the current special weather event."""
+        if self._special_weather_event:
+            return SPECIAL_WEATHER_DESCRIPTIONS.get(self._special_weather_event)
+        return None
+
+    def get_pending_storm_warning(self) -> Optional[Tuple[str, int]]:
+        """
+        Get pending storm warning info.
+
+        Returns:
+            Tuple of (weather_type, hours_until) or None if no pending storm
+        """
+        if self._pending_weather == WEATHER_STORMY and self._hours_until_weather_change > 0:
+            return (self._pending_weather, self._hours_until_weather_change)
+        return None
+
+    def schedule_weather_change(self, weather: str, hours: int, season: str):
+        """
+        Schedule a weather change (for storm warnings).
+
+        Args:
+            weather: The weather type to change to
+            hours: Hours until the change
+            season: Current season (for special event selection)
+        """
+        self._pending_weather = weather
+        self._hours_until_weather_change = hours
+
+        # If special weather, pick a random event for the season
+        if weather == WEATHER_SPECIAL:
+            events = SPECIAL_WEATHER_EVENTS.get(season, ['rainbow'])
+            self._special_weather_event = random.choice(events)
+
+    def apply_pending_weather(self):
+        """Apply the pending weather change."""
+        if self._pending_weather:
+            self._weather = self._pending_weather
+            self._days_since_weather_change = 0
+            self._pending_weather = None
+            self._hours_until_weather_change = 0
+
+    def tick_weather_countdown(self):
+        """Tick down the weather change countdown (called hourly)."""
+        if self._hours_until_weather_change > 0:
+            self._hours_until_weather_change -= 1
+            if self._hours_until_weather_change <= 0:
+                self.apply_pending_weather()
 
     # =========================================================================
     # RESOURCES
@@ -443,9 +657,9 @@ class WorldManager:
         """Called at the start of a new day."""
         self._days_since_weather_change += 1
 
-        # Roll for new weather (33% chance per day)
+        # Roll for new weather (33% chance per day, with storm warnings)
         if random.random() < 0.33:
-            self.roll_new_weather(season)
+            self.roll_new_weather(season, with_warning=True)
 
         # Respawn resources in all zones
         for zone in self._zones.values():
@@ -461,6 +675,9 @@ class WorldManager:
             'current_zone_id': self._current_zone_id,
             'weather': self._weather,
             'days_since_weather_change': self._days_since_weather_change,
+            'special_weather_event': self._special_weather_event,
+            'pending_weather': self._pending_weather,
+            'hours_until_weather_change': self._hours_until_weather_change,
             'unlocked_zones': list(self._unlocked_zones),
             'discovered_resource_points': list(self._discovered_resource_points),
             'player_x': self._player_x,
@@ -477,6 +694,9 @@ class WorldManager:
         self._current_zone_id = state.get('current_zone_id', ZONE_CAFE_GROUNDS)
         self._weather = state.get('weather', WEATHER_SUNNY)
         self._days_since_weather_change = state.get('days_since_weather_change', 0)
+        self._special_weather_event = state.get('special_weather_event', None)
+        self._pending_weather = state.get('pending_weather', None)
+        self._hours_until_weather_change = state.get('hours_until_weather_change', 0)
         self._unlocked_zones = set(state.get('unlocked_zones', [ZONE_CAFE_GROUNDS]))
         self._discovered_resource_points = set(state.get('discovered_resource_points', []))
         self._player_x = state.get('player_x', ZONE_WIDTH // 2)

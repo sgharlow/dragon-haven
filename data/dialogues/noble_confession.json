@@ -1,0 +1,72 @@
+{
+  "id": "noble_confession",
+  "name": "The Weight of the Crown",
+  "start_id": "noble_weary",
+  "nodes": {
+    "noble_weary": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The Masked Noble sits alone, their posture less rigid than usual. The mask seems heavier on their face today.",
+      "next_id": "noble_opens_up"
+    },
+    "noble_opens_up": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "I was seven when they placed the first crown on my head for a portrait. It was too heavy for my neck. I cried. They told me a ruler never shows weakness.",
+      "next_id": "noble_childhood"
+    },
+    "noble_childhood": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "Every day since, I've worn invisible crowns. The weight never lessened. I learned to hide my tears, my fears, my very self behind masks more ornate than this one.",
+      "next_id": "noble_breaking"
+    },
+    "noble_breaking": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "*Their voice cracks* When I left, I told myself it was temporary. A respite. But the longer I'm here, the more I realize... I don't want to go back to being a portrait.",
+      "next_id": "player_support"
+    },
+    "player_support": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "What words do you offer?",
+      "choices": [
+        {
+          "text": "Who you are beneath the mask is more real than any crown.",
+          "next_id": "noble_moved",
+          "set_flags": ["noble_affirmed_self"]
+        },
+        {
+          "text": "A ruler who understands common life could change things for the better.",
+          "next_id": "noble_considers",
+          "set_flags": ["noble_considers_return"]
+        }
+      ]
+    },
+    "noble_moved": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "*Tears glisten beneath the mask* No one has ever... all my life, I was told the role defines the person. You're telling me the person can define the role?",
+      "next_id": "noble_realization"
+    },
+    "noble_considers": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "*They pause, struck by the thought* Change things... I never considered that I could wear the crown differently. That the power could be used to give others what I craved.",
+      "next_id": "noble_realization"
+    },
+    "noble_realization": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "All this time, I thought my only choices were submission or escape. But perhaps... perhaps there's a third path. One where the mask becomes a bridge, not a barrier.",
+      "set_flags": ["noble_truth_known"],
+      "next_id": "noble_confession_end"
+    },
+    "noble_confession_end": {
+      "speaker": "The Masked Noble",
+      "portrait": "noble",
+      "text": "I need to think. About who I truly am, and who I could become. Thank you... for seeing me. The real me. Not the crown, not the title. Just... me."
+    }
+  }
+}

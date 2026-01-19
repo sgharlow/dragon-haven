@@ -9,7 +9,8 @@ import math
 from constants import (
     # Dragon colors
     DRAGON_EGG_SHELL, DRAGON_EGG_SPOT, DRAGON_HATCHLING, DRAGON_JUVENILE,
-    DRAGON_WING, DRAGON_EYE, DRAGON_BELLY,
+    DRAGON_ADOLESCENT, DRAGON_ADULT, DRAGON_WING, DRAGON_WING_MEMBRANE,
+    DRAGON_EYE, DRAGON_BELLY,
     # Character colors
     CHAR_SKIN, CHAR_HAIR_BROWN, CHAR_HAIR_BLACK, CHAR_HAIR_BLONDE,
     CHAR_APRON, CHAR_CLOTHES,
@@ -70,7 +71,7 @@ class SpriteGenerator:
         Get a dragon sprite for the given life stage.
 
         Args:
-            stage: 'egg', 'hatchling', or 'juvenile'
+            stage: 'egg', 'hatchling', 'juvenile', 'adolescent', or 'adult'
             color_shift: RGB tuple to shift base color by
             size: Base size in pixels
 
@@ -88,6 +89,10 @@ class SpriteGenerator:
             surface = self._draw_dragon_hatchling(size, color_shift)
         elif stage == 'juvenile':
             surface = self._draw_dragon_juvenile(size, color_shift)
+        elif stage == 'adolescent':
+            surface = self._draw_dragon_adolescent(size, color_shift)
+        elif stage == 'adult':
+            surface = self._draw_dragon_adult(size, color_shift)
         else:
             surface = self._draw_dragon_egg(size, color_shift)
 
@@ -243,6 +248,242 @@ class SpriteGenerator:
             (cx + 10, cy + 5)
         ]
         pygame.draw.polygon(surface, body_color, tail_points)
+
+        return surface
+
+    def _draw_dragon_adolescent(self, size, color_shift):
+        """Draw an adolescent dragon sprite (horse-sized, wing buds visible)."""
+        surface = pygame.Surface((size, size), pygame.SRCALPHA)
+        cx, cy = size // 2, size // 2
+
+        body_color = self._shift_color(DRAGON_ADOLESCENT, color_shift)
+        belly_color = self._shift_color(DRAGON_BELLY, color_shift)
+        wing_color = self._shift_color(DRAGON_WING, color_shift)
+        membrane_color = self._shift_color(DRAGON_WING_MEMBRANE, color_shift)
+
+        # Wing buds (developing wings, behind body)
+        # Left wing bud
+        wing_points_left = [
+            (cx - 10, cy - 8),
+            (cx - size // 2 - 8, cy - 20),
+            (cx - size // 2 - 3, cy - 5),
+            (cx - size // 2 + 5, cy + 8),
+            (cx - 12, cy + 5)
+        ]
+        pygame.draw.polygon(surface, wing_color, wing_points_left)
+        pygame.draw.polygon(surface, membrane_color, wing_points_left, 2)
+
+        # Right wing bud
+        wing_points_right = [
+            (cx + 10, cy - 8),
+            (cx + size // 2 + 8, cy - 20),
+            (cx + size // 2 + 3, cy - 5),
+            (cx + size // 2 - 5, cy + 8),
+            (cx + 12, cy + 5)
+        ]
+        pygame.draw.polygon(surface, wing_color, wing_points_right)
+        pygame.draw.polygon(surface, membrane_color, wing_points_right, 2)
+
+        # Body (elongated, more muscular)
+        pygame.draw.ellipse(surface, body_color,
+                          pygame.Rect(cx - size // 3, cy - 8, size // 1.5, size // 2))
+
+        # Belly
+        pygame.draw.ellipse(surface, belly_color,
+                          pygame.Rect(cx - size // 5, cy + 2, size // 2.5, size // 4))
+
+        # Longer neck
+        pygame.draw.ellipse(surface, body_color,
+                          pygame.Rect(cx - 8, cy - 22, 16, 25))
+
+        # Head (more defined features)
+        pygame.draw.ellipse(surface, body_color,
+                          pygame.Rect(cx - 12, cy - 34, 24, 18))
+
+        # Snout (longer)
+        pygame.draw.ellipse(surface, body_color,
+                          pygame.Rect(cx - 6, cy - 40, 12, 10))
+
+        # Nostrils
+        pygame.draw.circle(surface, DARK_GRAY, (cx - 2, cy - 38), 2)
+        pygame.draw.circle(surface, DARK_GRAY, (cx + 2, cy - 38), 2)
+
+        # Eyes (more detailed)
+        pygame.draw.ellipse(surface, WHITE, pygame.Rect(cx - 8, cy - 30, 7, 5))
+        pygame.draw.ellipse(surface, WHITE, pygame.Rect(cx + 1, cy - 30, 7, 5))
+        pygame.draw.circle(surface, DRAGON_EYE, (cx - 4, cy - 28), 2)
+        pygame.draw.circle(surface, DRAGON_EYE, (cx + 5, cy - 28), 2)
+
+        # Larger horns
+        pygame.draw.polygon(surface, DARK_GRAY, [
+            (cx - 10, cy - 32), (cx - 16, cy - 48), (cx - 6, cy - 34)
+        ])
+        pygame.draw.polygon(surface, DARK_GRAY, [
+            (cx + 10, cy - 32), (cx + 16, cy - 48), (cx + 6, cy - 34)
+        ])
+
+        # Spines down neck
+        for i in range(3):
+            spine_y = cy - 20 + i * 8
+            pygame.draw.polygon(surface, DARK_GRAY, [
+                (cx - 2, spine_y), (cx, spine_y - 5), (cx + 2, spine_y)
+            ])
+
+        # Legs (longer, more defined)
+        leg_width = 8
+        pygame.draw.rect(surface, body_color,
+                        pygame.Rect(cx - 14, cy + 15, leg_width, 16))
+        pygame.draw.rect(surface, body_color,
+                        pygame.Rect(cx + 6, cy + 15, leg_width, 16))
+
+        # Claws
+        for leg_x in [cx - 14, cx + 6]:
+            for claw_offset in [0, 3, 6]:
+                pygame.draw.line(surface, DARK_GRAY,
+                               (leg_x + claw_offset + 1, cy + 31),
+                               (leg_x + claw_offset, cy + 34), 2)
+
+        # Tail (longer, with ridges)
+        tail_points = [
+            (cx + 12, cy + 8),
+            (cx + 30, cy + 12),
+            (cx + 38, cy + 6),
+            (cx + 30, cy + 2),
+            (cx + 12, cy + 2)
+        ]
+        pygame.draw.polygon(surface, body_color, tail_points)
+
+        return surface
+
+    def _draw_dragon_adult(self, size, color_shift):
+        """Draw an adult dragon sprite (full wingspan, majestic)."""
+        # Adult needs more space, use larger surface
+        surface = pygame.Surface((size * 2, size * 2), pygame.SRCALPHA)
+        cx, cy = size, size
+
+        body_color = self._shift_color(DRAGON_ADULT, color_shift)
+        belly_color = self._shift_color(DRAGON_BELLY, color_shift)
+        wing_color = self._shift_color(DRAGON_WING, color_shift)
+        membrane_color = self._shift_color(DRAGON_WING_MEMBRANE, color_shift)
+
+        # Full wings (majestic wingspan)
+        # Left wing
+        wing_left = [
+            (cx - 15, cy - 10),
+            (cx - size - 10, cy - 40),
+            (cx - size - 20, cy - 25),
+            (cx - size - 15, cy),
+            (cx - size - 5, cy + 20),
+            (cx - 20, cy + 10)
+        ]
+        pygame.draw.polygon(surface, wing_color, wing_left)
+        # Wing membrane lines
+        for i in range(4):
+            start_x = cx - 15 - i * (size // 5)
+            pygame.draw.line(surface, membrane_color,
+                           (cx - 15, cy - 10),
+                           (start_x, cy - 30 + i * 15), 2)
+
+        # Right wing
+        wing_right = [
+            (cx + 15, cy - 10),
+            (cx + size + 10, cy - 40),
+            (cx + size + 20, cy - 25),
+            (cx + size + 15, cy),
+            (cx + size + 5, cy + 20),
+            (cx + 20, cy + 10)
+        ]
+        pygame.draw.polygon(surface, wing_color, wing_right)
+        # Wing membrane lines
+        for i in range(4):
+            start_x = cx + 15 + i * (size // 5)
+            pygame.draw.line(surface, membrane_color,
+                           (cx + 15, cy - 10),
+                           (start_x, cy - 30 + i * 15), 2)
+
+        # Large body
+        pygame.draw.ellipse(surface, body_color,
+                          pygame.Rect(cx - size // 2, cy - 10, size, size // 1.5))
+
+        # Belly
+        pygame.draw.ellipse(surface, belly_color,
+                          pygame.Rect(cx - size // 3, cy + 5, size // 1.5, size // 3))
+
+        # Long muscular neck
+        pygame.draw.ellipse(surface, body_color,
+                          pygame.Rect(cx - 12, cy - 35, 24, 35))
+
+        # Majestic head
+        pygame.draw.ellipse(surface, body_color,
+                          pygame.Rect(cx - 16, cy - 55, 32, 24))
+
+        # Long snout
+        pygame.draw.ellipse(surface, body_color,
+                          pygame.Rect(cx - 8, cy - 65, 16, 14))
+
+        # Nostrils with fire glow hint
+        pygame.draw.circle(surface, (255, 100, 50), (cx - 3, cy - 62), 3)
+        pygame.draw.circle(surface, (255, 100, 50), (cx + 3, cy - 62), 3)
+        pygame.draw.circle(surface, DARK_GRAY, (cx - 3, cy - 62), 2)
+        pygame.draw.circle(surface, DARK_GRAY, (cx + 3, cy - 62), 2)
+
+        # Fierce eyes
+        pygame.draw.ellipse(surface, WHITE, pygame.Rect(cx - 11, cy - 48, 9, 6))
+        pygame.draw.ellipse(surface, WHITE, pygame.Rect(cx + 2, cy - 48, 9, 6))
+        pygame.draw.ellipse(surface, DRAGON_EYE, pygame.Rect(cx - 8, cy - 47, 5, 4))
+        pygame.draw.ellipse(surface, DRAGON_EYE, pygame.Rect(cx + 4, cy - 47, 5, 4))
+
+        # Majestic horns
+        pygame.draw.polygon(surface, DARK_GRAY, [
+            (cx - 14, cy - 50), (cx - 22, cy - 75), (cx - 8, cy - 52)
+        ])
+        pygame.draw.polygon(surface, DARK_GRAY, [
+            (cx + 14, cy - 50), (cx + 22, cy - 75), (cx + 8, cy - 52)
+        ])
+
+        # Crown of smaller horns
+        for angle_offset in [-6, 0, 6]:
+            horn_x = cx + angle_offset
+            pygame.draw.polygon(surface, DARK_GRAY, [
+                (horn_x - 2, cy - 55), (horn_x, cy - 62), (horn_x + 2, cy - 55)
+            ])
+
+        # Spines down neck and back
+        for i in range(5):
+            spine_y = cy - 30 + i * 10
+            pygame.draw.polygon(surface, DARK_GRAY, [
+                (cx - 3, spine_y), (cx, spine_y - 8), (cx + 3, spine_y)
+            ])
+
+        # Powerful legs
+        leg_width = 12
+        pygame.draw.rect(surface, body_color,
+                        pygame.Rect(cx - 20, cy + 25, leg_width, 25))
+        pygame.draw.rect(surface, body_color,
+                        pygame.Rect(cx + 8, cy + 25, leg_width, 25))
+
+        # Large claws
+        for leg_x in [cx - 20, cx + 8]:
+            for claw_offset in [0, 4, 8]:
+                pygame.draw.line(surface, DARK_GRAY,
+                               (leg_x + claw_offset + 2, cy + 50),
+                               (leg_x + claw_offset, cy + 56), 3)
+
+        # Majestic tail
+        tail_points = [
+            (cx + 15, cy + 10),
+            (cx + 45, cy + 20),
+            (cx + 60, cy + 10),
+            (cx + 55, cy),
+            (cx + 45, cy + 5),
+            (cx + 15, cy + 3)
+        ]
+        pygame.draw.polygon(surface, body_color, tail_points)
+
+        # Tail spade
+        pygame.draw.polygon(surface, body_color, [
+            (cx + 55, cy + 5), (cx + 70, cy + 15), (cx + 70, cy - 5)
+        ])
 
         return surface
 
@@ -683,6 +924,75 @@ class SpriteGenerator:
                 pygame.draw.line(surface,
                                tuple(max(0, c - 20) for c in CAFE_WOOD),
                                (0, y), (size, y), 1)
+
+        # Coastal tiles
+        elif tile_type == 'shallow_water':
+            # Light blue water
+            shallow_blue = (100, 180, 220)
+            surface.fill(shallow_blue)
+            # Subtle wave effect
+            lighter = tuple(min(255, c + 20) for c in shallow_blue)
+            pygame.draw.arc(surface, lighter, pygame.Rect(0, size // 3, size, size // 3), 0, 3.14, 1)
+
+        elif tile_type == 'seaweed':
+            # Sandy base with green seaweed
+            surface.fill(TERRAIN_SAND)
+            seaweed_green = (40, 100, 60)
+            for i in range(3):
+                x = 4 + i * 10
+                pygame.draw.line(surface, seaweed_green, (x, size), (x - 2, size // 2), 2)
+                pygame.draw.line(surface, seaweed_green, (x, size), (x + 3, size // 2 + 4), 2)
+
+        elif tile_type == 'tidal_pool':
+            # Sandy base with water pool
+            surface.fill(TERRAIN_SAND)
+            pool_blue = (80, 140, 180)
+            pygame.draw.ellipse(surface, pool_blue, pygame.Rect(4, 4, size - 8, size - 8))
+            pygame.draw.ellipse(surface, (100, 160, 200), pygame.Rect(6, 6, size - 14, size - 14))
+
+        # Mountain tiles
+        elif tile_type == 'rock':
+            # Gray rocky terrain
+            rock_gray = (100, 95, 90)
+            surface.fill(rock_gray)
+            # Rocky texture
+            lighter = tuple(min(255, c + 15) for c in rock_gray)
+            darker = tuple(max(0, c - 15) for c in rock_gray)
+            pygame.draw.polygon(surface, lighter, [(0, size), (size // 3, size // 2), (0, size // 3)])
+            pygame.draw.polygon(surface, darker, [(size, 0), (size * 2 // 3, size // 2), (size, size * 2 // 3)])
+
+        elif tile_type == 'snow':
+            # White snow
+            surface.fill((240, 245, 250))
+            # Snow sparkle
+            for i in range(4):
+                x = (i * 9 + 3) % size
+                y = (i * 7 + 5) % size
+                pygame.draw.circle(surface, (255, 255, 255), (x, y), 1)
+
+        elif tile_type == 'alpine_flower':
+            # Grass with alpine flowers
+            surface.fill(GRASS_GREEN)
+            # Pink/purple alpine flowers
+            flower_colors = [(220, 120, 180), (180, 100, 200), (200, 150, 220)]
+            for i in range(3):
+                x = 5 + i * 10
+                y = 8 + (i * 7) % 16
+                color = flower_colors[i % len(flower_colors)]
+                pygame.draw.circle(surface, color, (x, y), 3)
+                pygame.draw.circle(surface, (255, 220, 100), (x, y), 1)
+
+        elif tile_type == 'hot_spring':
+            # Warm water
+            spring_blue = (100, 160, 200)
+            surface.fill(spring_blue)
+            # Steam bubbles
+            for i in range(4):
+                x = 6 + (i * 8) % (size - 8)
+                y = 4 + (i * 6) % (size - 8)
+                pygame.draw.circle(surface, (200, 220, 240), (x, y), 2)
+            # Warmth indicator (subtle orange glow at edges)
+            pygame.draw.arc(surface, (180, 140, 120), pygame.Rect(0, 0, size, size), 0, 6.28, 2)
 
         else:
             surface.fill(GRAY)

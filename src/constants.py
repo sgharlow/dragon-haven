@@ -56,7 +56,10 @@ DRAGON_EGG_SHELL = (220, 210, 190)
 DRAGON_EGG_SPOT = (180, 160, 130)
 DRAGON_HATCHLING = (140, 200, 160)
 DRAGON_JUVENILE = (100, 180, 130)
+DRAGON_ADOLESCENT = (80, 160, 110)
+DRAGON_ADULT = (60, 140, 90)
 DRAGON_WING = (80, 150, 110)
+DRAGON_WING_MEMBRANE = (100, 180, 130)  # Slightly lighter for wing membranes
 DRAGON_EYE = (60, 40, 30)
 DRAGON_BELLY = (200, 220, 190)
 
@@ -84,6 +87,42 @@ TERRAIN_FLOWER_RED = (220, 80, 80)
 TERRAIN_FLOWER_YELLOW = (240, 220, 80)
 TERRAIN_FLOWER_BLUE = (100, 140, 220)
 
+# Seasonal color palettes (for zone rendering adjustments)
+SEASON_COLORS = {
+    'spring': {
+        'grass': (100, 180, 80),      # Bright green
+        'leaves': (80, 160, 60),      # Fresh green
+        'sky_tint': (200, 220, 255),  # Light blue
+        'accent': (255, 180, 200),    # Pink blossoms
+    },
+    'summer': {
+        'grass': (120, 160, 60),      # Yellow-green
+        'leaves': (60, 140, 50),      # Deep green
+        'sky_tint': (180, 200, 255),  # Clear blue
+        'accent': (255, 220, 100),    # Golden
+    },
+    'autumn': {
+        'grass': (140, 140, 80),      # Faded green
+        'leaves': (200, 120, 60),     # Orange-brown
+        'sky_tint': (220, 200, 180),  # Warm haze
+        'accent': (180, 80, 40),      # Deep red
+    },
+    'winter': {
+        'grass': (160, 170, 180),     # Frost-touched
+        'leaves': (100, 110, 120),    # Gray-brown
+        'sky_tint': (200, 210, 230),  # Cold blue
+        'accent': (240, 245, 255),    # Snow white
+    },
+}
+
+# Seasonal overlay tint (applied to entire scene, RGBA)
+SEASON_OVERLAY = {
+    'spring': (255, 240, 245, 10),   # Slight pink
+    'summer': (255, 255, 220, 15),   # Warm yellow
+    'autumn': (255, 220, 180, 20),   # Orange tint
+    'winter': (220, 230, 255, 25),   # Cool blue
+}
+
 # =============================================================================
 # TIME SYSTEM
 # =============================================================================
@@ -99,9 +138,9 @@ TIME_NIGHT_START = 0      # 12:00 AM (wraps around)
 REAL_SECONDS_PER_GAME_HOUR = 30.0  # 30 real seconds = 1 game hour
 GAME_HOURS_PER_DAY = 24
 
-# Seasons (simplified)
-DAYS_PER_SEASON = 7  # BALANCE: Shorter seasons for variety
-SEASONS = ['spring', 'summer']
+# Seasons
+DAYS_PER_SEASON = 7  # BALANCE: Shorter seasons for variety (28-day year)
+SEASONS = ['spring', 'summer', 'autumn', 'winter']
 
 # Cafe operating hours
 CAFE_OPEN_HOUR = 8   # Opens at 8 AM
@@ -113,15 +152,55 @@ CAFE_STATE_PREP = 'prep'
 CAFE_STATE_SERVICE = 'service'
 CAFE_STATE_CLEANUP = 'cleanup'
 
-# Service period (simplified for prototype - single lunch service)
-CAFE_SERVICE_START = 10    # Service starts at 10 AM
-CAFE_SERVICE_END = 14      # Service ends at 2 PM
+# Service periods
+SERVICE_PERIOD_MORNING = 'morning'
+SERVICE_PERIOD_EVENING = 'evening'
+
+# Morning service (breakfast/lunch)
+CAFE_MORNING_SERVICE_START = 10   # Service starts at 10 AM
+CAFE_MORNING_SERVICE_END = 14     # Service ends at 2 PM
+CAFE_MORNING_PREP_START = 9       # Prep starts at 9 AM
+CAFE_MORNING_CLEANUP_END = 15     # Cleanup ends at 3 PM
+
+# Evening service (dinner)
+CAFE_EVENING_SERVICE_START = 17   # Service starts at 5 PM
+CAFE_EVENING_SERVICE_END = 21     # Service ends at 9 PM
+CAFE_EVENING_PREP_START = 16      # Prep starts at 4 PM
+CAFE_EVENING_CLEANUP_END = 22     # Cleanup ends at 10 PM
+
+# Backwards compatibility aliases
+CAFE_SERVICE_START = CAFE_MORNING_SERVICE_START
+CAFE_SERVICE_END = CAFE_MORNING_SERVICE_END
 CAFE_PREP_DURATION = 1     # 1 hour prep before service
 CAFE_CLEANUP_DURATION = 1  # 1 hour cleanup after service
 
+# Service period customer volume multipliers
+SERVICE_VOLUME_MULTIPLIER = {
+    SERVICE_PERIOD_MORNING: 0.6,   # Lighter morning crowd
+    SERVICE_PERIOD_EVENING: 1.0,   # Full evening crowd
+}
+
+# Service period category preferences (multiplier for customer wanting that category)
+SERVICE_CATEGORY_PREFERENCE = {
+    SERVICE_PERIOD_MORNING: {
+        'beverage': 1.5,    # Coffee/tea popular in morning
+        'appetizer': 1.3,   # Light bites for brunch
+        'main': 0.8,        # Less demand for heavy meals
+        'dessert': 0.9,     # Moderate dessert demand
+    },
+    SERVICE_PERIOD_EVENING: {
+        'beverage': 0.8,    # Less beverage focus
+        'appetizer': 1.0,   # Normal appetizer demand
+        'main': 1.4,        # Dinner mains very popular
+        'dessert': 1.3,     # Desserts popular after dinner
+    },
+}
+
 # Menu settings
 CAFE_MAX_MENU_ITEMS = 6    # Max dishes on menu at once
-CAFE_SKIP_REP_PENALTY = 10  # Reputation penalty for skipping a day
+CAFE_SKIP_SERVICE_PENALTY = 5   # Reputation penalty for skipping a single service
+CAFE_SKIP_DAY_PENALTY = 15      # Reputation penalty for skipping entire day
+CAFE_SKIP_REP_PENALTY = 10      # Backwards compatibility
 
 # =============================================================================
 # REPUTATION SYSTEM
@@ -159,6 +238,53 @@ REPUTATION_UNLOCKS = {
     REPUTATION_LEVEL_LOCAL: ['berry_juice', 'mushroom_skewers'],
     REPUTATION_LEVEL_TOWN: ['forest_fish_plate', 'honey_cake'],
     REPUTATION_LEVEL_REGIONAL: ['game_roast', 'all_recipes'],
+}
+
+# =============================================================================
+# CHARACTER AFFINITY SYSTEM
+# =============================================================================
+# Affinity range (per character)
+AFFINITY_MIN = 0
+AFFINITY_MAX = 100
+
+# Affinity level thresholds
+AFFINITY_LEVEL_ACQUAINTANCE = 'acquaintance'  # 0-24
+AFFINITY_LEVEL_FRIENDLY = 'friendly'          # 25-49
+AFFINITY_LEVEL_CLOSE = 'close'                # 50-74
+AFFINITY_LEVEL_BEST_FRIEND = 'best_friend'    # 75-100
+
+AFFINITY_LEVELS = {
+    AFFINITY_LEVEL_ACQUAINTANCE: {'min': 0, 'max': 24, 'name': 'Acquaintance'},
+    AFFINITY_LEVEL_FRIENDLY: {'min': 25, 'max': 49, 'name': 'Friendly'},
+    AFFINITY_LEVEL_CLOSE: {'min': 50, 'max': 74, 'name': 'Close'},
+    AFFINITY_LEVEL_BEST_FRIEND: {'min': 75, 'max': 100, 'name': 'Best Friend'},
+}
+
+# Affinity gains from interactions
+AFFINITY_COOK_BASE = 5           # Base cooking for character
+AFFINITY_COOK_QUALITY_BONUS = 5  # Extra for high quality (4-5 stars)
+AFFINITY_COOK_FAVORITE = 15      # Cooking their favorite recipe
+AFFINITY_COOK_LIKED = 8          # Cooking a liked recipe
+AFFINITY_COOK_DISLIKED = -5      # Cooking a disliked recipe
+
+AFFINITY_DIALOGUE_POSITIVE = 8   # Positive dialogue choice
+AFFINITY_DIALOGUE_NEGATIVE = -5  # Negative dialogue choice
+
+AFFINITY_GIFT_MIN = 3            # Minimum gift bonus
+AFFINITY_GIFT_MAX = 15           # Maximum gift bonus (preferred items)
+
+# Affinity unlock thresholds
+AFFINITY_UNLOCK_PERSONAL_STORY = 25   # Personal stories unlock
+AFFINITY_UNLOCK_SECRET_RECIPE = 50    # Secret recipes unlock
+AFFINITY_UNLOCK_SPECIAL_EVENT = 75    # Special events unlock
+
+# Secret recipes unlocked at Close affinity (50+)
+CHARACTER_SECRET_RECIPES = {
+    'mother': 'mothers_comfort_stew',
+    'marcus': 'wanderers_secret_blend',
+    'lily': 'lilys_perfect_souffle',
+    'vera': 'captains_treasure_catch',
+    'noble': 'royal_midnight_feast',
 }
 
 # =============================================================================
@@ -270,21 +396,43 @@ ORDER_CATEGORY_DRINK = 'drink'
 # =============================================================================
 # DRAGON SYSTEM
 # =============================================================================
-# Life stages and their day ranges
+# Life stages (5-stage progression)
 DRAGON_STAGE_EGG = 'egg'
 DRAGON_STAGE_HATCHLING = 'hatchling'
 DRAGON_STAGE_JUVENILE = 'juvenile'
+DRAGON_STAGE_ADOLESCENT = 'adolescent'
+DRAGON_STAGE_ADULT = 'adult'
+
+# All stages in order (for iteration)
+DRAGON_STAGES = [
+    DRAGON_STAGE_EGG,
+    DRAGON_STAGE_HATCHLING,
+    DRAGON_STAGE_JUVENILE,
+    DRAGON_STAGE_ADOLESCENT,
+    DRAGON_STAGE_ADULT,
+]
 
 # Stage progression (days alive)
-# BALANCE: Faster growth for shorter play sessions (15-30 min target)
-# At 12 real min/day: Egg hatches in 12 min, Juvenile at 36 min
-DRAGON_EGG_DAYS = 1        # Day 1: Egg (hatches quickly!)
-DRAGON_HATCHLING_DAYS = 3  # Days 2-4: Hatchling
-# Days 5+: Juvenile
+# BALANCE: Adjusted for prototype pacing (full growth in ~2 hours real time)
+# At 12 real min/day: Full adult in ~2 hours of play
+DRAGON_EGG_DAYS = 1          # Day 1: Egg (hatches quickly!)
+DRAGON_HATCHLING_DAYS = 2    # Days 2-3: Hatchling (small, cute)
+DRAGON_JUVENILE_DAYS = 2     # Days 4-5: Juvenile (cat-sized, playful)
+DRAGON_ADOLESCENT_DAYS = 4   # Days 6-9: Adolescent (horse-sized, wing buds)
+# Days 10+: Adult (full wingspan, majestic)
 
 # Stat ranges
 DRAGON_STAT_MAX = 100.0
 DRAGON_BOND_MAX = 500  # BALANCE: Lower max for achievable progression
+
+# Max stamina scales by stage (allows longer exploration as dragon grows)
+DRAGON_STAGE_STAMINA_MAX = {
+    DRAGON_STAGE_EGG: 100,        # Eggs don't use stamina
+    DRAGON_STAGE_HATCHLING: 100,  # Base stamina
+    DRAGON_STAGE_JUVENILE: 100,   # Still base stamina
+    DRAGON_STAGE_ADOLESCENT: 125, # 25% increase
+    DRAGON_STAGE_ADULT: 150,      # 50% increase
+}
 
 # Stat decay rates (per game hour)
 # BALANCE: With 30 sec/hour, decay is 2x faster in real-time
@@ -315,18 +463,69 @@ DRAGON_COLOR_SHIFT_RATE = 0.05
 DRAGON_NAME_MAX_LENGTH = 20
 DRAGON_NAME_DEFAULT = "Dragon"
 
-# Ability stamina costs
+# Ability stamina costs (one-time cost for instant abilities)
 DRAGON_ABILITY_COSTS = {
-    'burrow_fetch': 20,
-    'sniff_track': 15,
-    'rock_smash': 30,
+    'burrow_fetch': 20,   # Hatchling+: Dig up buried items
+    'sniff_track': 15,    # Hatchling+: Find hidden resources
+    'rock_smash': 30,     # Juvenile+: Break rocks for minerals
+    'creature_scare': 20, # Juvenile+: Frighten hostile creatures
+    'ember_breath': 25,   # Adolescent+: Light torches, clear brambles
+    'fire_breath': 40,    # Adolescent+: Cook items, clear obstacles
+    'flight_scout': 50,   # Adult: Reveal resources in adjacent zones
+    'fire_stream': 40,    # Adult: Clear major obstacles
 }
+
+# Continuous abilities drain stamina per second while active
+DRAGON_ABILITY_CONTINUOUS = {
+    'glide': 3,           # Adolescent+: Descend safely from heights
+    'full_flight': 5,     # Adult: Fast travel, access flight-only areas
+}
+
+# All abilities combined for validation
+DRAGON_ALL_ABILITIES = list(DRAGON_ABILITY_COSTS.keys()) + list(DRAGON_ABILITY_CONTINUOUS.keys())
 
 # Abilities unlocked per stage
 DRAGON_STAGE_ABILITIES = {
     DRAGON_STAGE_EGG: [],
     DRAGON_STAGE_HATCHLING: ['burrow_fetch', 'sniff_track'],
-    DRAGON_STAGE_JUVENILE: ['burrow_fetch', 'sniff_track', 'rock_smash'],
+    DRAGON_STAGE_JUVENILE: ['burrow_fetch', 'sniff_track', 'rock_smash', 'creature_scare'],
+    DRAGON_STAGE_ADOLESCENT: ['burrow_fetch', 'sniff_track', 'rock_smash', 'creature_scare',
+                              'ember_breath', 'fire_breath', 'glide'],
+    DRAGON_STAGE_ADULT: ['burrow_fetch', 'sniff_track', 'rock_smash', 'creature_scare',
+                         'ember_breath', 'fire_breath', 'glide', 'flight_scout',
+                         'full_flight', 'fire_stream'],
+}
+
+# Ability descriptions for UI
+DRAGON_ABILITY_DESCRIPTIONS = {
+    'burrow_fetch': "Dig up buried items",
+    'sniff_track': "Find hidden resources",
+    'rock_smash': "Break rocks for minerals",
+    'creature_scare': "Frighten hostile creatures",
+    'ember_breath': "Light torches, clear brambles",
+    'fire_breath': "Cook items, clear obstacles",
+    'flight_scout': "Reveal distant resources",
+    'fire_stream': "Clear major obstacles",
+    'glide': "Descend safely from heights",
+    'full_flight': "Fast travel, access sky areas",
+}
+
+# Stage descriptions for UI
+DRAGON_STAGE_DESCRIPTIONS = {
+    DRAGON_STAGE_EGG: "A mysterious dragon egg, warm to the touch.",
+    DRAGON_STAGE_HATCHLING: "A tiny hatchling, curious and playful.",
+    DRAGON_STAGE_JUVENILE: "A cat-sized dragon, eager to explore.",
+    DRAGON_STAGE_ADOLESCENT: "A horse-sized dragon with growing wing buds.",
+    DRAGON_STAGE_ADULT: "A majestic adult dragon with full wingspan.",
+}
+
+# Stage sizes for rendering (scale multiplier)
+DRAGON_STAGE_SIZES = {
+    DRAGON_STAGE_EGG: 1.0,
+    DRAGON_STAGE_HATCHLING: 1.0,
+    DRAGON_STAGE_JUVENILE: 1.2,
+    DRAGON_STAGE_ADOLESCENT: 1.6,
+    DRAGON_STAGE_ADULT: 2.0,
 }
 
 # =============================================================================
@@ -367,22 +566,31 @@ STARTING_GOLD = 150
 ZONE_CAFE_GROUNDS = 'cafe_grounds'
 ZONE_MEADOW_FIELDS = 'meadow_fields'
 ZONE_FOREST_DEPTHS = 'forest_depths'
+ZONE_COASTAL_SHORE = 'coastal_shore'
+ZONE_MOUNTAIN_PASS = 'mountain_pass'
 
 # All zones for iteration
-ALL_ZONES = [ZONE_CAFE_GROUNDS, ZONE_MEADOW_FIELDS, ZONE_FOREST_DEPTHS]
+ALL_ZONES = [
+    ZONE_CAFE_GROUNDS, ZONE_MEADOW_FIELDS, ZONE_FOREST_DEPTHS,
+    ZONE_COASTAL_SHORE, ZONE_MOUNTAIN_PASS,
+]
 
 # Zone unlock requirements (dragon stage)
 ZONE_UNLOCK_REQUIREMENTS = {
     ZONE_CAFE_GROUNDS: None,  # Always unlocked
     ZONE_MEADOW_FIELDS: DRAGON_STAGE_HATCHLING,
     ZONE_FOREST_DEPTHS: DRAGON_STAGE_JUVENILE,
+    ZONE_COASTAL_SHORE: DRAGON_STAGE_JUVENILE,  # Same as Forest
+    ZONE_MOUNTAIN_PASS: DRAGON_STAGE_ADOLESCENT,  # Requires Adolescent
 }
 
 # Zone connections (which zones connect to which)
 ZONE_CONNECTIONS = {
     ZONE_CAFE_GROUNDS: [ZONE_MEADOW_FIELDS],
-    ZONE_MEADOW_FIELDS: [ZONE_CAFE_GROUNDS, ZONE_FOREST_DEPTHS],
-    ZONE_FOREST_DEPTHS: [ZONE_MEADOW_FIELDS],
+    ZONE_MEADOW_FIELDS: [ZONE_CAFE_GROUNDS, ZONE_FOREST_DEPTHS, ZONE_MOUNTAIN_PASS],
+    ZONE_FOREST_DEPTHS: [ZONE_MEADOW_FIELDS, ZONE_COASTAL_SHORE],
+    ZONE_COASTAL_SHORE: [ZONE_FOREST_DEPTHS],
+    ZONE_MOUNTAIN_PASS: [ZONE_MEADOW_FIELDS],
 }
 
 # Zone map sizes (tiles)
@@ -394,13 +602,30 @@ TILE_SIZE = 32
 WEATHER_SUNNY = 'sunny'
 WEATHER_CLOUDY = 'cloudy'
 WEATHER_RAINY = 'rainy'
+WEATHER_STORMY = 'stormy'
+WEATHER_SPECIAL = 'special'
 
-ALL_WEATHER = [WEATHER_SUNNY, WEATHER_CLOUDY, WEATHER_RAINY]
+ALL_WEATHER = [WEATHER_SUNNY, WEATHER_CLOUDY, WEATHER_RAINY, WEATHER_STORMY, WEATHER_SPECIAL]
 
 # Weather probabilities per season (must sum to 1.0)
+# Stormy: ~10%, Special: ~5% (varies by season)
 WEATHER_PROBABILITIES = {
-    'spring': {WEATHER_SUNNY: 0.4, WEATHER_CLOUDY: 0.35, WEATHER_RAINY: 0.25},
-    'summer': {WEATHER_SUNNY: 0.6, WEATHER_CLOUDY: 0.3, WEATHER_RAINY: 0.1},
+    'spring': {
+        WEATHER_SUNNY: 0.35, WEATHER_CLOUDY: 0.30, WEATHER_RAINY: 0.20,
+        WEATHER_STORMY: 0.10, WEATHER_SPECIAL: 0.05,
+    },
+    'summer': {
+        WEATHER_SUNNY: 0.50, WEATHER_CLOUDY: 0.25, WEATHER_RAINY: 0.08,
+        WEATHER_STORMY: 0.12, WEATHER_SPECIAL: 0.05,  # More summer storms
+    },
+    'autumn': {
+        WEATHER_SUNNY: 0.30, WEATHER_CLOUDY: 0.32, WEATHER_RAINY: 0.20,
+        WEATHER_STORMY: 0.12, WEATHER_SPECIAL: 0.06,  # Autumn is magical
+    },
+    'winter': {
+        WEATHER_SUNNY: 0.22, WEATHER_CLOUDY: 0.40, WEATHER_RAINY: 0.20,
+        WEATHER_STORMY: 0.10, WEATHER_SPECIAL: 0.08,  # Winter special events
+    },
 }
 
 # Weather effects on resource spawn rates
@@ -408,6 +633,45 @@ WEATHER_RESOURCE_MULTIPLIER = {
     WEATHER_SUNNY: 1.0,
     WEATHER_CLOUDY: 1.1,  # Slightly more resources
     WEATHER_RAINY: 1.3,   # Best for foraging
+    WEATHER_STORMY: 1.5,  # Rare storm resources appear
+    WEATHER_SPECIAL: 2.0,  # Legendary resources appear
+}
+
+# Weather behavior flags
+WEATHER_CLOSES_CAFE = {
+    WEATHER_SUNNY: False,
+    WEATHER_CLOUDY: False,
+    WEATHER_RAINY: False,
+    WEATHER_STORMY: True,   # Cafe closes during storms
+    WEATHER_SPECIAL: False,  # Cafe stays open for special events
+}
+
+WEATHER_DANGER_LEVEL = {
+    WEATHER_SUNNY: 0,    # Safe
+    WEATHER_CLOUDY: 0,   # Safe
+    WEATHER_RAINY: 0,    # Safe
+    WEATHER_STORMY: 2,   # Dangerous - warnings shown
+    WEATHER_SPECIAL: 0,  # Safe
+}
+
+# Special weather event types (for WEATHER_SPECIAL)
+SPECIAL_WEATHER_EVENTS = {
+    'spring': ['rainbow', 'blossom_shower'],
+    'summer': ['meteor_shower', 'golden_hour'],
+    'autumn': ['aurora', 'harvest_moon'],
+    'winter': ['northern_lights', 'diamond_dust'],
+}
+
+# Special weather event descriptions
+SPECIAL_WEATHER_DESCRIPTIONS = {
+    'rainbow': 'A beautiful rainbow arches across the sky!',
+    'blossom_shower': 'Flower petals drift gently through the air.',
+    'meteor_shower': 'Shooting stars streak across the night sky!',
+    'golden_hour': 'The world is bathed in magical golden light.',
+    'aurora': 'Mystical lights dance on the horizon.',
+    'harvest_moon': 'A giant amber moon illuminates the land.',
+    'northern_lights': 'Ethereal ribbons of light shimmer above.',
+    'diamond_dust': 'Tiny ice crystals sparkle like diamonds.',
 }
 
 # =============================================================================
@@ -435,22 +699,36 @@ RESPAWN_DAYS = {
 QUALITY_MIN = 1
 QUALITY_MAX = 5
 
-# Quality bonuses
+# Quality bonuses per season (ingredient type -> bonus stars)
 QUALITY_SEASON_BONUS = {
     'spring': {'herb': 1, 'flower': 1, 'berry': 0},
     'summer': {'berry': 1, 'honey': 1, 'herb': 0},
+    'autumn': {'mushroom': 1, 'root': 1, 'grain': 1},
+    'winter': {'preserved': 1, 'meat': 1, 'fish': 0},
+}
+
+# Popular dish types per season (affects customer preferences)
+SEASON_POPULAR_DISHES = {
+    'spring': ['salad', 'tea', 'light'],
+    'summer': ['cold', 'refreshing', 'fruit'],
+    'autumn': ['soup', 'stew', 'hearty'],
+    'winter': ['warm', 'roasted', 'comfort'],
 }
 
 QUALITY_WEATHER_BONUS = {
     WEATHER_SUNNY: {'honey': 1, 'berry': 0},
     WEATHER_CLOUDY: {'mushroom': 1, 'herb': 0},
     WEATHER_RAINY: {'herb': 1, 'mushroom': 1, 'fish': 1},
+    WEATHER_STORMY: {'storm': 2, 'crystal': 1},  # Storm-exclusive resources get bonus
+    WEATHER_SPECIAL: {'legendary': 2, 'crystal': 1},  # Legendary items get bonus
 }
 
 # Dragon ability requirements for certain spawn points
 ABILITY_BURROW = 'burrow_fetch'
 ABILITY_SNIFF = 'sniff_track'
 ABILITY_SMASH = 'rock_smash'
+ABILITY_GLIDE = 'glide'
+ABILITY_FLIGHT = 'full_flight'
 
 # =============================================================================
 # INGREDIENT DEFINITIONS
@@ -476,6 +754,31 @@ INGREDIENTS = {
     'forest_fish': ('Forest Fish', ITEM_SEAFOOD, 28, 1, (0.3, 0.5, 0.8)),
     'crystal_shard': ('Crystal Shard', ITEM_SPECIAL, 50, 0, (0.5, 0.5, 0.9)),  # Never spoils
     'hidden_truffle': ('Hidden Truffle', ITEM_SPECIAL, 45, 2, (0.4, 0.3, 0.2)),
+
+    # Storm-exclusive ingredients (only spawn during stormy weather)
+    'storm_flower': ('Storm Flower', ITEM_SPECIAL, 60, 2, (0.3, 0.4, 0.9)),  # Electric blue
+    'lightning_crystal': ('Lightning Crystal', ITEM_SPECIAL, 80, 0, (0.9, 0.9, 0.4)),  # Never spoils
+
+    # Special weather legendary ingredients (only spawn during special weather)
+    'stardust_petal': ('Stardust Petal', ITEM_SPECIAL, 100, 3, (0.8, 0.6, 0.9)),  # Meteor shower
+    'rainbow_essence': ('Rainbow Essence', ITEM_SPECIAL, 120, 0, (0.7, 0.7, 0.7)),  # Rainbow, never spoils
+    'moonbeam_honey': ('Moonbeam Honey', ITEM_SPECIAL, 90, 0, (0.6, 0.7, 0.9)),  # Harvest moon, never spoils
+
+    # Coastal Shore ingredients - Seafood and beach finds
+    'sea_salt': ('Sea Salt', ITEM_SPICE, 12, 0, (0.9, 0.9, 0.9)),  # Never spoils
+    'fresh_seaweed': ('Fresh Seaweed', ITEM_VEGETABLE, 15, 2, (0.2, 0.5, 0.3)),
+    'coastal_crab': ('Coastal Crab', ITEM_SEAFOOD, 35, 1, (0.8, 0.4, 0.3)),
+    'pearl_oyster': ('Pearl Oyster', ITEM_SEAFOOD, 50, 1, (0.7, 0.7, 0.8)),
+    'tidal_clam': ('Tidal Clam', ITEM_SEAFOOD, 25, 1, (0.6, 0.5, 0.5)),
+    'beach_berry': ('Beach Berry', ITEM_FRUIT, 18, 2, (0.6, 0.2, 0.4)),
+
+    # Mountain Pass ingredients - Rare herbs and minerals
+    'mountain_herb': ('Mountain Herb', ITEM_SPICE, 28, 3, (0.3, 0.7, 0.5)),
+    'rock_honey': ('Rock Honey', ITEM_SPECIAL, 40, 0, (0.8, 0.6, 0.2)),  # Never spoils
+    'mineral_crystal': ('Mineral Crystal', ITEM_SPECIAL, 55, 0, (0.6, 0.8, 0.9)),  # Never spoils
+    'alpine_flower': ('Alpine Flower', ITEM_SPECIAL, 35, 2, (0.9, 0.5, 0.7)),
+    'mountain_moss': ('Mountain Moss', ITEM_VEGETABLE, 22, 3, (0.4, 0.6, 0.3)),
+    'hot_spring_egg': ('Hot Spring Egg', ITEM_SPECIAL, 45, 0, (0.9, 0.9, 0.7)),  # Never spoils
 }
 
 # Spawn point definitions per zone: list of (id, name, x, y, ingredient_id, rarity, ability_required)
@@ -506,6 +809,56 @@ ZONE_SPAWN_POINTS = {
         ('fd_fish_1', 'Forest Stream', 17, 9, 'forest_fish', SPAWN_RARITY_UNCOMMON, None),
         ('fd_crystal_1', 'Crystal Cave', 18, 13, 'crystal_shard', SPAWN_RARITY_RARE, ABILITY_SMASH),
         ('fd_truffle_1', 'Truffle Spot', 8, 3, 'hidden_truffle', SPAWN_RARITY_RARE, ABILITY_SNIFF),
+    ],
+    ZONE_COASTAL_SHORE: [
+        ('cs_salt_1', 'Salt Flats', 4, 6, 'sea_salt', SPAWN_RARITY_COMMON, None),
+        ('cs_seaweed_1', 'Seaweed Bed', 8, 10, 'fresh_seaweed', SPAWN_RARITY_COMMON, None),
+        ('cs_seaweed_2', 'Kelp Grove', 14, 8, 'fresh_seaweed', SPAWN_RARITY_UNCOMMON, None),
+        ('cs_crab_1', 'Crab Rocks', 6, 12, 'coastal_crab', SPAWN_RARITY_UNCOMMON, ABILITY_SNIFF),
+        ('cs_oyster_1', 'Pearl Beds', 16, 5, 'pearl_oyster', SPAWN_RARITY_RARE, ABILITY_BURROW),
+        ('cs_clam_1', 'Tidal Pool', 10, 4, 'tidal_clam', SPAWN_RARITY_UNCOMMON, None),
+        ('cs_clam_2', 'Sandy Shallows', 18, 12, 'tidal_clam', SPAWN_RARITY_COMMON, None),
+        ('cs_berry_1', 'Dune Shrubs', 3, 14, 'beach_berry', SPAWN_RARITY_UNCOMMON, None),
+    ],
+    ZONE_MOUNTAIN_PASS: [
+        ('mp_herb_1', 'Alpine Meadow', 5, 5, 'mountain_herb', SPAWN_RARITY_COMMON, None),
+        ('mp_herb_2', 'Cliff Edge', 15, 3, 'mountain_herb', SPAWN_RARITY_UNCOMMON, None),
+        ('mp_honey_1', 'Rock Hive', 10, 8, 'rock_honey', SPAWN_RARITY_RARE, ABILITY_SMASH),
+        ('mp_crystal_1', 'Crystal Vein', 18, 10, 'mineral_crystal', SPAWN_RARITY_RARE, ABILITY_SMASH),
+        ('mp_flower_1', 'Alpine Garden', 7, 12, 'alpine_flower', SPAWN_RARITY_UNCOMMON, None),
+        ('mp_flower_2', 'Summit Bloom', 14, 6, 'alpine_flower', SPAWN_RARITY_RARE, ABILITY_GLIDE),
+        ('mp_moss_1', 'Mossy Rocks', 3, 9, 'mountain_moss', SPAWN_RARITY_COMMON, None),
+        ('mp_egg_1', 'Hot Springs', 12, 14, 'hot_spring_egg', SPAWN_RARITY_RARE, None),
+    ],
+}
+
+# Weather-conditional spawn points (only appear during specific weather)
+# Format: (id, name, x, y, ingredient_id, rarity, ability_required, weather_required)
+WEATHER_SPAWN_POINTS = {
+    ZONE_CAFE_GROUNDS: [
+        ('cg_storm_1', 'Storm-touched Patch', 10, 10, 'storm_flower', SPAWN_RARITY_UNCOMMON, None, WEATHER_STORMY),
+    ],
+    ZONE_MEADOW_FIELDS: [
+        ('mf_storm_1', 'Lightning Strike Site', 8, 6, 'storm_flower', SPAWN_RARITY_UNCOMMON, None, WEATHER_STORMY),
+        ('mf_storm_2', 'Charged Ground', 15, 10, 'lightning_crystal', SPAWN_RARITY_RARE, None, WEATHER_STORMY),
+        ('mf_special_1', 'Starfall Meadow', 10, 8, 'stardust_petal', SPAWN_RARITY_RARE, None, WEATHER_SPECIAL),
+    ],
+    ZONE_FOREST_DEPTHS: [
+        ('fd_storm_1', 'Storm Clearing', 12, 7, 'storm_flower', SPAWN_RARITY_COMMON, None, WEATHER_STORMY),
+        ('fd_storm_2', 'Thunder Tree', 5, 10, 'lightning_crystal', SPAWN_RARITY_UNCOMMON, None, WEATHER_STORMY),
+        ('fd_special_1', 'Rainbow Pool', 16, 6, 'rainbow_essence', SPAWN_RARITY_RARE, None, WEATHER_SPECIAL),
+        ('fd_special_2', 'Moonlit Hollow', 3, 8, 'moonbeam_honey', SPAWN_RARITY_RARE, None, WEATHER_SPECIAL),
+    ],
+    ZONE_COASTAL_SHORE: [
+        ('cs_storm_1', 'Storm Surge Pool', 8, 8, 'storm_flower', SPAWN_RARITY_UNCOMMON, None, WEATHER_STORMY),
+        ('cs_storm_2', 'Lightning Tide', 14, 10, 'lightning_crystal', SPAWN_RARITY_RARE, None, WEATHER_STORMY),
+        ('cs_special_1', 'Moonlit Cove', 6, 5, 'moonbeam_honey', SPAWN_RARITY_RARE, None, WEATHER_SPECIAL),
+    ],
+    ZONE_MOUNTAIN_PASS: [
+        ('mp_storm_1', 'Thunder Peak', 10, 4, 'lightning_crystal', SPAWN_RARITY_UNCOMMON, None, WEATHER_STORMY),
+        ('mp_storm_2', 'Storm Ridge', 16, 8, 'storm_flower', SPAWN_RARITY_UNCOMMON, None, WEATHER_STORMY),
+        ('mp_special_1', 'Starlit Summit', 12, 2, 'stardust_petal', SPAWN_RARITY_RARE, None, WEATHER_SPECIAL),
+        ('mp_special_2', 'Aurora Pool', 8, 12, 'rainbow_essence', SPAWN_RARITY_RARE, None, WEATHER_SPECIAL),
     ],
 }
 
@@ -596,6 +949,7 @@ UNLOCK_TYPE_DEFAULT = 'default'       # Available from start
 UNLOCK_TYPE_REPUTATION = 'reputation'  # Requires reputation level
 UNLOCK_TYPE_STORY = 'story'           # Requires story progress
 UNLOCK_TYPE_DISCOVERY = 'discovery'   # Found through exploration
+UNLOCK_TYPE_AFFINITY = 'affinity'     # Requires character affinity (secret recipes)
 
 # Recipe definitions
 # Format: id -> {name, description, category, difficulty, base_price, ingredients, color_influence, unlock}
@@ -818,6 +1172,336 @@ RECIPES = {
         'color_influence': (0.7, 0.3, 0.4),  # Berry red
         'unlock': {'type': UNLOCK_TYPE_REPUTATION, 'requirement': 10},
     },
+
+    # =========================================================================
+    # SEAFOOD RECIPES (6) - Coastal Shore ingredients
+    # =========================================================================
+    'seaweed_salad': {
+        'name': 'Seaweed Salad',
+        'description': 'Fresh ocean seaweed with a light sea salt dressing.',
+        'category': RECIPE_CATEGORY_APPETIZER,
+        'difficulty': 1,
+        'base_price': 35,
+        'ingredients': [
+            ('fresh_seaweed', 2, 1),
+            ('sea_salt', 1, 1),
+        ],
+        'color_influence': (0.2, 0.5, 0.4),  # Sea green
+        'unlock': {'type': UNLOCK_TYPE_DISCOVERY},
+    },
+    'grilled_oysters': {
+        'name': 'Grilled Pearl Oysters',
+        'description': 'Succulent oysters grilled with herbs and sea salt.',
+        'category': RECIPE_CATEGORY_APPETIZER,
+        'difficulty': 2,
+        'base_price': 65,
+        'ingredients': [
+            ('pearl_oyster', 2, 2),
+            ('sea_salt', 1, 1),
+            ('garden_herb', 1, 1),
+        ],
+        'color_influence': (0.7, 0.7, 0.8),  # Pearl white
+        'unlock': {'type': UNLOCK_TYPE_REPUTATION, 'requirement': 40},
+    },
+    'coastal_chowder': {
+        'name': 'Coastal Chowder',
+        'description': 'Rich, creamy chowder with fresh coastal catches.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 3,
+        'base_price': 90,
+        'ingredients': [
+            ('tidal_clam', 2, 2),
+            ('sea_salt', 1, 1),
+            ('wild_herb', 1, 1),
+        ],
+        'color_influence': (0.8, 0.7, 0.6),  # Creamy
+        'unlock': {'type': UNLOCK_TYPE_DISCOVERY},
+    },
+    'crab_cakes': {
+        'name': 'Coastal Crab Cakes',
+        'description': 'Delicate crab cakes with herb seasoning.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 3,
+        'base_price': 105,
+        'ingredients': [
+            ('coastal_crab', 2, 2),
+            ('garden_herb', 1, 1),
+            ('sea_salt', 1, 1),
+        ],
+        'color_influence': (0.8, 0.5, 0.4),  # Crab orange
+        'unlock': {'type': UNLOCK_TYPE_REPUTATION, 'requirement': 45},
+    },
+    'ocean_medley': {
+        'name': 'Ocean Medley Platter',
+        'description': 'A luxurious selection of the finest coastal ingredients.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 4,
+        'base_price': 160,
+        'ingredients': [
+            ('coastal_crab', 1, 3),
+            ('pearl_oyster', 1, 2),
+            ('tidal_clam', 1, 2),
+            ('fresh_seaweed', 1, 2),
+        ],
+        'color_influence': (0.4, 0.6, 0.8),  # Ocean blue
+        'unlock': {'type': UNLOCK_TYPE_STORY, 'requirement': 'chapter_2'},
+    },
+    'salt_crusted_fish': {
+        'name': 'Salt-Crusted Fish',
+        'description': 'Tender fish baked in a sea salt crust with herbs.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 3,
+        'base_price': 95,
+        'ingredients': [
+            ('forest_fish', 1, 2),
+            ('sea_salt', 2, 2),
+            ('forest_herb', 1, 1),
+        ],
+        'color_influence': (0.9, 0.9, 0.8),  # Salt white
+        'unlock': {'type': UNLOCK_TYPE_REPUTATION, 'requirement': 35},
+    },
+
+    # =========================================================================
+    # MOUNTAIN RECIPES (5) - Mountain Pass ingredients
+    # =========================================================================
+    'alpine_tea': {
+        'name': 'Alpine Herb Tea',
+        'description': 'Fragrant tea brewed from rare mountain herbs.',
+        'category': RECIPE_CATEGORY_BEVERAGE,
+        'difficulty': 1,
+        'base_price': 30,
+        'ingredients': [
+            ('mountain_herb', 1, 1),
+            ('alpine_flower', 1, 1),
+        ],
+        'color_influence': (0.5, 0.7, 0.5),  # Alpine green
+        'unlock': {'type': UNLOCK_TYPE_DISCOVERY},
+    },
+    'mountain_stew': {
+        'name': 'Hearty Mountain Stew',
+        'description': 'A warming stew with mountain herbs and moss.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 3,
+        'base_price': 85,
+        'ingredients': [
+            ('mountain_herb', 2, 2),
+            ('mountain_moss', 1, 1),
+            ('buried_root', 1, 2),
+        ],
+        'color_influence': (0.4, 0.5, 0.4),  # Mountain green
+        'unlock': {'type': UNLOCK_TYPE_DISCOVERY},
+    },
+    'honey_glazed_game': {
+        'name': 'Rock Honey Glazed Game',
+        'description': 'Wild game glazed with precious rock honey.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 4,
+        'base_price': 145,
+        'ingredients': [
+            ('wild_game', 1, 3),
+            ('rock_honey', 1, 2),
+            ('mountain_herb', 1, 2),
+        ],
+        'color_influence': (0.8, 0.6, 0.3),  # Honey gold
+        'unlock': {'type': UNLOCK_TYPE_REPUTATION, 'requirement': 60},
+    },
+    'rock_honey_pastry': {
+        'name': 'Rock Honey Pastry',
+        'description': 'Flaky pastry filled with crystallized rock honey.',
+        'category': RECIPE_CATEGORY_DESSERT,
+        'difficulty': 2,
+        'base_price': 55,
+        'ingredients': [
+            ('rock_honey', 1, 2),
+            ('alpine_flower', 1, 1),
+        ],
+        'color_influence': (0.9, 0.7, 0.3),  # Honey amber
+        'unlock': {'type': UNLOCK_TYPE_DISCOVERY},
+    },
+    'crystal_infused_dessert': {
+        'name': 'Crystal-Infused Delicacy',
+        'description': 'A magical dessert sparkling with mineral crystals.',
+        'category': RECIPE_CATEGORY_DESSERT,
+        'difficulty': 4,
+        'base_price': 130,
+        'ingredients': [
+            ('mineral_crystal', 1, 3),
+            ('rock_honey', 1, 2),
+            ('alpine_flower', 1, 2),
+        ],
+        'color_influence': (0.6, 0.8, 0.9),  # Crystal blue
+        'unlock': {'type': UNLOCK_TYPE_STORY, 'requirement': 'chapter_3'},
+    },
+
+    # =========================================================================
+    # SEASONAL RECIPES (6) - Autumn/Winter comfort foods
+    # =========================================================================
+    'autumn_harvest_soup': {
+        'name': 'Autumn Harvest Soup',
+        'description': 'Warm soup celebrating the autumn harvest.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 2,
+        'base_price': 55,
+        'ingredients': [
+            ('buried_root', 2, 1),
+            ('field_mushroom', 1, 1),
+            ('wild_herb', 1, 1),
+        ],
+        'color_influence': (0.7, 0.5, 0.3),  # Autumn orange
+        'unlock': {'type': UNLOCK_TYPE_DEFAULT},
+    },
+    'mushroom_medley': {
+        'name': 'Forest Mushroom Medley',
+        'description': 'A rich dish featuring various forest mushrooms.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 3,
+        'base_price': 80,
+        'ingredients': [
+            ('rare_mushroom', 1, 2),
+            ('field_mushroom', 2, 2),
+            ('mountain_moss', 1, 1),
+        ],
+        'color_influence': (0.5, 0.4, 0.4),  # Mushroom brown
+        'unlock': {'type': UNLOCK_TYPE_REPUTATION, 'requirement': 35},
+    },
+    'winter_warmer': {
+        'name': 'Winter Warmer',
+        'description': 'A spiced hot drink to ward off the winter chill.',
+        'category': RECIPE_CATEGORY_BEVERAGE,
+        'difficulty': 2,
+        'base_price': 35,
+        'ingredients': [
+            ('mountain_herb', 1, 1),
+            ('golden_honey', 1, 1),
+            ('wild_berry', 1, 1),
+        ],
+        'color_influence': (0.7, 0.4, 0.3),  # Warm red
+        'unlock': {'type': UNLOCK_TYPE_REPUTATION, 'requirement': 20},
+    },
+    'hearty_root_stew': {
+        'name': 'Hearty Root Stew',
+        'description': 'A filling stew packed with nutritious roots.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 3,
+        'base_price': 75,
+        'ingredients': [
+            ('buried_root', 3, 2),
+            ('wild_herb', 1, 1),
+            ('field_mushroom', 1, 1),
+        ],
+        'color_influence': (0.6, 0.4, 0.3),  # Earthy brown
+        'unlock': {'type': UNLOCK_TYPE_REPUTATION, 'requirement': 30},
+    },
+    'spiced_berry_cider': {
+        'name': 'Spiced Berry Cider',
+        'description': 'Warm cider infused with berries and mountain herbs.',
+        'category': RECIPE_CATEGORY_BEVERAGE,
+        'difficulty': 2,
+        'base_price': 40,
+        'ingredients': [
+            ('meadow_berry', 2, 1),
+            ('beach_berry', 1, 1),
+            ('mountain_herb', 1, 1),
+        ],
+        'color_influence': (0.7, 0.3, 0.4),  # Berry pink
+        'unlock': {'type': UNLOCK_TYPE_DISCOVERY},
+    },
+    'comfort_casserole': {
+        'name': 'Comfort Casserole',
+        'description': 'A hearty casserole perfect for cold days.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 3,
+        'base_price': 90,
+        'ingredients': [
+            ('wild_game', 1, 2),
+            ('buried_root', 1, 2),
+            ('field_mushroom', 1, 1),
+            ('wild_herb', 1, 1),
+        ],
+        'color_influence': (0.6, 0.4, 0.3),  # Comfort brown
+        'unlock': {'type': UNLOCK_TYPE_REPUTATION, 'requirement': 40},
+    },
+
+    # =========================================================================
+    # SECRET RECIPES - Unlocked through character affinity (Close level: 50+)
+    # =========================================================================
+    'mothers_comfort_stew': {
+        'name': "Mother's Comfort Stew",
+        'description': 'A secret family recipe passed down through generations. Warm, comforting, and made with love.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 3,
+        'base_price': 110,
+        'ingredients': [
+            ('buried_root', 2, 2),
+            ('wild_herb', 2, 2),
+            ('golden_honey', 1, 2),
+            ('field_mushroom', 1, 2),
+        ],
+        'color_influence': (0.6, 0.5, 0.4),  # Warm earthy
+        'unlock': {'type': UNLOCK_TYPE_AFFINITY, 'character': 'mother'},
+    },
+    'wanderers_secret_blend': {
+        'name': "Wanderer's Secret Blend",
+        'description': "Marcus's special spice blend from his travels. The exact ingredients are a closely guarded secret.",
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 4,
+        'base_price': 135,
+        'ingredients': [
+            ('mountain_herb', 2, 2),
+            ('forest_herb', 1, 2),
+            ('wild_game', 1, 3),
+            ('rare_mushroom', 1, 2),
+        ],
+        'color_influence': (0.5, 0.4, 0.3),  # Exotic brown
+        'unlock': {'type': UNLOCK_TYPE_AFFINITY, 'character': 'marcus'},
+    },
+    'lilys_perfect_souffle': {
+        'name': "Lily's Perfect Soufflé",
+        'description': "A recipe that took Lily years to perfect. Light as air with an impossibly delicate texture.",
+        'category': RECIPE_CATEGORY_DESSERT,
+        'difficulty': 5,
+        'base_price': 150,
+        'ingredients': [
+            ('edible_flower', 2, 3),
+            ('golden_honey', 2, 2),
+            ('alpine_flower', 1, 2),
+            ('crystal_shard', 1, 2),
+        ],
+        'color_influence': (0.8, 0.7, 0.6),  # Golden delicate
+        'unlock': {'type': UNLOCK_TYPE_AFFINITY, 'character': 'lily'},
+    },
+    'captains_treasure_catch': {
+        'name': "Captain's Treasure Catch",
+        'description': "Vera's legendary seafood dish, said to bring good fortune to those who taste it.",
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 4,
+        'base_price': 175,
+        'ingredients': [
+            ('coastal_crab', 1, 3),
+            ('pearl_oyster', 2, 2),
+            ('tidal_clam', 1, 2),
+            ('sea_salt', 1, 2),
+            ('forest_fish', 1, 2),
+        ],
+        'color_influence': (0.4, 0.6, 0.8),  # Ocean blue
+        'unlock': {'type': UNLOCK_TYPE_AFFINITY, 'character': 'vera'},
+    },
+    'royal_midnight_feast': {
+        'name': 'Royal Midnight Feast',
+        'description': "The Masked Noble's secret recipe from the royal kitchens. Extraordinarily decadent.",
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 5,
+        'base_price': 200,
+        'ingredients': [
+            ('hidden_truffle', 1, 3),
+            ('rare_mushroom', 2, 2),
+            ('wild_game', 1, 3),
+            ('mineral_crystal', 1, 2),
+            ('rock_honey', 1, 2),
+        ],
+        'color_influence': (0.4, 0.3, 0.5),  # Regal purple
+        'unlock': {'type': UNLOCK_TYPE_AFFINITY, 'character': 'noble'},
+    },
 }
 
 # Default unlocked recipes (available from game start)
@@ -827,6 +1511,7 @@ DEFAULT_UNLOCKED_RECIPES = [
     'herb_stew',
     'berry_tart',
     'herb_tea',
+    'autumn_harvest_soup',  # Seasonal comfort food
 ]
 
 # =============================================================================
@@ -1017,16 +1702,38 @@ NOTIFICATION_COLORS = {
     NOTIFICATION_ERROR: (220, 80, 80),
 }
 
-# Season/Weather icons (unicode characters for procedural drawing)
+# Season/Weather icons (for procedural drawing)
 SEASON_ICONS = {
     'spring': 'flower',
     'summer': 'sun',
+    'autumn': 'leaf',
+    'winter': 'snowflake',
 }
 
 WEATHER_ICONS = {
     WEATHER_SUNNY: 'sun',
     WEATHER_CLOUDY: 'cloud',
     WEATHER_RAINY: 'rain',
+    WEATHER_STORMY: 'storm',
+    WEATHER_SPECIAL: 'star',
+}
+
+# Weather colors for visual effects
+WEATHER_COLORS = {
+    WEATHER_SUNNY: (255, 240, 200),    # Warm yellow
+    WEATHER_CLOUDY: (180, 180, 190),   # Gray
+    WEATHER_RAINY: (120, 140, 180),    # Blue-gray
+    WEATHER_STORMY: (80, 70, 100),     # Dark purple
+    WEATHER_SPECIAL: (200, 180, 255),  # Soft purple/magical
+}
+
+# Weather overlay tints (RGBA)
+WEATHER_OVERLAY = {
+    WEATHER_SUNNY: (255, 255, 220, 5),     # Slight warm
+    WEATHER_CLOUDY: (180, 180, 200, 20),   # Gray tint
+    WEATHER_RAINY: (100, 120, 150, 30),    # Blue-gray
+    WEATHER_STORMY: (60, 50, 80, 50),      # Dark dramatic
+    WEATHER_SPECIAL: (220, 200, 255, 25),  # Magical purple
 }
 
 # Mood face icons

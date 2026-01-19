@@ -4,9 +4,9 @@
 | Field | Value |
 |-------|-------|
 | **ID** | 041 |
-| **Status** | blocked |
-| **Branch** | |
-| **Assigned** | |
+| **Status** | done |
+| **Branch** | task/041 |
+| **Assigned** | task/041 |
 | **Depends** | 039 |
 | **Blocked-By** | Requires Adolescent stage for zone unlock |
 | **Estimated** | 180 min |
@@ -19,28 +19,28 @@
 Add Coastal Shore and Mountain Pass zones (2 of 4 missing zones). Coastal Shore requires Juvenile stage and provides seafood ingredients. Mountain Pass requires Adolescent stage and provides rare herbs and minerals.
 
 ## Acceptance Criteria
-- [ ] Add ZONE_COASTAL_SHORE and ZONE_MOUNTAIN_PASS constants
-- [ ] Define zone unlock requirements:
+- [x] Add ZONE_COASTAL_SHORE and ZONE_MOUNTAIN_PASS constants
+- [x] Define zone unlock requirements:
   - Coastal Shore: Requires Juvenile (same as Forest)
   - Mountain Pass: Requires Adolescent
-- [ ] Update zone connections:
+- [x] Update zone connections:
   - Forest Depths ↔ Coastal Shore
   - Meadow Fields ↔ Mountain Pass
-- [ ] Create Coastal Shore zone:
+- [x] Create Coastal Shore zone:
   - Beach/ocean tile themes
   - Fishing spots
   - Tidal pools
   - 6-8 spawn points
-- [ ] Create Mountain Pass zone:
+- [x] Create Mountain Pass zone:
   - Rocky terrain tiles
   - Alpine flowers
   - Hot springs feature
   - 6-8 spawn points
-- [ ] Add new ingredients for zones:
+- [x] Add new ingredients for zones:
   - Coastal: Sea Salt, Fresh Seaweed, Coastal Crab, Pearl Oyster
   - Mountain: Mountain Herb, Rock Honey, Mineral Crystal, Alpine Flower
-- [ ] Generate sprites for new zone tiles
-- [ ] Add zone-specific background colors/atmosphere
+- [x] Generate sprites for new zone tiles
+- [x] Add zone-specific background colors/atmosphere
 
 ## Context Files
 - src/constants.py
@@ -59,3 +59,26 @@ Add Coastal Shore and Mountain Pass zones (2 of 4 missing zones). Coastal Shore 
 ---
 
 ## Work Log
+
+### Session 1
+- Added ZONE_COASTAL_SHORE and ZONE_MOUNTAIN_PASS constants
+- Updated ALL_ZONES list with new zones
+- Added zone unlock requirements (Coastal: Juvenile, Mountain: Adolescent)
+- Updated ZONE_CONNECTIONS for bidirectional navigation
+- Added 12 new ingredients:
+  - Coastal: sea_salt, fresh_seaweed, coastal_crab, pearl_oyster, tidal_clam, beach_berry
+  - Mountain: mountain_herb, rock_honey, mineral_crystal, alpine_flower, mountain_moss, hot_spring_egg
+- Added ABILITY_GLIDE and ABILITY_FLIGHT constants for spawn requirements
+- Added 8 spawn points per zone in ZONE_SPAWN_POINTS
+- Added weather spawn points for both zones
+- Created new tile types in world.py:
+  - Coastal: SAND, SHALLOW_WATER, SEAWEED, TIDAL_POOL
+  - Mountain: ROCK, SNOW, ALPINE_FLOWER, HOT_SPRING
+- Added zone creation in WorldManager._create_zones()
+- Added _generate_coastal_map() and _generate_mountain_map() methods
+- Updated can_enter_zone() with full 5-stage progression
+- Added tile sprites in sprites.py for all 8 new tile types
+- Added tile colors and zone themes in zone_renderer.py
+- Added tile rendering in _draw_tile() for new tile types
+- Added zone-specific decorations (shells, driftwood, rocks, lichen, crystals)
+- Added decoration rendering for new types
