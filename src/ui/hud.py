@@ -20,8 +20,9 @@ from constants import (
     NOTIFICATION_COLORS,
     SEASON_ICONS, WEATHER_ICONS, MOOD_FACES,
     UI_TEXT, UI_TEXT_DIM, WHITE, CAFE_CREAM, CAFE_WARM,
-    WEATHER_SUNNY, WEATHER_CLOUDY, WEATHER_RAINY,
+    WEATHER_SUNNY, WEATHER_CLOUDY, WEATHER_RAINY, WEATHER_STORMY, WEATHER_SPECIAL,
 )
+import math
 from ui.status_bars import DragonStatusBars, QuickInventoryBar
 
 
@@ -390,6 +391,23 @@ class HUD:
             # Rain drops
             pygame.draw.line(surface, (100, 140, 200), (x - 3, y + 2), (x - 4, y + 6), 1)
             pygame.draw.line(surface, (100, 140, 200), (x + 2, y + 2), (x + 1, y + 6), 1)
+        elif weather == WEATHER_STORMY:
+            # Dark cloud
+            pygame.draw.ellipse(surface, (80, 70, 100), (x - 7, y - 5, 14, 7))
+            pygame.draw.ellipse(surface, (60, 50, 80), (x - 9, y - 2, 12, 6))
+            # Lightning bolt
+            pygame.draw.line(surface, (255, 255, 100), (x, y + 2), (x - 2, y + 5), 2)
+            pygame.draw.line(surface, (255, 255, 100), (x - 2, y + 5), (x + 1, y + 5), 2)
+            pygame.draw.line(surface, (255, 255, 100), (x + 1, y + 5), (x - 1, y + 9), 2)
+        elif weather == WEATHER_SPECIAL:
+            # Magical star/sparkle
+            star_color = (220, 200, 255)
+            # Draw a simple star shape
+            pygame.draw.line(surface, star_color, (x, y - 6), (x, y + 6), 2)
+            pygame.draw.line(surface, star_color, (x - 6, y), (x + 6, y), 2)
+            # Diagonal lines for sparkle effect
+            pygame.draw.line(surface, (255, 220, 255), (x - 4, y - 4), (x + 4, y + 4), 1)
+            pygame.draw.line(surface, (255, 220, 255), (x + 4, y - 4), (x - 4, y + 4), 1)
 
     def _draw_notifications(self, surface: pygame.Surface):
         """Draw notification messages (top-center)."""

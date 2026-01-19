@@ -12,8 +12,10 @@ from constants import (
     TILE_SIZE, ZONE_WIDTH, ZONE_HEIGHT,
     ZONE_CAFE_GROUNDS, ZONE_MEADOW_FIELDS, ZONE_FOREST_DEPTHS,
     HUD_MODE_EXPLORATION, NOTIFICATION_SUCCESS, NOTIFICATION_INFO, NOTIFICATION_WARNING,
+    NOTIFICATION_ERROR,
     DRAGON_STAGE_EGG, DRAGON_STAGE_HATCHLING, DRAGON_STAGE_JUVENILE,
     CAFE_CREAM, UI_TEXT, UI_TEXT_DIM, UI_BG, UI_PANEL,
+    WEATHER_STORMY, WEATHER_SPECIAL,
 )
 from entities.player import Player
 from entities.dragon import Dragon
@@ -244,6 +246,11 @@ class ExplorationModeState(BaseScreen):
 
         # Ability use
         self._ability_effects: List[Dict[str, Any]] = []
+
+        # Weather notification tracking
+        self._storm_warning_shown = False
+        self._special_event_shown = False
+        self._last_weather: Optional[str] = None
 
         # Fonts
         self.prompt_font = pygame.font.Font(None, 24)
@@ -635,6 +642,51 @@ class ExplorationModeState(BaseScreen):
                 self._dragon.name,
                 self._dragon.get_mood()
             )
+
+        # Check for weather notifications
+        self._check_weather_notifications(weather)
+
+    def _check_weather_notifications(self, current_weather: str):
+        """Check and show weather-related notifications."""
+        # Check for weather change
+        if self._last_weather != current_weather:
+            self._last_weather = current_weather
+
+            # Reset notification flags on weather change
+            self._storm_warning_shown = False
+            self._special_event_shown = False
+
+            # Show storm warning
+            if current_weather == WEATHER_STORMY:
+                self.hud.add_notification(
+                    "⚡ STORM WARNING! Cafe closed, exploration is dangerous!",
+                    NOTIFICATION_WARNING, 5.0
+                )
+                self._storm_warning_shown = True
+
+            # Show special event
+            elif current_weather == WEATHER_SPECIAL:
+                event_desc = self.world.get_special_weather_description()
+                if event_desc:
+                    self.hud.add_notification(
+                        f"✨ {event_desc}",
+                        NOTIFICATION_SUCCESS, 5.0
+                    )
+                    self.hud.add_notification(
+                        "Rare ingredients may appear!",
+                        NOTIFICATION_INFO, 4.0
+                    )
+                self._special_event_shown = True
+
+        # Check for pending storm warning
+        storm_warning = self.world.get_pending_storm_warning()
+        if storm_warning and not self._storm_warning_shown:
+            _, hours = storm_warning
+            self.hud.add_notification(
+                f"⚠ Storm approaching in {hours} hour(s)!",
+                NOTIFICATION_WARNING, 4.0
+            )
+            self._storm_warning_shown = True
 
     def draw(self, screen: pygame.Surface):
         """Draw exploration mode."""

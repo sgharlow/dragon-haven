@@ -430,15 +430,30 @@ TILE_SIZE = 32
 WEATHER_SUNNY = 'sunny'
 WEATHER_CLOUDY = 'cloudy'
 WEATHER_RAINY = 'rainy'
+WEATHER_STORMY = 'stormy'
+WEATHER_SPECIAL = 'special'
 
-ALL_WEATHER = [WEATHER_SUNNY, WEATHER_CLOUDY, WEATHER_RAINY]
+ALL_WEATHER = [WEATHER_SUNNY, WEATHER_CLOUDY, WEATHER_RAINY, WEATHER_STORMY, WEATHER_SPECIAL]
 
 # Weather probabilities per season (must sum to 1.0)
+# Stormy: ~10%, Special: ~5% (varies by season)
 WEATHER_PROBABILITIES = {
-    'spring': {WEATHER_SUNNY: 0.4, WEATHER_CLOUDY: 0.35, WEATHER_RAINY: 0.25},
-    'summer': {WEATHER_SUNNY: 0.6, WEATHER_CLOUDY: 0.3, WEATHER_RAINY: 0.1},
-    'autumn': {WEATHER_SUNNY: 0.35, WEATHER_CLOUDY: 0.40, WEATHER_RAINY: 0.25},
-    'winter': {WEATHER_SUNNY: 0.25, WEATHER_CLOUDY: 0.50, WEATHER_RAINY: 0.25},
+    'spring': {
+        WEATHER_SUNNY: 0.35, WEATHER_CLOUDY: 0.30, WEATHER_RAINY: 0.20,
+        WEATHER_STORMY: 0.10, WEATHER_SPECIAL: 0.05,
+    },
+    'summer': {
+        WEATHER_SUNNY: 0.50, WEATHER_CLOUDY: 0.25, WEATHER_RAINY: 0.08,
+        WEATHER_STORMY: 0.12, WEATHER_SPECIAL: 0.05,  # More summer storms
+    },
+    'autumn': {
+        WEATHER_SUNNY: 0.30, WEATHER_CLOUDY: 0.32, WEATHER_RAINY: 0.20,
+        WEATHER_STORMY: 0.12, WEATHER_SPECIAL: 0.06,  # Autumn is magical
+    },
+    'winter': {
+        WEATHER_SUNNY: 0.22, WEATHER_CLOUDY: 0.40, WEATHER_RAINY: 0.20,
+        WEATHER_STORMY: 0.10, WEATHER_SPECIAL: 0.08,  # Winter special events
+    },
 }
 
 # Weather effects on resource spawn rates
@@ -446,6 +461,45 @@ WEATHER_RESOURCE_MULTIPLIER = {
     WEATHER_SUNNY: 1.0,
     WEATHER_CLOUDY: 1.1,  # Slightly more resources
     WEATHER_RAINY: 1.3,   # Best for foraging
+    WEATHER_STORMY: 1.5,  # Rare storm resources appear
+    WEATHER_SPECIAL: 2.0,  # Legendary resources appear
+}
+
+# Weather behavior flags
+WEATHER_CLOSES_CAFE = {
+    WEATHER_SUNNY: False,
+    WEATHER_CLOUDY: False,
+    WEATHER_RAINY: False,
+    WEATHER_STORMY: True,   # Cafe closes during storms
+    WEATHER_SPECIAL: False,  # Cafe stays open for special events
+}
+
+WEATHER_DANGER_LEVEL = {
+    WEATHER_SUNNY: 0,    # Safe
+    WEATHER_CLOUDY: 0,   # Safe
+    WEATHER_RAINY: 0,    # Safe
+    WEATHER_STORMY: 2,   # Dangerous - warnings shown
+    WEATHER_SPECIAL: 0,  # Safe
+}
+
+# Special weather event types (for WEATHER_SPECIAL)
+SPECIAL_WEATHER_EVENTS = {
+    'spring': ['rainbow', 'blossom_shower'],
+    'summer': ['meteor_shower', 'golden_hour'],
+    'autumn': ['aurora', 'harvest_moon'],
+    'winter': ['northern_lights', 'diamond_dust'],
+}
+
+# Special weather event descriptions
+SPECIAL_WEATHER_DESCRIPTIONS = {
+    'rainbow': 'A beautiful rainbow arches across the sky!',
+    'blossom_shower': 'Flower petals drift gently through the air.',
+    'meteor_shower': 'Shooting stars streak across the night sky!',
+    'golden_hour': 'The world is bathed in magical golden light.',
+    'aurora': 'Mystical lights dance on the horizon.',
+    'harvest_moon': 'A giant amber moon illuminates the land.',
+    'northern_lights': 'Ethereal ribbons of light shimmer above.',
+    'diamond_dust': 'Tiny ice crystals sparkle like diamonds.',
 }
 
 # =============================================================================
@@ -493,6 +547,8 @@ QUALITY_WEATHER_BONUS = {
     WEATHER_SUNNY: {'honey': 1, 'berry': 0},
     WEATHER_CLOUDY: {'mushroom': 1, 'herb': 0},
     WEATHER_RAINY: {'herb': 1, 'mushroom': 1, 'fish': 1},
+    WEATHER_STORMY: {'storm': 2, 'crystal': 1},  # Storm-exclusive resources get bonus
+    WEATHER_SPECIAL: {'legendary': 2, 'crystal': 1},  # Legendary items get bonus
 }
 
 # Dragon ability requirements for certain spawn points
@@ -524,6 +580,15 @@ INGREDIENTS = {
     'forest_fish': ('Forest Fish', ITEM_SEAFOOD, 28, 1, (0.3, 0.5, 0.8)),
     'crystal_shard': ('Crystal Shard', ITEM_SPECIAL, 50, 0, (0.5, 0.5, 0.9)),  # Never spoils
     'hidden_truffle': ('Hidden Truffle', ITEM_SPECIAL, 45, 2, (0.4, 0.3, 0.2)),
+
+    # Storm-exclusive ingredients (only spawn during stormy weather)
+    'storm_flower': ('Storm Flower', ITEM_SPECIAL, 60, 2, (0.3, 0.4, 0.9)),  # Electric blue
+    'lightning_crystal': ('Lightning Crystal', ITEM_SPECIAL, 80, 0, (0.9, 0.9, 0.4)),  # Never spoils
+
+    # Special weather legendary ingredients (only spawn during special weather)
+    'stardust_petal': ('Stardust Petal', ITEM_SPECIAL, 100, 3, (0.8, 0.6, 0.9)),  # Meteor shower
+    'rainbow_essence': ('Rainbow Essence', ITEM_SPECIAL, 120, 0, (0.7, 0.7, 0.7)),  # Rainbow, never spoils
+    'moonbeam_honey': ('Moonbeam Honey', ITEM_SPECIAL, 90, 0, (0.6, 0.7, 0.9)),  # Harvest moon, never spoils
 }
 
 # Spawn point definitions per zone: list of (id, name, x, y, ingredient_id, rarity, ability_required)
@@ -554,6 +619,25 @@ ZONE_SPAWN_POINTS = {
         ('fd_fish_1', 'Forest Stream', 17, 9, 'forest_fish', SPAWN_RARITY_UNCOMMON, None),
         ('fd_crystal_1', 'Crystal Cave', 18, 13, 'crystal_shard', SPAWN_RARITY_RARE, ABILITY_SMASH),
         ('fd_truffle_1', 'Truffle Spot', 8, 3, 'hidden_truffle', SPAWN_RARITY_RARE, ABILITY_SNIFF),
+    ],
+}
+
+# Weather-conditional spawn points (only appear during specific weather)
+# Format: (id, name, x, y, ingredient_id, rarity, ability_required, weather_required)
+WEATHER_SPAWN_POINTS = {
+    ZONE_CAFE_GROUNDS: [
+        ('cg_storm_1', 'Storm-touched Patch', 10, 10, 'storm_flower', SPAWN_RARITY_UNCOMMON, None, WEATHER_STORMY),
+    ],
+    ZONE_MEADOW_FIELDS: [
+        ('mf_storm_1', 'Lightning Strike Site', 8, 6, 'storm_flower', SPAWN_RARITY_UNCOMMON, None, WEATHER_STORMY),
+        ('mf_storm_2', 'Charged Ground', 15, 10, 'lightning_crystal', SPAWN_RARITY_RARE, None, WEATHER_STORMY),
+        ('mf_special_1', 'Starfall Meadow', 10, 8, 'stardust_petal', SPAWN_RARITY_RARE, None, WEATHER_SPECIAL),
+    ],
+    ZONE_FOREST_DEPTHS: [
+        ('fd_storm_1', 'Storm Clearing', 12, 7, 'storm_flower', SPAWN_RARITY_COMMON, None, WEATHER_STORMY),
+        ('fd_storm_2', 'Thunder Tree', 5, 10, 'lightning_crystal', SPAWN_RARITY_UNCOMMON, None, WEATHER_STORMY),
+        ('fd_special_1', 'Rainbow Pool', 16, 6, 'rainbow_essence', SPAWN_RARITY_RARE, None, WEATHER_SPECIAL),
+        ('fd_special_2', 'Moonlit Hollow', 3, 8, 'moonbeam_honey', SPAWN_RARITY_RARE, None, WEATHER_SPECIAL),
     ],
 }
 
@@ -1077,6 +1161,26 @@ WEATHER_ICONS = {
     WEATHER_SUNNY: 'sun',
     WEATHER_CLOUDY: 'cloud',
     WEATHER_RAINY: 'rain',
+    WEATHER_STORMY: 'storm',
+    WEATHER_SPECIAL: 'star',
+}
+
+# Weather colors for visual effects
+WEATHER_COLORS = {
+    WEATHER_SUNNY: (255, 240, 200),    # Warm yellow
+    WEATHER_CLOUDY: (180, 180, 190),   # Gray
+    WEATHER_RAINY: (120, 140, 180),    # Blue-gray
+    WEATHER_STORMY: (80, 70, 100),     # Dark purple
+    WEATHER_SPECIAL: (200, 180, 255),  # Soft purple/magical
+}
+
+# Weather overlay tints (RGBA)
+WEATHER_OVERLAY = {
+    WEATHER_SUNNY: (255, 255, 220, 5),     # Slight warm
+    WEATHER_CLOUDY: (180, 180, 200, 20),   # Gray tint
+    WEATHER_RAINY: (100, 120, 150, 30),    # Blue-gray
+    WEATHER_STORMY: (60, 50, 80, 50),      # Dark dramatic
+    WEATHER_SPECIAL: (220, 200, 255, 25),  # Magical purple
 }
 
 # Mood face icons
