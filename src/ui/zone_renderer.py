@@ -14,7 +14,7 @@ from constants import (
     TERRAIN_FLOWER_RED, TERRAIN_FLOWER_YELLOW, TERRAIN_FLOWER_BLUE,
     CAFE_WOOD, CAFE_WARM, CAFE_CREAM,
     ZONE_CAFE_GROUNDS, ZONE_MEADOW_FIELDS, ZONE_FOREST_DEPTHS,
-    ZONE_COASTAL_SHORE, ZONE_MOUNTAIN_PASS, ZONE_ANCIENT_RUINS,
+    ZONE_COASTAL_SHORE, ZONE_MOUNTAIN_PASS, ZONE_ANCIENT_RUINS, ZONE_SKY_ISLANDS,
     SPAWN_RARITY_COMMON, SPAWN_RARITY_UNCOMMON, SPAWN_RARITY_RARE,
     SEASON_COLORS, SEASON_OVERLAY,
 )
@@ -58,6 +58,13 @@ class ZoneRenderer:
         TileType.CRYSTAL_CLUSTER: (140, 180, 200),
         TileType.OVERGROWN: (80, 100, 70),
         TileType.ANCIENT_PATH: (160, 150, 130),
+        # Sky Islands tiles
+        TileType.CLOUD: (240, 245, 255),
+        TileType.SKY_CRYSTAL: (180, 200, 255),
+        TileType.FLOATING_GRASS: (140, 200, 160),
+        TileType.STARLIGHT_POOL: (200, 180, 240),
+        TileType.WIND_STREAM: (220, 235, 255),
+        TileType.VOID: (20, 30, 60),
     }
 
     # Zone-specific color themes
@@ -98,6 +105,15 @@ class ZoneRenderer:
             'ruin': (130, 120, 110),  # Ruin stone
             'crystal': (120, 160, 190),  # Crystal formations
             'moss': (60, 80, 55),  # Ancient moss
+        },
+        ZONE_SKY_ISLANDS: {
+            'grass': (140, 200, 160),  # Ethereal floating grass
+            'accent': (220, 200, 255),  # Celestial accent
+            'tree': (80, 140, 100),  # Floating island trees
+            'cloud': (240, 245, 255),  # Cloud platforms
+            'crystal': (180, 200, 255),  # Sky crystals
+            'void': (20, 30, 60),  # Void between islands
+            'starlight': (200, 180, 240),  # Starlight pools
         },
     }
 
@@ -176,6 +192,27 @@ class ZoneRenderer:
                 elif tile == TileType.ROCK:
                     if random.random() < 0.08:
                         dec_type = random.choice(['small_rock', 'lichen', 'crystal_shard'])
+                        self._decorations.append({
+                            'type': dec_type,
+                            'x': x * TILE_SIZE + random.randint(4, TILE_SIZE - 4),
+                            'y': y * TILE_SIZE + random.randint(4, TILE_SIZE - 4),
+                            'color_var': random.randint(-10, 10),
+                        })
+
+                # Sky Islands decorations
+                elif tile == TileType.FLOATING_GRASS:
+                    if random.random() < 0.12:
+                        dec_type = random.choice(['sky_flower', 'cloud_wisp', 'starlight_mote'])
+                        self._decorations.append({
+                            'type': dec_type,
+                            'x': x * TILE_SIZE + random.randint(4, TILE_SIZE - 4),
+                            'y': y * TILE_SIZE + random.randint(4, TILE_SIZE - 4),
+                            'color_var': random.randint(-15, 15),
+                        })
+
+                elif tile == TileType.CLOUD:
+                    if random.random() < 0.06:
+                        dec_type = random.choice(['cloud_wisp', 'starlight_mote'])
                         self._decorations.append({
                             'type': dec_type,
                             'x': x * TILE_SIZE + random.randint(4, TILE_SIZE - 4),
@@ -469,6 +506,73 @@ class ZoneRenderer:
             # Warm glow edge
             pygame.draw.rect(surface, (180, 140, 120), rect, 2, border_radius=4)
 
+        # Sky Islands tiles
+        elif tile_type == TileType.CLOUD:
+            cloud_color = theme.get('cloud', (240, 245, 255))
+            pygame.draw.rect(surface, cloud_color, rect)
+            # Fluffy cloud texture
+            lighter = tuple(min(255, c + 10) for c in cloud_color)
+            pygame.draw.ellipse(surface, lighter, (x + 2, y + 4, TILE_SIZE - 4, TILE_SIZE - 8))
+            pygame.draw.ellipse(surface, lighter, (x + 6, y + 2, TILE_SIZE - 12, TILE_SIZE - 6))
+
+        elif tile_type == TileType.SKY_CRYSTAL:
+            crystal_color = theme.get('crystal', (180, 200, 255))
+            # Dark base
+            pygame.draw.rect(surface, (40, 50, 80), rect)
+            # Crystal formation
+            pygame.draw.polygon(surface, crystal_color, [
+                (x + TILE_SIZE // 2, y + 2),
+                (x + TILE_SIZE - 4, y + TILE_SIZE - 4),
+                (x + 4, y + TILE_SIZE - 4)
+            ])
+            # Shimmer
+            shimmer = math.sin(self._anim_timer * 4 + tile_x + tile_y) * 20 + 235
+            pygame.draw.line(surface, (int(shimmer), int(shimmer), 255),
+                           (x + TILE_SIZE // 2, y + 4), (x + TILE_SIZE // 2 - 3, y + TILE_SIZE // 2), 2)
+
+        elif tile_type == TileType.FLOATING_GRASS:
+            grass_color = theme.get('grass', (140, 200, 160))
+            pygame.draw.rect(surface, grass_color, rect)
+            # Glowing grass blades
+            for i in range(4):
+                gx = x + 4 + i * 8
+                glow = abs(math.sin(self._anim_timer * 2 + i)) * 30
+                blade_color = tuple(min(255, int(c + glow)) for c in grass_color)
+                pygame.draw.line(surface, blade_color, (gx, y + TILE_SIZE - 2),
+                               (gx + 2, y + TILE_SIZE // 2), 1)
+
+        elif tile_type == TileType.STARLIGHT_POOL:
+            starlight_color = theme.get('starlight', (200, 180, 240))
+            pygame.draw.rect(surface, (60, 50, 100), rect)  # Dark base
+            pygame.draw.ellipse(surface, starlight_color, (x + 3, y + 3, TILE_SIZE - 6, TILE_SIZE - 6))
+            # Animated stars
+            for i in range(3):
+                star_x = x + (tile_x * 7 + i * 11) % (TILE_SIZE - 8) + 4
+                star_y = y + (tile_y * 9 + i * 7) % (TILE_SIZE - 8) + 4
+                twinkle = abs(math.sin(self._anim_timer * 3 + i)) * 255
+                pygame.draw.circle(surface, (int(twinkle), int(twinkle), 255), (star_x, star_y), 1)
+
+        elif tile_type == TileType.WIND_STREAM:
+            # Transparent wind effect
+            pygame.draw.rect(surface, (180, 200, 240), rect)
+            # Animated wind lines
+            for i in range(3):
+                wind_offset = (self._anim_timer * 50 + i * 20) % TILE_SIZE
+                alpha_color = (220, 235, 255)
+                pygame.draw.line(surface, alpha_color,
+                               (x + wind_offset, y + 4 + i * 10),
+                               (x + wind_offset + 12, y + 4 + i * 10), 2)
+
+        elif tile_type == TileType.VOID:
+            void_color = theme.get('void', (20, 30, 60))
+            pygame.draw.rect(surface, void_color, rect)
+            # Distant stars
+            for i in range(2):
+                sx = x + (tile_x * 11 + i * 17) % (TILE_SIZE - 4) + 2
+                sy = y + (tile_y * 13 + i * 19) % (TILE_SIZE - 4) + 2
+                twinkle = abs(math.sin(self._anim_timer * 2 + tile_x + tile_y + i)) * 100 + 50
+                pygame.draw.circle(surface, (int(twinkle), int(twinkle), int(twinkle + 50)), (sx, sy), 1)
+
         else:
             # Default
             color = self.TILE_COLORS.get(tile_type, (100, 100, 100))
@@ -560,6 +664,31 @@ class ZoneRenderer:
                 pygame.draw.polygon(surface, (200 + var, 220 + var, 240), [
                     (screen_x - 1, screen_y - 2), (screen_x + 1, screen_y), (screen_x - 1, screen_y)
                 ])
+
+            # Sky Islands decorations
+            elif dec['type'] == 'sky_flower':
+                # Ethereal floating flower
+                flower_color = (200 + var, 180, 240)
+                pygame.draw.circle(surface, flower_color, (screen_x, screen_y), 3)
+                pygame.draw.circle(surface, (255, 240, 255), (screen_x, screen_y), 1)
+                # Petals
+                for angle in range(0, 360, 72):
+                    import math
+                    px = screen_x + int(math.cos(math.radians(angle)) * 4)
+                    py = screen_y + int(math.sin(math.radians(angle)) * 4)
+                    pygame.draw.circle(surface, (220 + var, 200, 255), (px, py), 2)
+
+            elif dec['type'] == 'cloud_wisp':
+                # Small wispy cloud
+                wisp_color = (240 + var, 245, 255)
+                pygame.draw.ellipse(surface, wisp_color, (screen_x - 4, screen_y - 2, 8, 4))
+                pygame.draw.ellipse(surface, wisp_color, (screen_x - 2, screen_y - 3, 5, 3))
+
+            elif dec['type'] == 'starlight_mote':
+                # Glowing starlight particle
+                glow = abs(var) % 40 + 200
+                pygame.draw.circle(surface, (glow, glow, 255), (screen_x, screen_y), 2)
+                pygame.draw.circle(surface, (255, 255, 255), (screen_x, screen_y), 1)
 
     def draw_resource_indicators(self, surface: pygame.Surface,
                                   indicators: List[Dict[str, Any]],

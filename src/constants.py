@@ -572,11 +572,13 @@ ZONE_FOREST_DEPTHS = 'forest_depths'
 ZONE_COASTAL_SHORE = 'coastal_shore'
 ZONE_MOUNTAIN_PASS = 'mountain_pass'
 ZONE_ANCIENT_RUINS = 'ancient_ruins'
+ZONE_SKY_ISLANDS = 'sky_islands'
 
 # All zones for iteration
 ALL_ZONES = [
     ZONE_CAFE_GROUNDS, ZONE_MEADOW_FIELDS, ZONE_FOREST_DEPTHS,
     ZONE_COASTAL_SHORE, ZONE_MOUNTAIN_PASS, ZONE_ANCIENT_RUINS,
+    ZONE_SKY_ISLANDS,
 ]
 
 # Zone unlock requirements (dragon stage)
@@ -587,6 +589,7 @@ ZONE_UNLOCK_REQUIREMENTS = {
     ZONE_COASTAL_SHORE: DRAGON_STAGE_JUVENILE,  # Same as Forest
     ZONE_MOUNTAIN_PASS: DRAGON_STAGE_ADOLESCENT,  # Requires Adolescent
     ZONE_ANCIENT_RUINS: DRAGON_STAGE_ADOLESCENT,  # Requires Adolescent
+    ZONE_SKY_ISLANDS: DRAGON_STAGE_ADULT,  # Requires Adult (flight)
 }
 
 # Zone connections (which zones connect to which)
@@ -595,8 +598,9 @@ ZONE_CONNECTIONS = {
     ZONE_MEADOW_FIELDS: [ZONE_CAFE_GROUNDS, ZONE_FOREST_DEPTHS, ZONE_MOUNTAIN_PASS],
     ZONE_FOREST_DEPTHS: [ZONE_MEADOW_FIELDS, ZONE_COASTAL_SHORE, ZONE_ANCIENT_RUINS],
     ZONE_COASTAL_SHORE: [ZONE_FOREST_DEPTHS],
-    ZONE_MOUNTAIN_PASS: [ZONE_MEADOW_FIELDS],
+    ZONE_MOUNTAIN_PASS: [ZONE_MEADOW_FIELDS, ZONE_SKY_ISLANDS],
     ZONE_ANCIENT_RUINS: [ZONE_FOREST_DEPTHS],
+    ZONE_SKY_ISLANDS: [ZONE_MOUNTAIN_PASS],
 }
 
 # Zone map sizes (tiles)
@@ -795,6 +799,16 @@ INGREDIENTS = {
     'mystic_mushroom': ('Mystic Mushroom', ITEM_VEGETABLE, 50, 2, (0.5, 0.4, 0.7)),  # Glowing mushroom
     'ancient_honey': ('Ancient Honey', ITEM_SPECIAL, 70, 0, (0.9, 0.6, 0.3)),  # Crystallized, never spoils
     'ruin_berry': ('Ruin Berry', ITEM_FRUIT, 38, 2, (0.6, 0.3, 0.5)),  # Wild berries in ruins
+
+    # Sky Islands ingredients - Legendary and mythical
+    'cloud_essence': ('Cloud Essence', ITEM_SPECIAL, 150, 0, (0.9, 0.95, 1.0)),  # Never spoils
+    'sky_crystal': ('Sky Crystal', ITEM_SPECIAL, 180, 0, (0.7, 0.85, 1.0)),  # Never spoils
+    'celestial_berry': ('Celestial Berry', ITEM_FRUIT, 120, 3, (0.8, 0.7, 0.9)),  # Floating island berries
+    'wind_flower': ('Wind Flower', ITEM_SPECIAL, 140, 2, (0.9, 0.9, 1.0)),  # Flowers on air currents
+    'starlight_nectar': ('Starlight Nectar', ITEM_SPECIAL, 200, 0, (1.0, 0.95, 0.8)),  # Never spoils
+    'dragon_tear': ('Dragon Tear', ITEM_SPECIAL, 250, 0, (0.6, 0.8, 1.0)),  # Legendary, never spoils
+    'phoenix_feather': ('Phoenix Feather', ITEM_SPECIAL, 300, 0, (1.0, 0.6, 0.3)),  # Mythical, never spoils
+    'sky_honey': ('Sky Honey', ITEM_SPECIAL, 160, 0, (1.0, 0.9, 0.6)),  # Never spoils
 }
 
 # Spawn point definitions per zone: list of (id, name, x, y, ingredient_id, rarity, ability_required)
@@ -859,6 +873,20 @@ ZONE_SPAWN_POINTS = {
         ('ar_honey_1', 'Amber Chamber', 15, 5, 'ancient_honey', SPAWN_RARITY_RARE, ABILITY_SMASH),
         ('ar_berry_1', 'Courtyard Vines', 3, 9, 'ruin_berry', SPAWN_RARITY_COMMON, None),
     ],
+    ZONE_SKY_ISLANDS: [
+        ('si_cloud_1', 'Cloud Bank', 5, 5, 'cloud_essence', SPAWN_RARITY_UNCOMMON, None),
+        ('si_cloud_2', 'Misty Peak', 15, 3, 'cloud_essence', SPAWN_RARITY_RARE, ABILITY_GLIDE),
+        ('si_crystal_1', 'Sky Spire', 10, 7, 'sky_crystal', SPAWN_RARITY_RARE, ABILITY_SMASH),
+        ('si_crystal_2', 'Crystal Clouds', 18, 10, 'sky_crystal', SPAWN_RARITY_RARE, None),
+        ('si_berry_1', 'Floating Garden', 6, 10, 'celestial_berry', SPAWN_RARITY_UNCOMMON, None),
+        ('si_berry_2', 'Star Orchard', 14, 12, 'celestial_berry', SPAWN_RARITY_RARE, ABILITY_GLIDE),
+        ('si_flower_1', 'Wind Terrace', 8, 4, 'wind_flower', SPAWN_RARITY_UNCOMMON, None),
+        ('si_flower_2', 'Breeze Garden', 16, 8, 'wind_flower', SPAWN_RARITY_RARE, ABILITY_GLIDE),
+        ('si_nectar_1', 'Starlight Pool', 12, 6, 'starlight_nectar', SPAWN_RARITY_RARE, ABILITY_SNIFF),
+        ('si_tear_1', 'Dragon Sanctuary', 10, 12, 'dragon_tear', SPAWN_RARITY_RARE, ABILITY_SNIFF),
+        ('si_feather_1', 'Phoenix Nest', 4, 8, 'phoenix_feather', SPAWN_RARITY_RARE, ABILITY_GLIDE),
+        ('si_honey_1', 'Sky Hive', 17, 5, 'sky_honey', SPAWN_RARITY_RARE, ABILITY_SMASH),
+    ],
 }
 
 # Weather-conditional spawn points (only appear during specific weather)
@@ -894,6 +922,13 @@ WEATHER_SPAWN_POINTS = {
         ('ar_storm_2', 'Thunder Sanctum', 5, 10, 'storm_flower', SPAWN_RARITY_UNCOMMON, None, WEATHER_STORMY),
         ('ar_special_1', 'Moonlit Chamber', 12, 8, 'moonbeam_honey', SPAWN_RARITY_RARE, None, WEATHER_SPECIAL),
         ('ar_special_2', 'Starfall Ruins', 16, 4, 'stardust_petal', SPAWN_RARITY_RARE, None, WEATHER_SPECIAL),
+    ],
+    ZONE_SKY_ISLANDS: [
+        ('si_storm_1', 'Thunder Cloud', 8, 6, 'lightning_crystal', SPAWN_RARITY_UNCOMMON, None, WEATHER_STORMY),
+        ('si_storm_2', 'Storm Eye', 14, 4, 'storm_flower', SPAWN_RARITY_RARE, None, WEATHER_STORMY),
+        ('si_special_1', 'Aurora Gate', 10, 8, 'rainbow_essence', SPAWN_RARITY_RARE, None, WEATHER_SPECIAL),
+        ('si_special_2', 'Celestial Throne', 12, 3, 'stardust_petal', SPAWN_RARITY_RARE, None, WEATHER_SPECIAL),
+        ('si_special_3', 'Moonrise Platform', 6, 12, 'moonbeam_honey', SPAWN_RARITY_RARE, None, WEATHER_SPECIAL),
     ],
 }
 
@@ -1626,6 +1661,66 @@ RECIPES = {
         ],
         'color_influence': (0.7, 0.6, 0.4),  # Golden ancient
         'unlock': {'type': UNLOCK_TYPE_DISCOVERY, 'zone': 'ancient_ruins'},
+    },
+
+    # Sky Islands legendary recipes
+    'celestial_ambrosia': {
+        'name': 'Celestial Ambrosia',
+        'description': "A divine dessert said to be the food of sky spirits. Grants a sense of peaceful euphoria.",
+        'category': RECIPE_CATEGORY_DESSERT,
+        'difficulty': 5,
+        'base_price': 350,
+        'ingredients': [
+            ('starlight_nectar', 1, 3),
+            ('celestial_berry', 2, 2),
+            ('sky_honey', 1, 2),
+            ('cloud_essence', 1, 2),
+        ],
+        'color_influence': (0.9, 0.85, 1.0),  # Ethereal white-gold
+        'unlock': {'type': UNLOCK_TYPE_DISCOVERY, 'zone': 'sky_islands'},
+    },
+    'dragon_tear_elixir': {
+        'name': 'Dragon Tear Elixir',
+        'description': "An impossibly rare beverage made from crystallized dragon tears. Said to grant visions.",
+        'category': RECIPE_CATEGORY_BEVERAGE,
+        'difficulty': 5,
+        'base_price': 400,
+        'ingredients': [
+            ('dragon_tear', 1, 3),
+            ('starlight_nectar', 1, 2),
+            ('wind_flower', 1, 2),
+        ],
+        'color_influence': (0.6, 0.75, 1.0),  # Iridescent blue
+        'unlock': {'type': UNLOCK_TYPE_DISCOVERY, 'zone': 'sky_islands'},
+    },
+    'phoenix_rebirth_cake': {
+        'name': 'Phoenix Rebirth Cake',
+        'description': "A legendary dessert that seems to glow with inner warmth. Customers feel renewed after eating it.",
+        'category': RECIPE_CATEGORY_DESSERT,
+        'difficulty': 5,
+        'base_price': 500,
+        'ingredients': [
+            ('phoenix_feather', 1, 3),
+            ('sky_crystal', 1, 2),
+            ('celestial_berry', 1, 2),
+            ('sky_honey', 1, 2),
+        ],
+        'color_influence': (1.0, 0.7, 0.4),  # Phoenix flame colors
+        'unlock': {'type': UNLOCK_TYPE_DISCOVERY, 'zone': 'sky_islands'},
+    },
+    'cloud_walker_soup': {
+        'name': 'Cloud Walker Soup',
+        'description': "A light, airy soup that leaves diners feeling like they could float away. Perfect for adventurers.",
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 4,
+        'base_price': 280,
+        'ingredients': [
+            ('cloud_essence', 2, 2),
+            ('wind_flower', 1, 2),
+            ('sky_crystal', 1, 2),
+        ],
+        'color_influence': (0.85, 0.9, 1.0),  # Soft cloud white
+        'unlock': {'type': UNLOCK_TYPE_DISCOVERY, 'zone': 'sky_islands'},
     },
 }
 

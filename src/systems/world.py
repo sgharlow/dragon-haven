@@ -9,6 +9,7 @@ from typing import Dict, List, Optional, Any, Tuple, Set
 from constants import (
     ZONE_CAFE_GROUNDS, ZONE_MEADOW_FIELDS, ZONE_FOREST_DEPTHS,
     ZONE_COASTAL_SHORE, ZONE_MOUNTAIN_PASS, ZONE_ANCIENT_RUINS,
+    ZONE_SKY_ISLANDS,
     ALL_ZONES, ZONE_UNLOCK_REQUIREMENTS, ZONE_CONNECTIONS,
     ZONE_WIDTH, ZONE_HEIGHT, TILE_SIZE,
     WEATHER_SUNNY, WEATHER_CLOUDY, WEATHER_RAINY, WEATHER_STORMY, WEATHER_SPECIAL,
@@ -50,10 +51,17 @@ class TileType:
     CRYSTAL_CLUSTER = 'crystal_cluster'
     OVERGROWN = 'overgrown'
     ANCIENT_PATH = 'ancient_path'
+    # Sky Islands tiles
+    CLOUD = 'cloud'
+    SKY_CRYSTAL = 'sky_crystal'
+    FLOATING_GRASS = 'floating_grass'
+    STARLIGHT_POOL = 'starlight_pool'
+    WIND_STREAM = 'wind_stream'
+    VOID = 'void'
 
     # Walkable tiles
-    WALKABLE = {GRASS, DIRT, FLOWER, SAND, SHALLOW_WATER, SEAWEED, TIDAL_POOL, ROCK, SNOW, ALPINE_FLOWER, HOT_SPRING, RUIN_FLOOR, OVERGROWN, ANCIENT_PATH}
-    BLOCKING = {WATER, STONE, TREE, BUSH, BUILDING, RUIN_WALL, CRYSTAL_CLUSTER}
+    WALKABLE = {GRASS, DIRT, FLOWER, SAND, SHALLOW_WATER, SEAWEED, TIDAL_POOL, ROCK, SNOW, ALPINE_FLOWER, HOT_SPRING, RUIN_FLOOR, OVERGROWN, ANCIENT_PATH, CLOUD, FLOATING_GRASS, STARLIGHT_POOL, WIND_STREAM}
+    BLOCKING = {WATER, STONE, TREE, BUSH, BUILDING, RUIN_WALL, CRYSTAL_CLUSTER, SKY_CRYSTAL, VOID}
 
 
 @dataclass
@@ -353,6 +361,28 @@ class WorldManager:
         ruins.tile_map = self._generate_ruins_map()
         self._zones[ZONE_ANCIENT_RUINS] = ruins
 
+        # Sky Islands - requires adult (flight capability)
+        sky = Zone(
+            id=ZONE_SKY_ISLANDS,
+            name="Sky Islands",
+            description="Floating islands among the clouds, home to legendary ingredients and celestial wonders.",
+            unlock_requirement=ZONE_UNLOCK_REQUIREMENTS[ZONE_SKY_ISLANDS],
+            connections=ZONE_CONNECTIONS[ZONE_SKY_ISLANDS]
+        )
+        sky.resource_points = [
+            ResourcePoint('si_cloud_1', 'Cloud Bank', 5, 5, 'cloud', 3),
+            ResourcePoint('si_crystal_1', 'Crystal Spire', 10, 4, 'crystal', 2),
+            ResourcePoint('si_berry_1', 'Star Garden', 4, 10, 'berry', 3),
+            ResourcePoint('si_flower_1', 'Wind Terrace', 12, 8, 'flower', 3),
+            ResourcePoint('si_nectar_1', 'Starlight Pool', 8, 12, 'nectar', 2),
+            ResourcePoint('si_tear_1', 'Dragon Shrine', 6, 6, 'tear', 1),
+            ResourcePoint('si_feather_1', 'Phoenix Nest', 14, 6, 'feather', 1),
+            ResourcePoint('si_honey_1', 'Sky Hive', 3, 14, 'honey', 2),
+        ]
+        # Generate sky-themed tile map
+        sky.tile_map = self._generate_sky_map()
+        self._zones[ZONE_SKY_ISLANDS] = sky
+
     def _generate_coastal_map(self) -> List[List[str]]:
         """Generate a coastal-themed tile map."""
         tiles = []
@@ -449,6 +479,47 @@ class WorldManager:
                         tile = TileType.CRYSTAL_CLUSTER
                     else:
                         tile = TileType.STONE
+                row.append(tile)
+            tiles.append(row)
+        return tiles
+
+    def _generate_sky_map(self) -> List[List[str]]:
+        """Generate a sky islands-themed tile map with floating platforms."""
+        tiles = []
+        for y in range(ZONE_HEIGHT):
+            row = []
+            for x in range(ZONE_WIDTH):
+                # Create floating island pattern - void around edges and between islands
+                # Main island cluster in center-left
+                in_main_island = (3 <= x <= 8 and 3 <= y <= 10)
+                # Secondary island cluster top-right
+                in_secondary_island = (10 <= x <= 14 and 2 <= y <= 7)
+                # Third island cluster bottom-right
+                in_third_island = (11 <= x <= 15 and 10 <= y <= 14)
+                # Bridge connections (wind streams)
+                on_bridge = ((y == 5 and 8 <= x <= 10) or
+                            (x == 11 and 7 <= y <= 10))
+
+                if on_bridge:
+                    tile = TileType.WIND_STREAM
+                elif in_main_island or in_secondary_island or in_third_island:
+                    # Island interior terrain
+                    r = random.random()
+                    if r < 0.35:
+                        tile = TileType.CLOUD
+                    elif r < 0.55:
+                        tile = TileType.FLOATING_GRASS
+                    elif r < 0.70:
+                        tile = TileType.STARLIGHT_POOL
+                    elif r < 0.80:
+                        tile = TileType.WIND_STREAM
+                    elif r < 0.90:
+                        tile = TileType.SKY_CRYSTAL
+                    else:
+                        tile = TileType.CLOUD
+                else:
+                    # Void between islands (impassable)
+                    tile = TileType.VOID
                 row.append(tile)
             tiles.append(row)
         return tiles
