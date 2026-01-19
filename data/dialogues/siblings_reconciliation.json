@@ -1,0 +1,120 @@
+{
+  "id": "siblings_reconciliation",
+  "name": "Finding Common Ground",
+  "start_id": "both_present",
+  "nodes": {
+    "both_present": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "For the first time, Elena and Thomas are sitting at the same table. Not speaking, not looking at each other, but sharing the same space. Your dragon lies between them like a furry mediator.",
+      "next_id": "thomas_speaks"
+    },
+    "thomas_speaks": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "*After a long silence* Do you remember when we were kids... and I broke Mother's favorite vase? You told her it was you.",
+      "next_id": "elena_remembers"
+    },
+    "elena_remembers": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "*A reluctant half-smile* You cried for an hour afterward because I got punished. Kept trying to tell the truth and I kept shushing you.",
+      "next_id": "thomas_why"
+    },
+    "thomas_why": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "Why did you do that? Take the blame for me?",
+      "next_id": "elena_simple"
+    },
+    "elena_simple": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "*She shrugs* Because you were my little brother. Because I knew Mother would be harder on you. Because... *her voice softens* Because protecting you was just what I did.",
+      "next_id": "thomas_emotional"
+    },
+    "thomas_emotional": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "*His voice catches* You protected me my whole life, Elena. From bullies, from my own stupid decisions, from everything. And when you tried to protect me from Margot...",
+      "next_id": "elena_interrupts"
+    },
+    "elena_interrupts": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "*Quietly* You chose her.",
+      "next_id": "thomas_admits"
+    },
+    "thomas_admits": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "I chose her. *He looks down at his hands* And I've spent every day since wondering how I could have been so blind. So cruel. You were trying to save me and I... I...",
+      "next_id": "thomas_breaks"
+    },
+    "thomas_breaks": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "*His composure shatters* I'm so sorry, Elena. I'm so sorry. I know it's not enough. I know words can't fix what I did. But I need you to know - I never stopped loving you. Not for one day.",
+      "next_id": "elena_responds"
+    },
+    "elena_responds": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Elena is silent for a long moment. When she speaks, her voice is thick with emotion.",
+      "choices": [
+        {
+          "text": "[Watch quietly]",
+          "next_id": "elena_speaks"
+        }
+      ]
+    },
+    "elena_speaks": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "I tried to stop loving you. *A tear escapes* I tried so hard. I told myself you were dead to me. That I didn't care. But every birthday, every holiday... the empty chair hurt.",
+      "next_id": "elena_confession"
+    },
+    "elena_confession": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "I'm tired, Thomas. Tired of being angry. Tired of being alone. Tired of pretending I don't miss my little brother every single day.",
+      "next_id": "thomas_hope"
+    },
+    "thomas_hope": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "*Desperately hopeful* Does that mean... can we... I'll do anything, Elena. Whatever it takes. I'll spend the rest of my life making it up to you.",
+      "next_id": "elena_conditions"
+    },
+    "elena_conditions": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "*She holds up a hand* I'm not ready to forgive you. I don't know if I ever will be. But... *she takes a shaky breath* ...I'm willing to try. Slowly. Carefully.",
+      "next_id": "thomas_accepts"
+    },
+    "thomas_accepts": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "*Relief floods his face* That's more than I deserve. More than I dared hope for. Thank you, Elena. Thank you.",
+      "next_id": "elena_warning"
+    },
+    "elena_warning": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "Don't thank me yet. This is going to be hard. I'm going to get angry. I'm going to bring up old wounds. You'll have to be patient with me.",
+      "next_id": "thomas_promises"
+    },
+    "thomas_promises": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "I waited five years just to sit at the same table as you. I can wait however long it takes.",
+      "set_flags": ["siblings_reconciling"],
+      "next_id": "dragon_happy"
+    },
+    "dragon_happy": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Your dragon lifts its head and makes a happy rumbling sound, as if sensing the shift in the air. For the first time, Elena and Thomas share a small smile - not at each other, but at the dragon between them."
+    }
+  }
+}

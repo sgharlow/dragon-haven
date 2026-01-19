@@ -1,0 +1,82 @@
+{
+  "id": "elena_arrival",
+  "name": "The Proud Sister",
+  "start_id": "elena_enters",
+  "nodes": {
+    "elena_enters": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "A woman enters your cafe, her posture rigid, her eyes scanning the room with guarded wariness. She carries herself like someone expecting disappointment.",
+      "next_id": "elena_first_words"
+    },
+    "elena_first_words": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "*She approaches the counter, her voice clipped and formal* I was told this establishment is... discreet. That one can find a quiet corner without questions.",
+      "next_id": "player_welcome"
+    },
+    "player_welcome": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "How do you respond?",
+      "choices": [
+        {
+          "text": "Everyone's welcome here. No questions, just good food.",
+          "next_id": "elena_relaxes"
+        },
+        {
+          "text": "You seem troubled. Would you like to talk about it?",
+          "next_id": "elena_defensive"
+        }
+      ]
+    },
+    "elena_relaxes": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "*Her shoulders drop slightly* That's... refreshing. Most places want to know everything. Your business, your family, your story. *She pauses* I just need somewhere to think.",
+      "next_id": "elena_sits"
+    },
+    "elena_defensive": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "*Her walls go back up instantly* I didn't come here for counseling. *She takes a breath* I apologize. That was... uncalled for. I just need somewhere to think.",
+      "next_id": "elena_sits"
+    },
+    "elena_sits": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "She chooses a corner table, her back to the wall where she can watch the door. Your dragon approaches curiously, and for the first time, her expression softens.",
+      "next_id": "elena_dragon"
+    },
+    "elena_dragon": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "*She reaches out tentatively to touch your dragon* We had a family dragon once. Before... *She stops herself* It doesn't matter. Some things can't be fixed.",
+      "next_id": "dragon_comfort"
+    },
+    "dragon_comfort": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Your dragon nuzzles against her hand, sensing something underneath her proud exterior - a loneliness she tries hard to hide.",
+      "next_id": "elena_surprised"
+    },
+    "elena_surprised": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "*Her voice catches slightly* Your dragon has gentle manners. It's been so long since... *She clears her throat* I'm Elena. I may become a regular here, if that's acceptable.",
+      "next_id": "player_accept"
+    },
+    "player_accept": {
+      "speaker": "You",
+      "portrait": "player",
+      "text": "You're always welcome here, Elena. The corner booth will be yours whenever you need it.",
+      "set_flags": ["elena_met"],
+      "next_id": "elena_grateful"
+    },
+    "elena_grateful": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "*A flicker of something like gratitude crosses her face* Thank you. You may come to regret that offer when you learn what kind of mess follows me. But for now... thank you."
+    }
+  }
+}

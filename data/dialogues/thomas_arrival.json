@@ -1,0 +1,88 @@
+{
+  "id": "thomas_arrival",
+  "name": "The Regretful Brother",
+  "start_id": "thomas_enters",
+  "nodes": {
+    "thomas_enters": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "A weathered man pushes through the door, pausing just inside. His eyes sweep the room with the desperate urgency of someone searching for something precious.",
+      "next_id": "thomas_spots_corner"
+    },
+    "thomas_spots_corner": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "His gaze lands on Elena in her corner booth. His face cycles through a dozen emotions - hope, fear, guilt, determination - before settling into resigned resolve.",
+      "next_id": "elena_notices"
+    },
+    "elena_notices": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "*Her cup freezes halfway to her lips. Her voice is ice* How did you find me.",
+      "next_id": "thomas_approaches"
+    },
+    "thomas_approaches": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "*He approaches slowly, hands raised* Elena. Please. I've been looking everywhere. We need to talk.",
+      "next_id": "elena_refuses"
+    },
+    "elena_refuses": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "We needed to talk five years ago, Thomas. You made your choice. You chose her side. There's nothing left to say.",
+      "next_id": "thomas_pleads"
+    },
+    "thomas_pleads": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "*His voice breaks* I was wrong. Elena, I was so wrong. I've spent five years realizing just how wrong I was. Please. Just... five minutes.",
+      "next_id": "player_intervene"
+    },
+    "player_intervene": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The tension is palpable. Other customers have stopped eating to watch. What do you do?",
+      "choices": [
+        {
+          "text": "Perhaps you could both use some tea? On the house.",
+          "next_id": "offer_tea"
+        },
+        {
+          "text": "This is clearly a private matter. I'll give you space.",
+          "next_id": "give_space"
+        }
+      ]
+    },
+    "offer_tea": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You place two cups of calming tea between them. Thomas looks at you with gratitude. Elena... doesn't refuse it.",
+      "next_id": "elena_relents"
+    },
+    "give_space": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "*He nods gratefully* Thank you. *He turns back to his sister* Elena, please. Not for me. For our parents. For what our family used to be.",
+      "next_id": "elena_relents"
+    },
+    "elena_relents": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "*A long silence. Finally* Five minutes. That's all you get. And not here - I won't make a scene in front of these people.",
+      "next_id": "thomas_agrees"
+    },
+    "thomas_agrees": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "*Relief floods his weathered face* Thank you. That's all I ask. *He turns to you* I'll... I'll be back. Thank you for... whatever you did. For giving her somewhere safe.",
+      "set_flags": ["thomas_met"],
+      "next_id": "siblings_leave"
+    },
+    "siblings_leave": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "They leave together, not walking close, but at least walking in the same direction. Your dragon watches them go with what seems like concern."
+    }
+  }
+}

@@ -147,5 +147,55 @@
       "noble_unmasked": 100
     },
     "met": false
+  },
+  {
+    "id": "elena",
+    "name": "Elena",
+    "portrait_id": "elena",
+    "description": "A proud woman with sharp features and guarded eyes. She carries the weight of old wounds and refuses to be the first to apologize.",
+    "chapter": "chapter6",
+    "affinity": 0,
+    "favorite_recipes": ["refined_tea", "delicate_pastry", "garden_salad"],
+    "liked_recipes": ["herbed_bread", "cream_puff", "honey_cake"],
+    "disliked_recipes": ["campfire_bread", "traveler_stew", "simple_gruel"],
+    "gift_preferences": {
+      "rare_flower": 15,
+      "fine_silk": 12,
+      "rare_spice": 10,
+      "cookbook": 8,
+      "exotic_fruit": 8
+    },
+    "unlocked_dialogues": {
+      "elena_pride": 25,
+      "elena_hurt": 50,
+      "elena_regret": 75,
+      "elena_forgiveness": 100
+    },
+    "met": false
+  },
+  {
+    "id": "thomas",
+    "name": "Thomas",
+    "portrait_id": "thomas",
+    "description": "A weathered man who carries regret in his posture. Stubborn by nature, he struggles to admit when he's wrong.",
+    "chapter": "chapter6",
+    "affinity": 0,
+    "favorite_recipes": ["hearty_breakfast", "meat_pie", "comfort_stew"],
+    "liked_recipes": ["herb_stew", "traveler_stew", "campfire_bread"],
+    "disliked_recipes": ["refined_tea", "delicate_pastry", "crystal_infused_dessert"],
+    "gift_preferences": {
+      "dried_meat": 10,
+      "adventure_journal": 12,
+      "compass": 8,
+      "herbal_bundle": 10,
+      "antique_trinket": 15
+    },
+    "unlocked_dialogues": {
+      "thomas_stubbornness": 25,
+      "thomas_memories": 50,
+      "thomas_apology": 75,
+      "thomas_reconciliation": 100
+    },
+    "met": false
   }
 ]

@@ -286,6 +286,8 @@ CHARACTER_SECRET_RECIPES = {
     'garrett': 'garretts_memory_bread',
     'vera': 'captains_treasure_catch',
     'noble': 'royal_midnight_feast',
+    'elena': 'elenas_reconciliation_tea',
+    'thomas': 'thomas_humble_pie',
 }
 
 # =============================================================================
@@ -1516,6 +1518,36 @@ RECIPES = {
         ],
         'color_influence': (0.4, 0.3, 0.5),  # Regal purple
         'unlock': {'type': UNLOCK_TYPE_AFFINITY, 'character': 'noble'},
+    },
+    'elenas_reconciliation_tea': {
+        'name': "Elena's Reconciliation Tea",
+        'description': "A delicate blend passed down through generations. Elena shares it only with those she trusts.",
+        'category': RECIPE_CATEGORY_BEVERAGE,
+        'difficulty': 3,
+        'base_price': 85,
+        'ingredients': [
+            ('wild_herb', 2, 2),
+            ('garden_herb', 1, 2),
+            ('rare_flower', 1, 3),
+            ('golden_honey', 1, 2),
+        ],
+        'color_influence': (0.6, 0.5, 0.7),  # Soft lavender
+        'unlock': {'type': UNLOCK_TYPE_AFFINITY, 'character': 'elena'},
+    },
+    'thomas_humble_pie': {
+        'name': "Thomas's Humble Pie",
+        'description': "A hearty, unpretentious pie. Thomas learned that sometimes the simplest gesture means the most.",
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 3,
+        'base_price': 90,
+        'ingredients': [
+            ('wild_game', 1, 2),
+            ('garden_herb', 2, 2),
+            ('root_vegetable', 2, 2),
+            ('wild_mushroom', 1, 2),
+        ],
+        'color_influence': (0.6, 0.5, 0.4),  # Warm rustic brown
+        'unlock': {'type': UNLOCK_TYPE_AFFINITY, 'character': 'thomas'},
     },
 }
 

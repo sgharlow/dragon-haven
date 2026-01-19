@@ -1,0 +1,133 @@
+{
+  "id": "elena_confides",
+  "name": "Elena's Pain",
+  "start_id": "elena_opens_up",
+  "nodes": {
+    "elena_opens_up": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Elena lingers after the cafe empties out. She's been staring at her empty cup for nearly an hour, lost in thought.",
+      "next_id": "player_check"
+    },
+    "player_check": {
+      "speaker": "You",
+      "portrait": "player",
+      "text": "Another cup? Or just some company?",
+      "next_id": "elena_startled"
+    },
+    "elena_startled": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "*She looks up, surprised* I... company, I suppose. If you don't mind sitting with someone who isn't very good at talking about feelings.",
+      "next_id": "player_sits"
+    },
+    "player_sits": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You sit across from her. Your dragon curls up nearby, its warm presence filling the silence until Elena is ready to speak.",
+      "next_id": "elena_begins"
+    },
+    "elena_begins": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "You want to know what happened between us. Everyone always does. The curious cafe owner who watches the dramatic siblings...",
+      "next_id": "player_respond"
+    },
+    "player_respond": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "How do you respond?",
+      "choices": [
+        {
+          "text": "Only if you want to share. Your story is yours to keep or tell.",
+          "next_id": "elena_appreciates"
+        },
+        {
+          "text": "I've learned that telling stories can sometimes heal them.",
+          "next_id": "elena_considers"
+        }
+      ]
+    },
+    "elena_appreciates": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "*A sad smile* You're kind. Kinder than I probably deserve. I've been... bitter. For so long. It's become who I am.",
+      "next_id": "elena_tells_story"
+    },
+    "elena_considers": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "*She considers this* Maybe. Maybe that's true. I've held this story so tightly it's grown thorns. Perhaps letting some of it out...",
+      "next_id": "elena_tells_story"
+    },
+    "elena_tells_story": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "Thomas and I were close. Inseparable growing up. Our parents called us two halves of one whole. Then he met Margot.",
+      "next_id": "elena_about_margot"
+    },
+    "elena_about_margot": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "She was charming. Beautiful. Everyone loved her. But I saw... something else. The way she isolated Thomas from his friends. The way she twisted his words against people.",
+      "next_id": "elena_warned"
+    },
+    "elena_warned": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "I tried to warn him. *Her voice breaks slightly* I tried so hard. But he was in love. And Margot was clever. She made me look jealous. Paranoid. Over-protective.",
+      "next_id": "elena_falling_out"
+    },
+    "elena_falling_out": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "The last thing Thomas said to me before I left... he said I was poison. That I couldn't stand to see anyone happy because I was so miserable inside. *Tears form but don't fall*",
+      "next_id": "elena_aftermath"
+    },
+    "elena_aftermath": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "He chose her over his own family. Over me. And for five years, I convinced myself I didn't care. That he was dead to me. But hearing that she left him...",
+      "next_id": "player_comfort"
+    },
+    "player_comfort": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "What do you say?",
+      "choices": [
+        {
+          "text": "You feel vindicated, but also sad for him.",
+          "next_id": "elena_truth"
+        },
+        {
+          "text": "Part of you still cares, even after everything.",
+          "next_id": "elena_admits"
+        }
+      ]
+    },
+    "elena_truth": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "*A bitter laugh* Vindicated. Yes. I was RIGHT. But being right... it doesn't feel like I thought it would. It just feels empty.",
+      "next_id": "elena_confides_end"
+    },
+    "elena_admits": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "*Her facade cracks* Of course I still care. He's my brother. I HATE that I still care. But when he walked through that door... I felt twelve years old again.",
+      "next_id": "elena_confides_end"
+    },
+    "elena_confides_end": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "*She wipes her eyes quickly* I don't know if I can forgive him. I don't know if I should. But I'm... tired of carrying this anger alone.",
+      "set_flags": ["elena_confided"],
+      "next_id": "dragon_comfort"
+    },
+    "dragon_comfort": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Your dragon rests its head on Elena's lap. She strokes it absently, and for the first time, she looks less like a fortress and more like a person."
+    }
+  }
+}

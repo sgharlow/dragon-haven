@@ -402,6 +402,12 @@ class DialogueBox:
         elif portrait_lower == 'garrett':
             # Old Man Garrett
             self._draw_garrett_portrait(surface, center_x, center_y, alpha)
+        elif portrait_lower == 'elena':
+            # Elena - proud sister
+            self._draw_elena_portrait(surface, center_x, center_y, alpha)
+        elif portrait_lower == 'thomas':
+            # Thomas - regretful brother
+            self._draw_thomas_portrait(surface, center_x, center_y, alpha)
         else:
             # Generic NPC portrait
             self._draw_npc_portrait(surface, center_x, center_y, alpha)
@@ -596,6 +602,68 @@ class DialogueBox:
         # Cardigan buttons
         pygame.draw.circle(surface, (70, 60, 55), (cx, cy + 22), 3)
         pygame.draw.circle(surface, (70, 60, 55), (cx, cy + 28), 3)
+
+    def _draw_elena_portrait(self, surface: pygame.Surface, cx: int, cy: int, alpha: int):
+        """Draw Elena - proud sister with sharp features and guarded eyes."""
+        # Fair skin tone
+        skin_color = (235, 210, 195)
+        # Head (slightly angular)
+        pygame.draw.circle(surface, skin_color, (cx, cy - 5), 24)
+        # Dark auburn hair, pulled back tightly
+        pygame.draw.ellipse(surface, (120, 55, 40), (cx - 26, cy - 35, 52, 32))
+        pygame.draw.ellipse(surface, (100, 45, 35), (cx - 22, cy - 28, 44, 22))
+        # Hair pulled back at sides
+        pygame.draw.ellipse(surface, (110, 50, 38), (cx - 28, cy - 20, 12, 15))
+        pygame.draw.ellipse(surface, (110, 50, 38), (cx + 16, cy - 20, 12, 15))
+        # Sharp, guarded eyes
+        pygame.draw.ellipse(surface, (255, 255, 255), (cx - 14, cy - 11, 11, 7))
+        pygame.draw.ellipse(surface, (255, 255, 255), (cx + 3, cy - 11, 11, 7))
+        pygame.draw.circle(surface, (70, 50, 40), (cx - 9, cy - 8), 3)
+        pygame.draw.circle(surface, (70, 50, 40), (cx + 8, cy - 8), 3)
+        # Thin, arched eyebrows (skeptical)
+        pygame.draw.arc(surface, (100, 45, 35), (cx - 18, cy - 20, 14, 10), 0.5, 2.6, 2)
+        pygame.draw.arc(surface, (100, 45, 35), (cx + 4, cy - 20, 14, 10), 0.5, 2.6, 2)
+        # Thin, pressed lips (holding back)
+        pygame.draw.line(surface, (180, 120, 120), (cx - 8, cy + 6), (cx + 8, cy + 6), 2)
+        # High collar - formal, protective
+        pygame.draw.polygon(surface, (90, 60, 70), [
+            (cx - 18, cy + 16), (cx - 12, cy + 30), (cx + 12, cy + 30), (cx + 18, cy + 16)
+        ])
+        pygame.draw.line(surface, (70, 45, 55), (cx, cy + 16), (cx, cy + 28), 2)
+
+    def _draw_thomas_portrait(self, surface: pygame.Surface, cx: int, cy: int, alpha: int):
+        """Draw Thomas - regretful brother with weathered features and stubborn jaw."""
+        # Tanned, weathered skin tone
+        skin_color = (210, 175, 150)
+        # Head (broader, more rugged)
+        pygame.draw.circle(surface, skin_color, (cx, cy - 5), 25)
+        # Messy brown hair with gray streaks
+        pygame.draw.ellipse(surface, (85, 65, 50), (cx - 28, cy - 36, 56, 30))
+        pygame.draw.ellipse(surface, (75, 55, 42), (cx - 24, cy - 30, 48, 22))
+        # Gray streaks
+        pygame.draw.ellipse(surface, (130, 125, 120), (cx - 20, cy - 32, 12, 8))
+        pygame.draw.ellipse(surface, (130, 125, 120), (cx + 10, cy - 33, 10, 7))
+        # Tired, regretful eyes
+        pygame.draw.ellipse(surface, (255, 255, 255), (cx - 14, cy - 10, 10, 6))
+        pygame.draw.ellipse(surface, (255, 255, 255), (cx + 4, cy - 10, 10, 6))
+        pygame.draw.circle(surface, (60, 50, 45), (cx - 9, cy - 8), 3)
+        pygame.draw.circle(surface, (60, 50, 45), (cx + 9, cy - 8), 3)
+        # Heavy brows (furrowed, stubborn)
+        pygame.draw.ellipse(surface, (70, 55, 45), (cx - 16, cy - 15, 12, 5))
+        pygame.draw.ellipse(surface, (70, 55, 45), (cx + 4, cy - 15, 12, 5))
+        # Stubble
+        for i in range(-10, 11, 4):
+            pygame.draw.circle(surface, (90, 75, 65), (cx + i, cy + 12), 1)
+        # Stubborn jaw set, slight frown
+        pygame.draw.arc(surface, (170, 130, 110), (cx - 10, cy + 2, 20, 10), 0, 3.14, 2)
+        # Simple work shirt collar
+        pygame.draw.polygon(surface, (100, 85, 70), [
+            (cx - 20, cy + 18), (cx - 16, cy + 30), (cx + 16, cy + 30), (cx + 20, cy + 18)
+        ])
+        # Open collar
+        pygame.draw.polygon(surface, skin_color, [
+            (cx - 6, cy + 18), (cx, cy + 26), (cx + 6, cy + 18)
+        ])
 
     def _draw_affinity_bar(self, surface: pygame.Surface, x: int, y: int, alpha: int):
         """

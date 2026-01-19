@@ -1,0 +1,112 @@
+{
+  "id": "chapter6_end",
+  "name": "Chapter 6 Complete",
+  "start_id": "chapter_reflection",
+  "nodes": {
+    "chapter_reflection": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Elena and Thomas have become regulars at Dragon Haven Cafe - not separately anymore, but together. Their laughter fills the corner booth that once held only Elena's silence.",
+      "next_id": "siblings_together"
+    },
+    "siblings_together": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "They're rebuilding their relationship one conversation at a time. Some days are harder than others. Old wounds resurface, old arguments flare. But they keep coming back. They keep trying.",
+      "next_id": "elena_visit"
+    },
+    "elena_visit": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "*She approaches you while Thomas orders* I never properly thanked you. When I first came here, I was running from my past. You gave me a place to stop running.",
+      "next_id": "thomas_joins"
+    },
+    "thomas_joins": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "*He joins them, carrying two cups* And you gave me somewhere to find what I'd lost. *He hands Elena her tea* Our family wasn't broken beyond repair. We just needed... neutral ground.",
+      "next_id": "elena_explains"
+    },
+    "elena_explains": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "This cafe is special. It's not just the food or the dragon. *She looks around* People heal here. They find what they need. That takes a special kind of magic.",
+      "next_id": "player_respond"
+    },
+    "player_respond": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "What do you say?",
+      "choices": [
+        {
+          "text": "The magic comes from the people who walk through that door.",
+          "next_id": "elena_smiles"
+        },
+        {
+          "text": "I just serve the food. You two did the hard work.",
+          "next_id": "thomas_disagrees"
+        }
+      ]
+    },
+    "elena_smiles": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "*A genuine smile, no walls, no guards* Perhaps. But you create the space where magic can happen. That's not nothing.",
+      "next_id": "siblings_gift"
+    },
+    "thomas_disagrees": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "*He shakes his head* Don't be modest. You listened when we needed to talk. You stayed quiet when we needed silence. You knew exactly what we needed, even when we didn't.",
+      "next_id": "siblings_gift"
+    },
+    "siblings_gift": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "We've been talking about the future. Thomas is thinking of moving back to the city. *She glances at him* Closer to family.",
+      "next_id": "thomas_nervous"
+    },
+    "thomas_nervous": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "*Nervous but hopeful* We thought maybe... a joint business. Something to work on together. Rebuild what we lost by building something new.",
+      "next_id": "elena_plans"
+    },
+    "elena_plans": {
+      "speaker": "Elena",
+      "portrait": "elena",
+      "text": "A specialty shop. Artisan foods. Family recipes with modern touches. *She looks at you* Inspired by a certain cafe we know.",
+      "next_id": "thomas_request"
+    },
+    "thomas_request": {
+      "speaker": "Thomas",
+      "portrait": "thomas",
+      "text": "Would you... would you consider being our advisor? Helping us get started? You've built something remarkable here. We'd love to learn from you.",
+      "next_id": "player_final"
+    },
+    "player_final": {
+      "speaker": "You",
+      "portrait": "player",
+      "text": "I'd be honored. Family businesses are built on love - and you two have plenty of that.",
+      "next_id": "chapter_complete"
+    },
+    "chapter_complete": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Word spreads of Dragon Haven Cafe - a place where estranged family members find their way back to each other. Where the past can be confronted, forgiven, and laid to rest.",
+      "set_flags": ["chapter6_complete"],
+      "next_id": "reputation_grows"
+    },
+    "reputation_grows": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Elena's Reconciliation Tea and Thomas's Humble Pie join your menu - reminders that even the most broken relationships can be mended with patience, honesty, and love.",
+      "next_id": "chapter_end"
+    },
+    "chapter_end": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Chapter 6 - Mending What Was Broken - Complete"
+    }
+  }
+}
