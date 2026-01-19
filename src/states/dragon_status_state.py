@@ -9,6 +9,7 @@ from states.base_state import BaseScreen
 from entities.dragon import Dragon
 from ui.components import Button
 from ui.status_bars import StatusBar
+from systems.dragon_manager import get_dragon_manager
 from constants import (
     SCREEN_WIDTH, SCREEN_HEIGHT,
     UI_PANEL, UI_BORDER, UI_TEXT, UI_TEXT_DIM,
@@ -83,6 +84,12 @@ class DragonStatusState(BaseScreen):
         """Initialize UI when entering state."""
         super().enter(previous_state)
 
+        # Get dragon from dragon manager
+        dragon_mgr = get_dragon_manager()
+        if dragon_mgr.has_dragon():
+            self._dragon = dragon_mgr.get_dragon()
+            self._name_input = self._dragon.get_name()
+
         # Initialize fonts
         self._name_font = pygame.font.Font(None, 36)
         self._stat_font = pygame.font.Font(None, 24)
@@ -133,9 +140,10 @@ class DragonStatusState(BaseScreen):
             # Handle name editing
             if self._editing_name:
                 if event.key == pygame.K_RETURN:
-                    # Save name
+                    # Save name using validation
                     if self._dragon and len(self._name_input) > 0:
-                        self._dragon.name = self._name_input
+                        dragon_mgr = get_dragon_manager()
+                        dragon_mgr.set_dragon_name(self._name_input)
                     self._editing_name = False
                 elif event.key == pygame.K_BACKSPACE:
                     self._name_input = self._name_input[:-1]

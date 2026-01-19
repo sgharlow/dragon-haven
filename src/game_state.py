@@ -17,9 +17,10 @@ from systems.cafe import get_cafe_manager
 from systems.dialogue import get_dialogue_manager
 from systems.story import get_story_manager
 from entities.story_character import get_character_manager
+from systems.dragon_manager import get_dragon_manager
 
-# Note: Dragon and Player are managed per-state, not global singletons
-# They'll be accessed through the active gameplay state when needed
+# Note: Dragon is now managed through DragonManager singleton
+# Player is still managed per-state
 
 
 class GameStateManager:
@@ -109,6 +110,10 @@ class GameStateManager:
         recipe_mgr = get_recipe_manager()
         recipe_state = recipe_mgr.get_state()
 
+        # Dragon
+        dragon_mgr = get_dragon_manager()
+        dragon_state = dragon_mgr.get_state()
+
         return {
             'time': time_state,
             'inventory': inventory_state,
@@ -120,6 +125,7 @@ class GameStateManager:
             'characters': character_state,
             'dialogue': dialogue_state,
             'recipes': recipe_state,
+            'dragon': dragon_state,
             'playtime_seconds': self._playtime_seconds,
         }
 
@@ -177,6 +183,11 @@ class GameStateManager:
             recipe_mgr = get_recipe_manager()
             recipe_mgr.load_state(state['recipes'])
 
+        # Dragon
+        if 'dragon' in state:
+            dragon_mgr = get_dragon_manager()
+            dragon_mgr.load_state(state['dragon'])
+
         # Playtime
         self._playtime_seconds = state.get('playtime_seconds', 0.0)
 
@@ -205,13 +216,20 @@ class GameStateManager:
         # Player data
         save_data.player.name = "Player"
 
-        # Dragon data - from cafe manager's dragon info
-        cafe_state = game_state.get('cafe', {})
-        save_data.dragon.name = cafe_state.get('dragon_name', '')
-        save_data.dragon.stage = cafe_state.get('dragon_stage', 'egg')
-        save_data.dragon.age_days = 0
+        # Dragon data - from dragon manager
+        dragon_mgr = get_dragon_manager()
+        dragon = dragon_mgr.get_dragon()
+        if dragon:
+            save_data.dragon.name = dragon.get_name()
+            save_data.dragon.stage = dragon.get_stage()
+            save_data.dragon.age_days = dragon.get_age_days()
+        else:
+            save_data.dragon.name = ''
+            save_data.dragon.stage = 'egg'
+            save_data.dragon.age_days = 0
 
         # World data
+        cafe_state = game_state.get('cafe', {})
         world_state = game_state.get('world', {})
         save_data.world.current_zone = world_state.get('current_zone', 'cafe_grounds')
         save_data.world.day_number = time_mgr.get_current_day()
@@ -344,6 +362,10 @@ class GameStateManager:
         char_mgr.load_state({
             'characters': {},
         })
+
+        # Create fresh dragon
+        dragon_mgr = get_dragon_manager()
+        dragon_mgr.create_dragon()
 
 
 # =============================================================================

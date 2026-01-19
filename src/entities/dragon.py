@@ -15,6 +15,7 @@ from constants import (
     DRAGON_PET_HAPPINESS, DRAGON_PET_BOND,
     DRAGON_COLOR_SHIFT_RATE,
     DRAGON_ABILITY_COSTS, DRAGON_STAGE_ABILITIES,
+    DRAGON_NAME_MAX_LENGTH, DRAGON_NAME_DEFAULT,
     REAL_SECONDS_PER_GAME_HOUR
 )
 
@@ -83,7 +84,7 @@ class Dragon:
             dragon.use_ability('burrow_fetch')
     """
 
-    def __init__(self, name: str = "Dragon"):
+    def __init__(self, name: str = DRAGON_NAME_DEFAULT):
         """
         Initialize a new dragon (as an egg).
 
@@ -242,6 +243,55 @@ class Dragon:
             'stamina': self._stamina / DRAGON_STAT_MAX,
             'bond': self._bond / DRAGON_BOND_MAX
         }
+
+    def get_name(self) -> str:
+        """Get the dragon's name."""
+        return self.name
+
+    def set_name(self, name: str) -> bool:
+        """
+        Set the dragon's name with validation.
+
+        Args:
+            name: The new name (will be stripped of whitespace)
+
+        Returns:
+            True if name was valid and set, False otherwise
+        """
+        # Strip whitespace
+        name = name.strip()
+
+        # Validate: not empty
+        if not name:
+            return False
+
+        # Validate: max length
+        if len(name) > DRAGON_NAME_MAX_LENGTH:
+            name = name[:DRAGON_NAME_MAX_LENGTH]
+
+        self.name = name
+        return True
+
+    @staticmethod
+    def validate_name(name: str) -> Tuple[bool, str]:
+        """
+        Validate a potential dragon name.
+
+        Args:
+            name: The name to validate
+
+        Returns:
+            Tuple of (is_valid, error_message or validated_name)
+        """
+        name = name.strip()
+
+        if not name:
+            return False, "Name cannot be empty"
+
+        if len(name) > DRAGON_NAME_MAX_LENGTH:
+            return False, f"Name cannot exceed {DRAGON_NAME_MAX_LENGTH} characters"
+
+        return True, name
 
     # =========================================================================
     # INTERACTIONS

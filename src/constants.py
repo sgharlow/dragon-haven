@@ -311,6 +311,10 @@ DRAGON_PET_BOND = 5
 # Color shift rate (how fast color changes from food)
 DRAGON_COLOR_SHIFT_RATE = 0.05
 
+# Dragon naming
+DRAGON_NAME_MAX_LENGTH = 20
+DRAGON_NAME_DEFAULT = "Dragon"
+
 # Ability stamina costs
 DRAGON_ABILITY_COSTS = {
     'burrow_fetch': 20,

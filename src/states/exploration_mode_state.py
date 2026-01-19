@@ -21,6 +21,7 @@ from systems.world import get_world_manager, Zone
 from systems.resources import get_resource_manager
 from systems.time_system import get_time_manager
 from systems.inventory import get_inventory
+from systems.dragon_manager import get_dragon_manager
 from ui.zone_renderer import ZoneRenderer
 from ui.hud import HUD
 
@@ -257,6 +258,12 @@ class ExplorationModeState(BaseScreen):
         """Enter exploration mode."""
         super().enter(previous_state)
 
+        # Get dragon from dragon manager
+        dragon_mgr = get_dragon_manager()
+        if dragon_mgr.has_dragon():
+            self._dragon = dragon_mgr.get_dragon()
+            self.dragon_companion.set_dragon(self._dragon)
+
         # Load current zone
         zone = self.world.get_current_zone()
         if zone:
@@ -326,6 +333,12 @@ class ExplorationModeState(BaseScreen):
     def update(self, dt: float) -> bool:
         """Update exploration state."""
         super().update(dt)
+
+        # Check if dragon naming is pending
+        dragon_mgr = get_dragon_manager()
+        if dragon_mgr.is_naming_pending():
+            self.transition_to('dragon_naming')
+            return True
 
         if self._transitioning:
             return True

@@ -16,6 +16,7 @@ from states.recipe_book_state import RecipeBookState
 from states.dragon_status_state import DragonStatusState
 from states.pause_menu_state import PauseMenuState
 from states.save_load_state import SaveLoadState
+from states.dragon_naming_state import DragonNamingState
 
 # Initialize managers
 from save_manager import get_save_manager
@@ -28,6 +29,7 @@ from systems.dialogue import get_dialogue_manager
 from systems.story import get_story_manager
 from entities.story_character import get_character_manager
 from game_state import get_game_state_manager
+from systems.dragon_manager import get_dragon_manager
 
 
 def initialize_systems():
@@ -68,6 +70,16 @@ def initialize_systems():
     game_state_mgr = get_game_state_manager()
     game_state_mgr.enable_autosave()
 
+    # Initialize dragon manager
+    dragon_mgr = get_dragon_manager()
+
+    # Register dialogue events
+    def on_name_dragon_popup():
+        """Handle name_dragon_popup dialogue trigger."""
+        dragon_mgr.request_naming()
+
+    dialogue_mgr.register_event('name_dragon_popup', on_name_dragon_popup)
+
 
 def main():
     """Main entry point for Dragon Haven Cafe."""
@@ -97,6 +109,7 @@ def main():
     game.register_state("inventory", InventoryState(game))
     game.register_state("recipe_book", RecipeBookState(game))
     game.register_state("dragon_status", DragonStatusState(game))
+    game.register_state("dragon_naming", DragonNamingState(game))
 
     # Set initial state to main menu
     game.set_initial_state("main_menu")
