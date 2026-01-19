@@ -151,12 +151,6 @@ REPUTATION_CUSTOMER_RANGE = {
     REPUTATION_LEVEL_REGIONAL: (5, 8),
 }
 
-# Reputation gains/losses
-REP_GAIN_SATISFIED = 3      # Satisfied customer (rating 4+)
-REP_GAIN_DELIGHTED = 5      # Delighted customer (rating 5)
-REP_LOSS_ANGRY = -5         # Angry customer (rating 2-)
-REP_LOSS_NEUTRAL = -1       # Neutral customer (rating 2-3)
-
 # Daily reputation decay (if cafe not operated)
 REPUTATION_DAILY_DECAY = 2
 

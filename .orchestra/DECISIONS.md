@@ -108,4 +108,44 @@ This document records all significant technical decisions made during developmen
 
 ---
 
+## DEC-004: Additional Balance & Scope Adjustments
+
+**Date:** 2026-01-18
+**Status:** Accepted
+**Context:** Several balance adjustments from the full spec were made for the prototype but not formally documented.
+
+**Decisions:**
+
+### Single Cafe Service Period
+- **Spec:** Two service periods (Morning 10:00-14:00, Evening 17:00-21:00)
+- **Prototype:** Single lunch service (10:00-14:00 only)
+- **Rationale:** Simpler loop for 15-30 min sessions; evening service adds complexity without core value
+
+### Dragon Bond Range
+- **Spec:** 0-1000 lifetime bond
+- **Prototype:** 0-500 bond
+- **Rationale:** Lower max makes bond progression achievable in shorter play sessions
+
+### Reputation Range & Tiers
+- **Spec:** 0-1000 with 5 tiers (Unknown, Local Favorite, Town Attraction, Regional Fame, Legendary)
+- **Prototype:** 0-500 with 4 tiers (no Legendary tier)
+- **Rationale:** Proportionally scaled to match reduced content scope; Legendary tier requires endgame content not present in prototype
+
+### Reputation Gain Values
+- **Spec:** Character affinity gains specified (+5/+10 for dishes), cafe reputation gains not specified
+- **Prototype:** +3 (happy customer), +5 (delighted customer)
+- **Rationale:** Conservative gains ensure reputation feels earned; faster gains would trivialize progression
+
+### Character Relationship System
+- **Spec:** Per-character affinity 0-100 with thresholds and gifts
+- **Prototype:** Event/flag-based story progression only
+- **Rationale:** Simplified for prototype scope; affinity system requires more story characters than implemented
+
+**Consequences:**
+- Single service period means less daily variety but faster core loop
+- Players can max bond/reputation within reasonable playtime
+- Story progression is linear rather than relationship-driven
+
+---
+
 *Add new decisions above this line*

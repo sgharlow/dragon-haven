@@ -15,7 +15,6 @@ from constants import (
     REPUTATION_LEVEL_UNKNOWN, REPUTATION_LEVEL_LOCAL,
     REPUTATION_LEVEL_TOWN, REPUTATION_LEVEL_REGIONAL,
     REPUTATION_LEVELS, REPUTATION_CUSTOMER_RANGE, REPUTATION_UNLOCKS,
-    REP_GAIN_SATISFIED, REP_GAIN_DELIGHTED, REP_LOSS_ANGRY, REP_LOSS_NEUTRAL,
     REPUTATION_DAILY_DECAY,
 )
 from systems.time_system import get_time_manager
@@ -372,31 +371,6 @@ class CafeManager:
         """
         level = self.get_reputation_level()
         return REPUTATION_CUSTOMER_RANGE.get(level, (1, 2))
-
-    def apply_customer_feedback(self, satisfaction: float) -> Dict[str, Any]:
-        """
-        Apply reputation change based on customer satisfaction.
-
-        Args:
-            satisfaction: Customer satisfaction rating (1-5)
-
-        Returns:
-            Result dict from add_reputation
-        """
-        if satisfaction >= 5:
-            rep_change = REP_GAIN_DELIGHTED
-        elif satisfaction >= 4:
-            rep_change = REP_GAIN_SATISFIED
-        elif satisfaction <= 2:
-            rep_change = REP_LOSS_ANGRY
-        elif satisfaction < 3:
-            rep_change = REP_LOSS_NEUTRAL
-        else:
-            rep_change = 0  # Neutral (3) = no change
-
-        if rep_change != 0:
-            return self.add_reputation(rep_change)
-        return {'change': 0, 'level_changed': False}
 
     def apply_daily_decay(self, cafe_operated: bool = True) -> Dict[str, Any]:
         """
