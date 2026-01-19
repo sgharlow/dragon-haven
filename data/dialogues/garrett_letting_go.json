@@ -1,0 +1,77 @@
+{
+  "id": "garrett_letting_go",
+  "name": "Moving Forward",
+  "start_id": "garrett_changed",
+  "nodes": {
+    "garrett_changed": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Garrett enters the cafe with a different energy today. He still moves slowly, but there's a purpose to his steps that wasn't there before.",
+      "next_id": "garrett_announcement"
+    },
+    "garrett_announcement": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*He takes a deep breath* I did something this morning. Something I haven't done in three years. I set only one place at the breakfast table.",
+      "next_id": "garrett_explains"
+    },
+    "garrett_explains": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "It felt like betrayal at first. Then I realized - Eleanor never wanted that second place set for her ghost. She wanted me to live. Really live, not just exist around her absence.",
+      "next_id": "garrett_revelation"
+    },
+    "garrett_revelation": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "I went to her grave yesterday. First time I could actually talk to her instead of just crying. I told her about this place. About you. About your dragon.",
+      "next_id": "garrett_promise"
+    },
+    "garrett_promise": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "I told her I was going to be okay. That I was going to keep living, for both of us. And I felt... I felt like she was smiling.",
+      "next_id": "player_respond_letting_go"
+    },
+    "player_respond_letting_go": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "What do you say to Garrett?",
+      "choices": [
+        {
+          "text": "That takes incredible courage, Garrett.",
+          "next_id": "garrett_humble"
+        },
+        {
+          "text": "Eleanor would be proud of you.",
+          "next_id": "garrett_hopes",
+          "set_flags": ["garrett_encouraged"]
+        }
+      ]
+    },
+    "garrett_humble": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "Courage? No. Love. She gave me fifty-two years of love. I owe it to her to keep going. To find joy again, not just memories.",
+      "next_id": "garrett_decision"
+    },
+    "garrett_hopes": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*His eyes water, but he's smiling* I hope so. I truly hope so. She always said I was stubborn. Took me three years to figure out what she already knew.",
+      "next_id": "garrett_decision"
+    },
+    "garrett_decision": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*He pulls out the worn recipe* I've decided something. This recipe... it doesn't belong in my pocket anymore. It belongs in a kitchen. A real kitchen, where it can bring joy to others.",
+      "set_flags": ["garrett_letting_go"],
+      "next_id": "garrett_hint"
+    },
+    "garrett_hint": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "But not today. Soon. When I'm ready to watch someone else make her bread... and smile instead of cry."
+    }
+  }
+}

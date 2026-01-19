@@ -1,0 +1,82 @@
+{
+  "id": "chapter3_end",
+  "name": "Chapter 3 Complete",
+  "start_id": "chapter_reflection",
+  "nodes": {
+    "chapter_reflection": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The weeks have changed Garrett in ways you never expected. The man who shuffled in carrying ghosts now walks with purpose, often bringing fresh-baked bread to share.",
+      "next_id": "garrett_regular"
+    },
+    "garrett_regular": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "He's become part of the cafe's rhythm - telling stories to other customers, playing with your dragon, helping in the kitchen when it gets busy. A grandfather to everyone who walks through the door.",
+      "next_id": "garrett_news"
+    },
+    "garrett_news": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*Garrett approaches with a spring in his step* I have news! I've booked a trip. Two weeks from now. To the ocean.",
+      "next_id": "garrett_explains_trip"
+    },
+    "garrett_explains_trip": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "Eleanor and I never made it there together. But I'm going to go for both of us. I'll scatter some of her ashes there. Let her finally see the waves.",
+      "next_id": "garrett_emotional"
+    },
+    "garrett_emotional": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*His eyes glisten, but he's smiling* It's time. Time to complete our last promise. And then... then I'll come home. Here. To my new family.",
+      "next_id": "player_respond_trip"
+    },
+    "player_respond_trip": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "What do you say to Garrett?",
+      "choices": [
+        {
+          "text": "We'll be here when you get back. This is your home now.",
+          "next_id": "garrett_home"
+        },
+        {
+          "text": "Send Eleanor our love when you see the ocean.",
+          "next_id": "garrett_promise_eleanor"
+        }
+      ]
+    },
+    "garrett_home": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*He embraces you* Home. I never thought I'd have another one. Eleanor was my home for fifty-two years. Now... now home is here. And memories of her. Both at once.",
+      "next_id": "chapter_complete"
+    },
+    "garrett_promise_eleanor": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*He laughs through tears* I will. I'll tell her all about this place. About the dragon who comforted me. About the young chef who taught an old man that letting go doesn't mean forgetting.",
+      "next_id": "chapter_complete"
+    },
+    "chapter_complete": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Garrett's Memory Bread becomes a beloved item on your menu. Customers ask about its story, and Garrett is always happy to tell it - a tale of love, loss, and the courage to keep living.",
+      "next_id": "reputation_grows"
+    },
+    "reputation_grows": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Word spreads of Dragon Haven Cafe - a place where the food nourishes more than just the body. Where stories are shared, and hearts are healed.",
+      "set_flags": ["chapter3_complete"],
+      "next_id": "chapter_end"
+    },
+    "chapter_end": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Chapter 3 - Letting Go of the Past - Complete"
+    }
+  }
+}

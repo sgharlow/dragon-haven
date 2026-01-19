@@ -1,0 +1,71 @@
+{
+  "id": "garrett_recipe_mention",
+  "name": "Her Recipe",
+  "start_id": "garrett_bread_smell",
+  "nodes": {
+    "garrett_bread_smell": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "As fresh bread comes out of your oven, Garrett suddenly goes very still. His eyes close, and he breathes deep.",
+      "next_id": "garrett_transported"
+    },
+    "garrett_transported": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*Eyes still closed* For just a moment... I was home. In our kitchen. Eleanor was humming while she kneaded the dough.",
+      "next_id": "garrett_opens_eyes"
+    },
+    "garrett_opens_eyes": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*He opens his eyes, looking almost embarrassed* She had a recipe. Her 'Memory Bread,' she called it. Said it tasted like all our happiest moments.",
+      "next_id": "garrett_recipe_story"
+    },
+    "garrett_recipe_story": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "Simple ingredients - herbs, honey, love. She'd make it for every special occasion. Birthdays. Anniversaries. The day we got the news about... *he stops*",
+      "next_id": "player_respond_recipe"
+    },
+    "player_respond_recipe": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "How do you respond?",
+      "choices": [
+        {
+          "text": "It sounds beautiful. Does the recipe still exist?",
+          "next_id": "garrett_has_recipe"
+        },
+        {
+          "text": "Some recipes carry more than ingredients.",
+          "next_id": "garrett_agrees",
+          "set_flags": ["garrett_philosophical_response"]
+        }
+      ]
+    },
+    "garrett_has_recipe": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*He reaches into his coat pocket, then hesitates* I carry it with me. Always. Her handwriting is on it. I could never... I can't use it. Or share it. It's all I have left of her hands.",
+      "next_id": "garrett_conflict"
+    },
+    "garrett_agrees": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "Yes. Yes, they do. *He touches his chest where a pocket rests* I carry her recipe here. Next to my heart. I can't bring myself to make it. What if I get it wrong? What if it doesn't taste right anymore?",
+      "next_id": "garrett_conflict"
+    },
+    "garrett_conflict": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*His voice breaks* What if making it means she's really gone? As long as I don't make it, there's still... something waiting. Something unfinished between us.",
+      "set_flags": ["garrett_recipe_mentioned"],
+      "next_id": "garrett_leaves_quiet"
+    },
+    "garrett_leaves_quiet": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "Forgive me. I've said too much. I should... I should go. The memories are too close today."
+    }
+  }
+}

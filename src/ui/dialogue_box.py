@@ -399,6 +399,9 @@ class DialogueBox:
         elif portrait_lower == 'mother':
             # Mother
             self._draw_mother_portrait(surface, center_x, center_y, alpha)
+        elif portrait_lower == 'garrett':
+            # Old Man Garrett
+            self._draw_garrett_portrait(surface, center_x, center_y, alpha)
         else:
             # Generic NPC portrait
             self._draw_npc_portrait(surface, center_x, center_y, alpha)
@@ -563,6 +566,36 @@ class DialogueBox:
         pygame.draw.polygon(surface, (130, 100, 120), [
             (cx - 18, cy + 18), (cx - 22, cy + 30), (cx + 22, cy + 30), (cx + 18, cy + 18)
         ])
+
+    def _draw_garrett_portrait(self, surface: pygame.Surface, cx: int, cy: int, alpha: int):
+        """Draw Old Man Garrett - elderly, gentle, weathered by time and loss."""
+        # Aged skin tone
+        skin_color = (225, 195, 175)
+        # Head (slightly gaunt)
+        pygame.draw.circle(surface, skin_color, (cx, cy - 5), 24)
+        # Balding head with wispy white hair
+        pygame.draw.ellipse(surface, (220, 220, 225), (cx - 22, cy - 32, 18, 20))  # left wisps
+        pygame.draw.ellipse(surface, (220, 220, 225), (cx + 4, cy - 32, 18, 20))  # right wisps
+        pygame.draw.ellipse(surface, skin_color, (cx - 15, cy - 30, 30, 20))  # bald top
+        # Bushy white eyebrows
+        pygame.draw.ellipse(surface, (230, 230, 235), (cx - 18, cy - 16, 14, 6))
+        pygame.draw.ellipse(surface, (230, 230, 235), (cx + 4, cy - 16, 14, 6))
+        # Tired but kind eyes
+        pygame.draw.ellipse(surface, (90, 80, 70), (cx - 14, cy - 10, 10, 6))
+        pygame.draw.ellipse(surface, (90, 80, 70), (cx + 4, cy - 10, 10, 6))
+        # Wrinkles and age lines
+        pygame.draw.arc(surface, (190, 160, 140), (cx - 20, cy - 8, 8, 10), 1.5, 3.14, 1)
+        pygame.draw.arc(surface, (190, 160, 140), (cx + 12, cy - 8, 8, 10), 0, 1.5, 1)
+        pygame.draw.line(surface, (190, 160, 140), (cx - 5, cy - 2), (cx + 5, cy - 2), 1)  # forehead
+        # Gentle, melancholy smile
+        pygame.draw.arc(surface, (160, 120, 110), (cx - 8, cy + 4, 16, 8), 3.14, 6.28, 2)
+        # Simple cardigan collar
+        pygame.draw.polygon(surface, (100, 90, 80), [
+            (cx - 16, cy + 18), (cx - 20, cy + 30), (cx + 20, cy + 30), (cx + 16, cy + 18)
+        ])
+        # Cardigan buttons
+        pygame.draw.circle(surface, (70, 60, 55), (cx, cy + 22), 3)
+        pygame.draw.circle(surface, (70, 60, 55), (cx, cy + 28), 3)
 
     def _draw_affinity_bar(self, surface: pygame.Surface, x: int, y: int, alpha: int):
         """

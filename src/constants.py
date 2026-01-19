@@ -283,6 +283,7 @@ CHARACTER_SECRET_RECIPES = {
     'mother': 'mothers_comfort_stew',
     'marcus': 'wanderers_secret_blend',
     'lily': 'lilys_perfect_souffle',
+    'garrett': 'garretts_memory_bread',
     'vera': 'captains_treasure_catch',
     'noble': 'royal_midnight_feast',
 }
@@ -1469,6 +1470,20 @@ RECIPES = {
         ],
         'color_influence': (0.8, 0.7, 0.6),  # Golden delicate
         'unlock': {'type': UNLOCK_TYPE_AFFINITY, 'character': 'lily'},
+    },
+    'garretts_memory_bread': {
+        'name': "Garrett's Memory Bread",
+        'description': "An old family recipe that Garrett's late wife used to make. Simple ingredients, profound meaning.",
+        'category': RECIPE_CATEGORY_APPETIZER,
+        'difficulty': 2,
+        'base_price': 65,
+        'ingredients': [
+            ('golden_honey', 1, 2),
+            ('garden_herb', 2, 2),
+            ('wild_herb', 1, 2),
+        ],
+        'color_influence': (0.7, 0.6, 0.4),  # Warm golden brown
+        'unlock': {'type': UNLOCK_TYPE_AFFINITY, 'character': 'garrett'},
     },
     'captains_treasure_catch': {
         'name': "Captain's Treasure Catch",

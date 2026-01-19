@@ -1,0 +1,100 @@
+{
+  "id": "garrett_resolution",
+  "name": "New Beginnings",
+  "start_id": "garrett_arrives_final",
+  "nodes": {
+    "garrett_arrives_final": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Garrett arrives early today, carrying a small basket covered with a cloth. There's a lightness about him you haven't seen before.",
+      "next_id": "garrett_basket"
+    },
+    "garrett_basket": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*He sets the basket on the counter with trembling hands* I made it. Last night. Her Memory Bread. First time in three years I stepped into the kitchen to cook.",
+      "next_id": "garrett_cooking_story"
+    },
+    "garrett_cooking_story": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "I was terrified. My hands shook. I kept hearing her voice - 'A little more honey, Garrett. Don't be stingy.' But for the first time, it made me laugh instead of cry.",
+      "next_id": "garrett_result"
+    },
+    "garrett_result": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*He pulls back the cloth to reveal golden loaves* It's not perfect. Eleanor's never were either, though she'd never admit it. But it's... it's hers. And now it's mine too.",
+      "next_id": "garrett_offer"
+    },
+    "garrett_offer": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*He pulls out the worn recipe card* I want you to have this. Not to keep in a pocket - to use. To share. Let Eleanor's bread bring joy to others, the way it brought joy to us.",
+      "next_id": "player_receive_garrett_recipe"
+    },
+    "player_receive_garrett_recipe": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Garrett offers you his wife's treasured recipe.",
+      "choices": [
+        {
+          "text": "I'll honor her memory with every loaf I bake.",
+          "next_id": "garrett_touched"
+        },
+        {
+          "text": "Are you sure? This is your most precious possession.",
+          "next_id": "garrett_certain"
+        }
+      ]
+    },
+    "garrett_touched": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*Tears flow freely, but he's smiling* That's all I ask. Not that you remember me, or even her. Just that you keep the bread alive. Keep the love it was made with alive.",
+      "next_id": "garrett_gift_bread"
+    },
+    "garrett_certain": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "My most precious possession is right here. *He taps his chest* The fifty-two years we had. The recipe is just... directions. The love was never in the paper.",
+      "next_id": "garrett_gift_bread"
+    },
+    "garrett_gift_bread": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "Now - *he pushes the basket toward you* - you must taste it. Tell me honestly. I need to know if I got it right.",
+      "next_id": "player_tastes"
+    },
+    "player_tastes": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You take a piece of the still-warm bread. It's simple, humble, but the flavor... there's something in it that can't be measured. Warmth. Home. Love.",
+      "next_id": "garrett_reaction"
+    },
+    "garrett_reaction": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*He watches your face intently* Well? Does it... is it...?",
+      "next_id": "player_verdict"
+    },
+    "player_verdict": {
+      "speaker": "You",
+      "portrait": "player",
+      "text": "Garrett... this tastes like every happy moment I've ever had. All at once.",
+      "next_id": "garrett_relief"
+    },
+    "garrett_relief": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "*He lets out a breath he seems to have been holding for years* Then she's still here. In every bite. She always will be.",
+      "set_flags": ["garrett_resolved"],
+      "next_id": "garrett_final"
+    },
+    "garrett_final": {
+      "speaker": "Old Man Garrett",
+      "portrait": "garrett",
+      "text": "Thank you. Not for the kind words. For giving an old man a place to remember, and a reason to stop just remembering and start living again."
+    }
+  }
+}

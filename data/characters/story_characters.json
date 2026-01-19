@@ -74,6 +74,31 @@
     "met": false
   },
   {
+    "id": "garrett",
+    "name": "Old Man Garrett",
+    "portrait_id": "garrett",
+    "description": "An elderly widower who visits the cafe seeking comfort in familiar tastes. He carries the weight of cherished memories and struggles to let go of the past.",
+    "chapter": "chapter3",
+    "affinity": 0,
+    "favorite_recipes": ["herb_stew", "honey_cake", "herb_tea"],
+    "liked_recipes": ["autumn_harvest_soup", "hearty_root_stew", "comfort_casserole"],
+    "disliked_recipes": ["crystal_sorbet", "exotic_blend", "spiced_fusion"],
+    "gift_preferences": {
+      "pressed_flower": 15,
+      "old_photograph": 20,
+      "honey": 8,
+      "herbal_bundle": 10,
+      "antique_trinket": 12
+    },
+    "unlocked_dialogues": {
+      "garrett_wife_memory": 25,
+      "garrett_regrets": 50,
+      "garrett_acceptance": 75,
+      "garrett_blessing": 100
+    },
+    "met": false
+  },
+  {
     "id": "vera",
     "name": "Captain Vera",
     "portrait_id": "vera",
