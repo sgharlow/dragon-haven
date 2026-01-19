@@ -1,19 +1,21 @@
 # Tasks
 
 > Last updated: 2026-01-18
-> Progress: 45/51 complete (Phase 1 done, Phase 2 done, Phase 3 in progress)
+> Progress: 46/51 complete (Phase 1 done, Phase 2 done, Phase 3 in progress)
 
 ## Ready
-- [ ] `047` Chapter 3 - Old Man Garrett
 - [ ] `048` Chapter 6 - Estranged Siblings
 - [ ] `049` Ancient Ruins zone
 - [ ] `050` Sky Islands zone
 - [ ] `051` Finale - Mother's Secret
 
 ## In Progress
-- [ ] `046` Chapter 2 - Lily the Perfectionist
+- [ ] `047` Chapter 3 - Old Man Garrett
 
 ## Blocked
+
+## Done (Phase 3)
+- [x] `046` Chapter 2 - Lily the Perfectionist ✓
 
 ## Done (Phase 2)
 - [x] `045` Character affinity system ✓
