@@ -1084,6 +1084,255 @@ RECIPES = {
         'color_influence': (0.7, 0.3, 0.4),  # Berry red
         'unlock': {'type': UNLOCK_TYPE_REPUTATION, 'requirement': 10},
     },
+
+    # =========================================================================
+    # SEAFOOD RECIPES (6) - Coastal Shore ingredients
+    # =========================================================================
+    'seaweed_salad': {
+        'name': 'Seaweed Salad',
+        'description': 'Fresh ocean seaweed with a light sea salt dressing.',
+        'category': RECIPE_CATEGORY_APPETIZER,
+        'difficulty': 1,
+        'base_price': 35,
+        'ingredients': [
+            ('fresh_seaweed', 2, 1),
+            ('sea_salt', 1, 1),
+        ],
+        'color_influence': (0.2, 0.5, 0.4),  # Sea green
+        'unlock': {'type': UNLOCK_TYPE_DISCOVERY},
+    },
+    'grilled_oysters': {
+        'name': 'Grilled Pearl Oysters',
+        'description': 'Succulent oysters grilled with herbs and sea salt.',
+        'category': RECIPE_CATEGORY_APPETIZER,
+        'difficulty': 2,
+        'base_price': 65,
+        'ingredients': [
+            ('pearl_oyster', 2, 2),
+            ('sea_salt', 1, 1),
+            ('garden_herb', 1, 1),
+        ],
+        'color_influence': (0.7, 0.7, 0.8),  # Pearl white
+        'unlock': {'type': UNLOCK_TYPE_REPUTATION, 'requirement': 40},
+    },
+    'coastal_chowder': {
+        'name': 'Coastal Chowder',
+        'description': 'Rich, creamy chowder with fresh coastal catches.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 3,
+        'base_price': 90,
+        'ingredients': [
+            ('tidal_clam', 2, 2),
+            ('sea_salt', 1, 1),
+            ('wild_herb', 1, 1),
+        ],
+        'color_influence': (0.8, 0.7, 0.6),  # Creamy
+        'unlock': {'type': UNLOCK_TYPE_DISCOVERY},
+    },
+    'crab_cakes': {
+        'name': 'Coastal Crab Cakes',
+        'description': 'Delicate crab cakes with herb seasoning.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 3,
+        'base_price': 105,
+        'ingredients': [
+            ('coastal_crab', 2, 2),
+            ('garden_herb', 1, 1),
+            ('sea_salt', 1, 1),
+        ],
+        'color_influence': (0.8, 0.5, 0.4),  # Crab orange
+        'unlock': {'type': UNLOCK_TYPE_REPUTATION, 'requirement': 45},
+    },
+    'ocean_medley': {
+        'name': 'Ocean Medley Platter',
+        'description': 'A luxurious selection of the finest coastal ingredients.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 4,
+        'base_price': 160,
+        'ingredients': [
+            ('coastal_crab', 1, 3),
+            ('pearl_oyster', 1, 2),
+            ('tidal_clam', 1, 2),
+            ('fresh_seaweed', 1, 2),
+        ],
+        'color_influence': (0.4, 0.6, 0.8),  # Ocean blue
+        'unlock': {'type': UNLOCK_TYPE_STORY, 'requirement': 'chapter_2'},
+    },
+    'salt_crusted_fish': {
+        'name': 'Salt-Crusted Fish',
+        'description': 'Tender fish baked in a sea salt crust with herbs.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 3,
+        'base_price': 95,
+        'ingredients': [
+            ('forest_fish', 1, 2),
+            ('sea_salt', 2, 2),
+            ('forest_herb', 1, 1),
+        ],
+        'color_influence': (0.9, 0.9, 0.8),  # Salt white
+        'unlock': {'type': UNLOCK_TYPE_REPUTATION, 'requirement': 35},
+    },
+
+    # =========================================================================
+    # MOUNTAIN RECIPES (5) - Mountain Pass ingredients
+    # =========================================================================
+    'alpine_tea': {
+        'name': 'Alpine Herb Tea',
+        'description': 'Fragrant tea brewed from rare mountain herbs.',
+        'category': RECIPE_CATEGORY_BEVERAGE,
+        'difficulty': 1,
+        'base_price': 30,
+        'ingredients': [
+            ('mountain_herb', 1, 1),
+            ('alpine_flower', 1, 1),
+        ],
+        'color_influence': (0.5, 0.7, 0.5),  # Alpine green
+        'unlock': {'type': UNLOCK_TYPE_DISCOVERY},
+    },
+    'mountain_stew': {
+        'name': 'Hearty Mountain Stew',
+        'description': 'A warming stew with mountain herbs and moss.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 3,
+        'base_price': 85,
+        'ingredients': [
+            ('mountain_herb', 2, 2),
+            ('mountain_moss', 1, 1),
+            ('buried_root', 1, 2),
+        ],
+        'color_influence': (0.4, 0.5, 0.4),  # Mountain green
+        'unlock': {'type': UNLOCK_TYPE_DISCOVERY},
+    },
+    'honey_glazed_game': {
+        'name': 'Rock Honey Glazed Game',
+        'description': 'Wild game glazed with precious rock honey.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 4,
+        'base_price': 145,
+        'ingredients': [
+            ('wild_game', 1, 3),
+            ('rock_honey', 1, 2),
+            ('mountain_herb', 1, 2),
+        ],
+        'color_influence': (0.8, 0.6, 0.3),  # Honey gold
+        'unlock': {'type': UNLOCK_TYPE_REPUTATION, 'requirement': 60},
+    },
+    'rock_honey_pastry': {
+        'name': 'Rock Honey Pastry',
+        'description': 'Flaky pastry filled with crystallized rock honey.',
+        'category': RECIPE_CATEGORY_DESSERT,
+        'difficulty': 2,
+        'base_price': 55,
+        'ingredients': [
+            ('rock_honey', 1, 2),
+            ('alpine_flower', 1, 1),
+        ],
+        'color_influence': (0.9, 0.7, 0.3),  # Honey amber
+        'unlock': {'type': UNLOCK_TYPE_DISCOVERY},
+    },
+    'crystal_infused_dessert': {
+        'name': 'Crystal-Infused Delicacy',
+        'description': 'A magical dessert sparkling with mineral crystals.',
+        'category': RECIPE_CATEGORY_DESSERT,
+        'difficulty': 4,
+        'base_price': 130,
+        'ingredients': [
+            ('mineral_crystal', 1, 3),
+            ('rock_honey', 1, 2),
+            ('alpine_flower', 1, 2),
+        ],
+        'color_influence': (0.6, 0.8, 0.9),  # Crystal blue
+        'unlock': {'type': UNLOCK_TYPE_STORY, 'requirement': 'chapter_3'},
+    },
+
+    # =========================================================================
+    # SEASONAL RECIPES (6) - Autumn/Winter comfort foods
+    # =========================================================================
+    'autumn_harvest_soup': {
+        'name': 'Autumn Harvest Soup',
+        'description': 'Warm soup celebrating the autumn harvest.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 2,
+        'base_price': 55,
+        'ingredients': [
+            ('buried_root', 2, 1),
+            ('field_mushroom', 1, 1),
+            ('wild_herb', 1, 1),
+        ],
+        'color_influence': (0.7, 0.5, 0.3),  # Autumn orange
+        'unlock': {'type': UNLOCK_TYPE_DEFAULT},
+    },
+    'mushroom_medley': {
+        'name': 'Forest Mushroom Medley',
+        'description': 'A rich dish featuring various forest mushrooms.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 3,
+        'base_price': 80,
+        'ingredients': [
+            ('rare_mushroom', 1, 2),
+            ('field_mushroom', 2, 2),
+            ('mountain_moss', 1, 1),
+        ],
+        'color_influence': (0.5, 0.4, 0.4),  # Mushroom brown
+        'unlock': {'type': UNLOCK_TYPE_REPUTATION, 'requirement': 35},
+    },
+    'winter_warmer': {
+        'name': 'Winter Warmer',
+        'description': 'A spiced hot drink to ward off the winter chill.',
+        'category': RECIPE_CATEGORY_BEVERAGE,
+        'difficulty': 2,
+        'base_price': 35,
+        'ingredients': [
+            ('mountain_herb', 1, 1),
+            ('golden_honey', 1, 1),
+            ('wild_berry', 1, 1),
+        ],
+        'color_influence': (0.7, 0.4, 0.3),  # Warm red
+        'unlock': {'type': UNLOCK_TYPE_REPUTATION, 'requirement': 20},
+    },
+    'hearty_root_stew': {
+        'name': 'Hearty Root Stew',
+        'description': 'A filling stew packed with nutritious roots.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 3,
+        'base_price': 75,
+        'ingredients': [
+            ('buried_root', 3, 2),
+            ('wild_herb', 1, 1),
+            ('field_mushroom', 1, 1),
+        ],
+        'color_influence': (0.6, 0.4, 0.3),  # Earthy brown
+        'unlock': {'type': UNLOCK_TYPE_REPUTATION, 'requirement': 30},
+    },
+    'spiced_berry_cider': {
+        'name': 'Spiced Berry Cider',
+        'description': 'Warm cider infused with berries and mountain herbs.',
+        'category': RECIPE_CATEGORY_BEVERAGE,
+        'difficulty': 2,
+        'base_price': 40,
+        'ingredients': [
+            ('meadow_berry', 2, 1),
+            ('beach_berry', 1, 1),
+            ('mountain_herb', 1, 1),
+        ],
+        'color_influence': (0.7, 0.3, 0.4),  # Berry pink
+        'unlock': {'type': UNLOCK_TYPE_DISCOVERY},
+    },
+    'comfort_casserole': {
+        'name': 'Comfort Casserole',
+        'description': 'A hearty casserole perfect for cold days.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 3,
+        'base_price': 90,
+        'ingredients': [
+            ('wild_game', 1, 2),
+            ('buried_root', 1, 2),
+            ('field_mushroom', 1, 1),
+            ('wild_herb', 1, 1),
+        ],
+        'color_influence': (0.6, 0.4, 0.3),  # Comfort brown
+        'unlock': {'type': UNLOCK_TYPE_REPUTATION, 'requirement': 40},
+    },
 }
 
 # Default unlocked recipes (available from game start)
@@ -1093,6 +1342,7 @@ DEFAULT_UNLOCKED_RECIPES = [
     'herb_stew',
     'berry_tart',
     'herb_tea',
+    'autumn_harvest_soup',  # Seasonal comfort food
 ]
 
 # =============================================================================
