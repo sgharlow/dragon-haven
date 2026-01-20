@@ -1,0 +1,72 @@
+{
+  "id": "marcus_resolution",
+  "name": "Marcus's Resolution",
+  "start_id": "feast_ready",
+  "nodes": {
+    "feast_ready": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "After much preparation, you've finally recreated the Wanderer's Feast. Marcus sits at his usual table, waiting.",
+      "next_id": "serve_dish"
+    },
+    "serve_dish": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You place the steaming dish before him. The aroma fills the cafe with the scent of adventure and nostalgia.",
+      "next_id": "marcus_reaction"
+    },
+    "marcus_reaction": {
+      "speaker": "Marcus",
+      "portrait": "marcus",
+      "text": "*He takes a bite, and his eyes well with tears* This is it. Exactly as I remember it.",
+      "next_id": "marcus_memory"
+    },
+    "marcus_memory": {
+      "speaker": "Marcus",
+      "portrait": "marcus",
+      "text": "We ate this the night before the raid. Everyone laughing, telling stories... not knowing what tomorrow would bring.",
+      "next_id": "player_response"
+    },
+    "player_response": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "What do you say?",
+      "choices": [
+        {
+          "text": "Those memories deserve to be honored.",
+          "next_id": "honor_memories",
+          "set_flags": ["marcus_fully_healed"]
+        },
+        {
+          "text": "Perhaps it's time to create new memories.",
+          "next_id": "new_memories"
+        }
+      ]
+    },
+    "honor_memories": {
+      "speaker": "Marcus",
+      "portrait": "marcus",
+      "text": "*He nods slowly* You're right. I've been running from them instead of carrying them with me.",
+      "next_id": "marcus_decision"
+    },
+    "new_memories": {
+      "speaker": "Marcus",
+      "portrait": "marcus",
+      "text": "*He smiles through his tears* New memories... yes. Perhaps starting right here, in this cafe.",
+      "next_id": "marcus_decision"
+    },
+    "marcus_decision": {
+      "speaker": "Marcus",
+      "portrait": "marcus",
+      "text": "I've made my decision. I'm done wandering. I want to stay here, help this cafe grow. If you'll have me.",
+      "next_id": "resolution"
+    },
+    "resolution": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Marcus has found his peace. He'll remain at Dragon Haven as a friend and ally, his wandering days finally at an end.",
+      "set_flags": ["marcus_resolved", "chapter1_complete"],
+      "trigger_event": "marcus_joins"
+    }
+  }
+}

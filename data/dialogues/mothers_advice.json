@@ -1,0 +1,44 @@
+{
+  "id": "mothers_advice",
+  "name": "Mother's Wisdom",
+  "start_id": "letter_arrives",
+  "nodes": {
+    "letter_arrives": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "A letter arrives in the morning post. The handwriting is your mother's.",
+      "next_id": "read_letter"
+    },
+    "read_letter": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "My dear child, I hope the cafe is treating you well. I wanted to share some wisdom that served me for many years.",
+      "next_id": "advice_1"
+    },
+    "advice_1": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "Remember - a cafe is not just about food. It's about the connections you make. Every customer has a story.",
+      "next_id": "advice_2"
+    },
+    "advice_2": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "And that little one in the cellar... they're more special than you know. Care for them well, and they'll become your greatest companion.",
+      "next_id": "recipe_mention"
+    },
+    "recipe_mention": {
+      "speaker": "Mother",
+      "portrait": "mother",
+      "text": "P.S. I've enclosed my recipe for Comfort Stew. It was always a favorite - perfect for cold days and heavy hearts.",
+      "next_id": "letter_end"
+    },
+    "letter_end": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You tuck the letter away carefully. Mother's words give you renewed determination.",
+      "set_flags": ["received_mothers_advice"],
+      "trigger_event": "unlock_comfort_stew"
+    }
+  }
+}

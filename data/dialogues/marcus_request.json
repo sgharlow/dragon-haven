@@ -1,0 +1,65 @@
+{
+  "id": "marcus_request",
+  "name": "Marcus's Request",
+  "start_id": "marcus_approaches",
+  "nodes": {
+    "marcus_approaches": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Marcus approaches the counter with an unusual hesitance in his step.",
+      "next_id": "marcus_speaks"
+    },
+    "marcus_speaks": {
+      "speaker": "Marcus",
+      "portrait": "marcus",
+      "text": "I have a request. It's... personal. There's a dish I've been searching for. One I had many years ago.",
+      "next_id": "request_details"
+    },
+    "request_details": {
+      "speaker": "Marcus",
+      "portrait": "marcus",
+      "text": "It was called the Wanderer's Feast. A traveling cook made it for our guild before... before everything changed.",
+      "next_id": "player_response"
+    },
+    "player_response": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "How do you respond to his request?",
+      "choices": [
+        {
+          "text": "Tell me more about it. I'll try to recreate it.",
+          "next_id": "accept_challenge",
+          "set_flags": ["marcus_quest_accepted"]
+        },
+        {
+          "text": "That sounds like quite a challenge.",
+          "next_id": "acknowledge_difficulty"
+        }
+      ]
+    },
+    "accept_challenge": {
+      "speaker": "Marcus",
+      "portrait": "marcus",
+      "text": "*His eyes brighten* You'd do that? It's a complex dish - hearty meat, forest herbs, and a special blend of spices from distant lands.",
+      "next_id": "quest_details"
+    },
+    "acknowledge_difficulty": {
+      "speaker": "Marcus",
+      "portrait": "marcus",
+      "text": "It is. But if anyone can do it, I believe it's you. Will you try?",
+      "next_id": "quest_details"
+    },
+    "quest_details": {
+      "speaker": "Marcus",
+      "portrait": "marcus",
+      "text": "If you can recreate it... perhaps it would help me finally make peace with the past.",
+      "next_id": "quest_accepted"
+    },
+    "quest_accepted": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You've accepted Marcus's request to recreate the Wanderer's Feast. You'll need to gather rare ingredients from distant zones.",
+      "set_flags": ["marcus_request_active"]
+    }
+  }
+}

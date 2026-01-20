@@ -1,0 +1,37 @@
+{
+  "id": "chapter1_end",
+  "name": "Chapter 1 Complete",
+  "start_id": "reflection",
+  "nodes": {
+    "reflection": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Marcus's story has reached its conclusion. A wanderer has found his home.",
+      "next_id": "summary"
+    },
+    "summary": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Through food and compassion, you've helped heal old wounds. Your reputation as more than just a cafe keeper grows.",
+      "next_id": "dragon_growth"
+    },
+    "dragon_growth": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Your dragon companion has grown stronger too, learning new abilities and bonding closer with you.",
+      "next_id": "new_arrival_hint"
+    },
+    "new_arrival_hint": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Word of your cafe has spread further. A perfectionist chef has heard tales of your cooking...",
+      "next_id": "chapter_end"
+    },
+    "chapter_end": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "New challenges and new stories await. Chapter 1 Complete.",
+      "set_flags": ["chapter1_end_seen", "chapter2_unlocked"]
+    }
+  }
+}

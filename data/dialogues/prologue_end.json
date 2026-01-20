@@ -1,0 +1,37 @@
+{
+  "id": "prologue_end",
+  "name": "Prologue Complete",
+  "start_id": "reflection",
+  "nodes": {
+    "reflection": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Days have passed since you took over Dragon Haven Cafe. Already, so much has changed.",
+      "next_id": "achievements"
+    },
+    "achievements": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Your first customers have come and gone. The little dragon has hatched, filling the cafe with new life.",
+      "next_id": "looking_forward"
+    },
+    "looking_forward": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Word is spreading about the reopened cafe. Travelers from distant places are starting to arrive...",
+      "next_id": "new_chapter"
+    },
+    "new_chapter": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "A weathered stranger enters the cafe. He carries himself like someone who has seen much of the world.",
+      "next_id": "marcus_teaser"
+    },
+    "marcus_teaser": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "His eyes hold a mixture of weariness and hope. Perhaps his story will be the first of many you'll hear in this place.",
+      "set_flags": ["prologue_complete", "chapter1_unlocked"]
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "id": "first_customer",
+  "name": "Your First Customer",
+  "start_id": "customer_arrives",
+  "nodes": {
+    "customer_arrives": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "The bell above the door chimes. Your very first customer steps inside, looking around curiously.",
+      "next_id": "customer_greets"
+    },
+    "customer_greets": {
+      "speaker": "Customer",
+      "portrait": "customer",
+      "text": "Oh! I heard this place was reopening. It's been closed for so long... I used to come here years ago.",
+      "next_id": "player_response"
+    },
+    "player_response": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "How do you greet your first customer?",
+      "choices": [
+        {
+          "text": "Welcome! I'm honored to serve you.",
+          "next_id": "warm_welcome",
+          "set_flags": ["first_customer_warm"]
+        },
+        {
+          "text": "Please, have a seat. What can I get you?",
+          "next_id": "professional_welcome"
+        }
+      ]
+    },
+    "warm_welcome": {
+      "speaker": "Customer",
+      "portrait": "customer",
+      "text": "*Smiles warmly* You have the same spirit as the old owner. This place always felt special.",
+      "next_id": "customer_orders"
+    },
+    "professional_welcome": {
+      "speaker": "Customer",
+      "portrait": "customer",
+      "text": "Thank you. I'll have whatever you recommend - I trust the cafe's taste.",
+      "next_id": "customer_orders"
+    },
+    "customer_orders": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "You prepare a simple but heartfelt meal. The customer takes a bite and their eyes light up.",
+      "next_id": "customer_satisfied"
+    },
+    "customer_satisfied": {
+      "speaker": "Customer",
+      "portrait": "customer",
+      "text": "Delicious! The warmth in this food... it reminds me of better days. I'll definitely be back.",
+      "next_id": "customer_leaves"
+    },
+    "customer_leaves": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Your first customer leaves satisfied, promising to spread the word. Dragon Haven Cafe is officially open for business.",
+      "set_flags": ["served_first_customer"]
+    }
+  }
+}

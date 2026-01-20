@@ -1,0 +1,59 @@
+{
+  "id": "marcus_regular",
+  "name": "Marcus Returns",
+  "start_id": "marcus_enters",
+  "nodes": {
+    "marcus_enters": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Marcus has become a regular sight at the cafe. Today, he settles into his usual corner seat.",
+      "next_id": "marcus_greets"
+    },
+    "marcus_greets": {
+      "speaker": "Marcus",
+      "portrait": "marcus",
+      "text": "Ah, the cafe keeper. I find myself returning here more often than I planned. There's something about this place.",
+      "next_id": "player_response"
+    },
+    "player_response": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "How do you respond?",
+      "choices": [
+        {
+          "text": "You're always welcome here, Marcus.",
+          "next_id": "warm_response",
+          "set_flags": ["marcus_feels_welcome"]
+        },
+        {
+          "text": "The usual order?",
+          "next_id": "usual_order"
+        }
+      ]
+    },
+    "warm_response": {
+      "speaker": "Marcus",
+      "portrait": "marcus",
+      "text": "*A rare smile crosses his face* Thank you. It's been a long time since anywhere felt like... home.",
+      "next_id": "marcus_reflects"
+    },
+    "usual_order": {
+      "speaker": "Marcus",
+      "portrait": "marcus",
+      "text": "You know me well already. Yes, the Traveler's Stew, if you please.",
+      "next_id": "marcus_reflects"
+    },
+    "marcus_reflects": {
+      "speaker": "Marcus",
+      "portrait": "marcus",
+      "text": "You know, I've been thinking... maybe wandering isn't all there is. Maybe some places are worth staying for.",
+      "next_id": "end_scene"
+    },
+    "end_scene": {
+      "speaker": "Narrator",
+      "portrait": "",
+      "text": "Marcus seems more at ease each time he visits. Perhaps his wandering days are finally coming to an end.",
+      "set_flags": ["marcus_regular_complete"]
+    }
+  }
+}
