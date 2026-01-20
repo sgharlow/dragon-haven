@@ -578,7 +578,7 @@ class CafeManager:
     def get_next_service_period(self) -> Optional[str]:
         """Get the next upcoming service period."""
         time_mgr = get_time_manager()
-        current = time_mgr.current_hour
+        current = time_mgr.get_current_hour()
 
         # Check if morning service is still available
         if not self._morning_completed and not self._morning_skipped:
@@ -595,7 +595,7 @@ class CafeManager:
     def get_time_until_service(self) -> float:
         """Get hours until next service starts."""
         time_mgr = get_time_manager()
-        current = time_mgr.current_hour
+        current = time_mgr.get_current_hour()
 
         # Check morning service
         if not self._morning_completed and not self._morning_skipped:
@@ -617,7 +617,7 @@ class CafeManager:
     def get_time_until_close(self) -> float:
         """Get hours until current service ends (0 if not in service)."""
         time_mgr = get_time_manager()
-        current = time_mgr.current_hour
+        current = time_mgr.get_current_hour()
 
         if self._state != CAFE_STATE_SERVICE:
             return 0

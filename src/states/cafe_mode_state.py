@@ -157,10 +157,11 @@ class CafeModeState(BaseScreen):
     def handle_event(self, event):
         """Handle input events."""
         if self._cooking_active:
-            # Pass to cooking minigame
-            result = self.cooking_minigame.handle_input(event)
-            if result:
-                self._on_cooking_complete(result)
+            # Pass key presses to cooking minigame
+            if event.type == pygame.KEYDOWN:
+                result = self.cooking_minigame.handle_input(event.key)
+                if result:
+                    self._on_cooking_complete(result)
             return
 
         if self._showing_summary:
