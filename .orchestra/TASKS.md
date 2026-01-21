@@ -1,18 +1,27 @@
 # Tasks
 
-> Last updated: 2026-01-18
-> Progress: 51/51 complete (Phase 1 done, Phase 2 done, Phase 3 COMPLETE!)
+> Last updated: 2026-01-20
+> Progress: 51/57 complete (Phase 1 done, Phase 2 done, Phase 3 Story done, Phase 3 Polish in progress)
 
 ## Ready
+- [ ] `052` Legendary Reputation Tier
+- [ ] `053` Recipe Completion (80+ total)
 
 ## In Progress
 
 ## Blocked
+- [ ] `054` Creature System (waiting: none, can start after 052-053)
+- [ ] `055` Achievements System (waiting: none, can start after 052-053)
+- [ ] `056` Ancient Ruins Zone (waiting: 054)
+- [ ] `057` Sky Islands Zone (waiting: 054, 056)
 
-## Done (Phase 3)
+## Done (Phase 3 - Polish)
+<!-- New tasks will be marked complete here -->
+
+## Done (Phase 3 - Story)
 - [x] `051` Finale - Mother's Secret ✓
-- [x] `050` Sky Islands zone ✓
-- [x] `049` Ancient Ruins zone ✓
+- [x] `050` Sky Islands zone (story) ✓
+- [x] `049` Ancient Ruins zone (story) ✓
 - [x] `048` Chapter 6 - Estranged Siblings ✓
 - [x] `047` Chapter 3 - Old Man Garrett ✓
 - [x] `046` Chapter 2 - Lily the Perfectionist ✓
@@ -68,43 +77,26 @@
 
 ---
 
-## Phase 2: Expansion
+## Phase 3 - Polish & End-Game Content
 
-Closing gaps between prototype and full specification. See `.orchestra/EXPANSION_PLAN.md` for details.
+See `.orchestra/PHASE3_PLAN.md` for detailed implementation plan.
 
-### Implementation Order
-1. **Foundation** (036, 037, 038): Dragon naming, seasons, weather
-2. **Dragon Expansion** (039, 040): New stages, abilities
-3. **World Expansion** (041, 042): New zones, recipes
-4. **Story & Depth** (043, 044, 045): Evening service, chapters, affinity
+### Sprint 1: Quick Wins (3-5 hours)
+- `052` Legendary Reputation Tier - 5th tier at 500+ rep
+- `053` Recipe Completion - Add 4-6 recipes to reach 80+
 
-### Dependencies
-```
-036 Dragon Naming ────────────────────────────────┐
-037 Seasons ──────→ 038 Weather                   │
-039 Dragon Stages ──→ 040 Abilities               ├── All independent
-                  └─→ 041 Zones ──→ 042 Recipes   │
-                  └─→ 044 Story Chapters          │
-043 Evening Service ──────────────────────────────┤
-045 Affinity System ──────────────────────────────┘
-```
+### Sprint 2: Core Systems (10-14 hours)
+- `054` Creature System - 5 creature types with dragon interactions
+- `055` Achievements System - 20+ achievements across all categories
 
----
-
-## Phase 3: Story Completion
-
-Completing all story chapters and world zones per specification.
-
-### Implementation Order
-1. **Story Chapters** (046, 047, 048): Lily, Garrett, Siblings
-2. **World Zones** (049, 050): Ancient Ruins, Sky Islands
-3. **Finale** (051): Mother's Secret conclusion
+### Sprint 3: End-Game Zones (8-12 hours)
+- `056` Ancient Ruins Zone - Puzzles, hidden recipes, dragon lore
+- `057` Sky Islands Zone - Flight-based traversal, legendary ingredients
 
 ### Dependencies
 ```
-046 Chapter 2 (Lily) ──→ 047 Chapter 3 (Garrett) ──→ 048 Chapter 6 (Siblings)
-                                                              │
-049 Ancient Ruins ──→ 050 Sky Islands ────────────────────────┤
-                                                              ↓
-                                                    051 Finale
+052 Legendary Tier ──┐
+053 Recipes ─────────┼──→ 054 Creatures ──→ 056 Ancient Ruins ──→ 057 Sky Islands
+                     │         │
+                     └─────────┴──→ 055 Achievements
 ```
