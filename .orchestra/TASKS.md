@@ -1,10 +1,9 @@
 # Tasks
 
 > Last updated: 2026-01-20
-> Progress: 54/57 complete (Phase 1 done, Phase 2 done, Phase 3 Story done, Phase 3 Polish in progress)
+> Progress: 55/57 complete (Phase 1 done, Phase 2 done, Phase 3 Story done, Phase 3 Polish in progress)
 
 ## Ready
-- [ ] `055` Achievements System
 - [ ] `056` Ancient Ruins Zone
 - [ ] `057` Sky Islands Zone
 
@@ -16,6 +15,7 @@
 - [x] `052` Legendary Reputation Tier ✓
 - [x] `053` Recipe Completion (82 total) ✓
 - [x] `054` Creature System ✓
+- [x] `055` Achievements System (24 achievements) ✓
 
 ## Done (Phase 3 - Story)
 - [x] `051` Finale - Mother's Secret ✓

@@ -649,6 +649,197 @@ CREATURE_SCARE_STAMINA_COST = 20  # Stamina to scare hostile creatures
 CREATURE_RESPAWN_HOURS = 4        # Hours until scared creatures return
 
 # =============================================================================
+# ACHIEVEMENTS SYSTEM (Phase 3)
+# =============================================================================
+# Achievement categories
+ACHIEVEMENT_CAT_DRAGON = 'dragon'
+ACHIEVEMENT_CAT_CAFE = 'cafe'
+ACHIEVEMENT_CAT_EXPLORATION = 'exploration'
+ACHIEVEMENT_CAT_STORY = 'story'
+
+# Achievement definitions: id -> {name, description, category, condition, reward}
+ACHIEVEMENTS = {
+    # Dragon Milestones (5)
+    'dragon_first_steps': {
+        'name': 'First Steps',
+        'description': 'Hatch your dragon egg',
+        'category': ACHIEVEMENT_CAT_DRAGON,
+        'condition': {'type': 'dragon_stage', 'value': 'hatchling'},
+        'reward': {'gold': 50},
+    },
+    'dragon_growing_up': {
+        'name': 'Growing Up',
+        'description': 'Raise your dragon to Juvenile stage',
+        'category': ACHIEVEMENT_CAT_DRAGON,
+        'condition': {'type': 'dragon_stage', 'value': 'juvenile'},
+        'reward': {'gold': 100},
+    },
+    'dragon_coming_of_age': {
+        'name': 'Coming of Age',
+        'description': 'Raise your dragon to Adolescent stage',
+        'category': ACHIEVEMENT_CAT_DRAGON,
+        'condition': {'type': 'dragon_stage', 'value': 'adolescent'},
+        'reward': {'gold': 200},
+    },
+    'dragon_full_grown': {
+        'name': 'Full Grown',
+        'description': 'Raise your dragon to Adult stage',
+        'category': ACHIEVEMENT_CAT_DRAGON,
+        'condition': {'type': 'dragon_stage', 'value': 'adult'},
+        'reward': {'gold': 500},
+    },
+    'dragon_best_friends': {
+        'name': 'Best Friends',
+        'description': 'Reach maximum bond level (100) with your dragon',
+        'category': ACHIEVEMENT_CAT_DRAGON,
+        'condition': {'type': 'dragon_bond', 'value': 100},
+        'reward': {'gold': 300},
+    },
+
+    # Cafe Milestones (6)
+    'cafe_grand_opening': {
+        'name': 'Grand Opening',
+        'description': 'Complete your first cafe service',
+        'category': ACHIEVEMENT_CAT_CAFE,
+        'condition': {'type': 'service_count', 'value': 1},
+        'reward': {'gold': 25},
+    },
+    'cafe_rising_star': {
+        'name': 'Rising Star',
+        'description': 'Reach 100 reputation',
+        'category': ACHIEVEMENT_CAT_CAFE,
+        'condition': {'type': 'reputation', 'value': 100},
+        'reward': {'gold': 100},
+    },
+    'cafe_expert_chef': {
+        'name': 'Expert Chef',
+        'description': 'Reach 200 reputation',
+        'category': ACHIEVEMENT_CAT_CAFE,
+        'condition': {'type': 'reputation', 'value': 200},
+        'reward': {'gold': 200},
+    },
+    'cafe_master_chef': {
+        'name': 'Master Chef',
+        'description': 'Reach 350 reputation',
+        'category': ACHIEVEMENT_CAT_CAFE,
+        'condition': {'type': 'reputation', 'value': 350},
+        'reward': {'gold': 300},
+    },
+    'cafe_legendary': {
+        'name': 'Legendary Status',
+        'description': 'Reach 500 reputation (Legendary tier)',
+        'category': ACHIEVEMENT_CAT_CAFE,
+        'condition': {'type': 'reputation', 'value': 500},
+        'reward': {'gold': 500},
+    },
+    'cafe_recipe_collector': {
+        'name': 'Recipe Collector',
+        'description': 'Unlock 50 recipes',
+        'category': ACHIEVEMENT_CAT_CAFE,
+        'condition': {'type': 'recipes_unlocked', 'value': 50},
+        'reward': {'gold': 250},
+    },
+
+    # Exploration Milestones (4)
+    'explore_all_zones': {
+        'name': 'Explorer',
+        'description': 'Visit all exploration zones',
+        'category': ACHIEVEMENT_CAT_EXPLORATION,
+        'condition': {'type': 'zones_visited', 'value': 7},
+        'reward': {'gold': 200},
+    },
+    'explore_gatherer': {
+        'name': 'Gatherer',
+        'description': 'Collect 100 ingredients total',
+        'category': ACHIEVEMENT_CAT_EXPLORATION,
+        'condition': {'type': 'ingredients_gathered', 'value': 100},
+        'reward': {'gold': 150},
+    },
+    'explore_treasure_hunter': {
+        'name': 'Treasure Hunter',
+        'description': 'Find 10 rare resources',
+        'category': ACHIEVEMENT_CAT_EXPLORATION,
+        'condition': {'type': 'rare_found', 'value': 10},
+        'reward': {'gold': 300},
+    },
+    'explore_dragon_master': {
+        'name': 'Dragon Master',
+        'description': 'Unlock all dragon abilities',
+        'category': ACHIEVEMENT_CAT_EXPLORATION,
+        'condition': {'type': 'abilities_unlocked', 'value': 10},
+        'reward': {'gold': 400},
+    },
+
+    # Story Milestones (9)
+    'story_chapter_1': {
+        'name': 'Chapter I Complete',
+        'description': 'Complete Chapter 1 of the story',
+        'category': ACHIEVEMENT_CAT_STORY,
+        'condition': {'type': 'chapter_complete', 'value': 1},
+        'reward': {'gold': 50},
+    },
+    'story_chapter_2': {
+        'name': 'Chapter II Complete',
+        'description': 'Complete Chapter 2 of the story',
+        'category': ACHIEVEMENT_CAT_STORY,
+        'condition': {'type': 'chapter_complete', 'value': 2},
+        'reward': {'gold': 75},
+    },
+    'story_chapter_3': {
+        'name': 'Chapter III Complete',
+        'description': 'Complete Chapter 3 of the story',
+        'category': ACHIEVEMENT_CAT_STORY,
+        'condition': {'type': 'chapter_complete', 'value': 3},
+        'reward': {'gold': 100},
+    },
+    'story_chapter_4': {
+        'name': 'Chapter IV Complete',
+        'description': 'Complete Chapter 4 of the story',
+        'category': ACHIEVEMENT_CAT_STORY,
+        'condition': {'type': 'chapter_complete', 'value': 4},
+        'reward': {'gold': 125},
+    },
+    'story_chapter_5': {
+        'name': 'Chapter V Complete',
+        'description': 'Complete Chapter 5 of the story',
+        'category': ACHIEVEMENT_CAT_STORY,
+        'condition': {'type': 'chapter_complete', 'value': 5},
+        'reward': {'gold': 150},
+    },
+    'story_chapter_6': {
+        'name': 'Chapter VI Complete',
+        'description': 'Complete Chapter 6 of the story',
+        'category': ACHIEVEMENT_CAT_STORY,
+        'condition': {'type': 'chapter_complete', 'value': 6},
+        'reward': {'gold': 175},
+    },
+    'story_chapter_7': {
+        'name': 'Chapter VII Complete',
+        'description': 'Complete Chapter 7 of the story',
+        'category': ACHIEVEMENT_CAT_STORY,
+        'condition': {'type': 'chapter_complete', 'value': 7},
+        'reward': {'gold': 200},
+    },
+    'story_chapter_8': {
+        'name': 'Chapter VIII Complete',
+        'description': 'Complete the final chapter',
+        'category': ACHIEVEMENT_CAT_STORY,
+        'condition': {'type': 'chapter_complete', 'value': 8},
+        'reward': {'gold': 500},
+    },
+    'story_true_friend': {
+        'name': 'True Friend',
+        'description': 'Reach maximum affinity with any character',
+        'category': ACHIEVEMENT_CAT_STORY,
+        'condition': {'type': 'max_affinity', 'value': True},
+        'reward': {'gold': 250},
+    },
+}
+
+# Total achievement count for validation
+ACHIEVEMENT_COUNT = len(ACHIEVEMENTS)  # Should be 24
+
+# =============================================================================
 # INVENTORY SYSTEM
 # =============================================================================
 # Item categories
