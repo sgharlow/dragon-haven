@@ -89,14 +89,42 @@ See `.orchestra/EXPANSION_PLAN.md` for detailed implementation plan.
 - 2 additional story chapters (7 total)
 - Character affinity system (0-100 per character)
 
-### Success Criteria (Phase 2)
-- [ ] Dragon progresses through 5 life stages
-- [ ] 8 dragon abilities available across stages
-- [ ] 5 explorable zones
-- [ ] 30+ recipes
-- [ ] 4 seasons with 5 weather types
-- [ ] 7 story chapters
-- [ ] Evening service period active
-- [ ] Character affinity tracking
-- [ ] Named dragon companion
-- [ ] All Phase 1 functionality preserved
+### Success Criteria (Phase 2 - COMPLETE ✓)
+- [x] Dragon progresses through 5 life stages
+- [x] 10 dragon abilities available across stages (exceeds spec)
+- [x] 7 explorable zones (exceeds spec)
+- [x] 76 recipes (exceeds spec)
+- [x] 4 seasons with 5 weather types
+- [x] 8 story chapters (exceeds spec)
+- [x] Evening service period active
+- [x] Character affinity tracking
+- [x] Named dragon companion
+- [x] All Phase 1 functionality preserved
+
+---
+
+## Phase 3: Polish & End-Game Content
+
+See `.orchestra/PHASE3_PLAN.md` for detailed implementation plan.
+
+**Included:**
+- Legendary reputation tier (5th tier)
+- Recipe completion (80+ total)
+- Creature system for exploration
+- Achievements system
+- Ancient Ruins zone
+- Sky Islands zone
+
+**Deferred to Phase 4+:**
+- Multiplayer/Sharing (requires networking infrastructure)
+- New Game+ mode (nice-to-have, not core)
+- Extensive dragon customization (cosmetic-only)
+- Seasonal events system (live-service model)
+
+### Success Criteria (Phase 3)
+- [ ] 5 reputation tiers including Legendary
+- [ ] 80+ recipes available
+- [ ] Creature system with 5+ creature types
+- [ ] 20+ achievements trackable
+- [ ] 9 explorable zones
+- [ ] All Phase 1 & 2 functionality preserved
