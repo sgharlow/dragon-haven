@@ -539,6 +539,116 @@ DRAGON_STAGE_SIZES = {
 }
 
 # =============================================================================
+# CREATURE SYSTEM (Phase 3)
+# =============================================================================
+# Creature types
+CREATURE_FOREST_SPRITE = 'forest_sprite'
+CREATURE_WILD_BOAR = 'wild_boar'
+CREATURE_CLIFF_BIRD = 'cliff_bird'
+CREATURE_SHORE_CRAB = 'shore_crab'
+CREATURE_CAVE_BAT = 'cave_bat'
+
+ALL_CREATURE_TYPES = [
+    CREATURE_FOREST_SPRITE, CREATURE_WILD_BOAR, CREATURE_CLIFF_BIRD,
+    CREATURE_SHORE_CRAB, CREATURE_CAVE_BAT
+]
+
+# Creature behavior types
+CREATURE_BEHAVIOR_PATROL = 'patrol'       # Wander between waypoints
+CREATURE_BEHAVIOR_FLEE = 'flee'           # Run from player/dragon
+CREATURE_BEHAVIOR_GUARD = 'guard'         # Block until cleared
+CREATURE_BEHAVIOR_FOLLOW = 'follow'       # Accompany player temporarily
+CREATURE_BEHAVIOR_STATIONARY = 'stationary'  # Stay in place
+
+# Creature definitions: name, behavior, hostile, zones, drops, dragon_ability
+# Note: zones use strings to avoid forward reference issues
+CREATURE_DATA = {
+    CREATURE_FOREST_SPRITE: {
+        'name': 'Forest Sprite',
+        'behavior': CREATURE_BEHAVIOR_PATROL,
+        'hostile': False,
+        'zones': ['forest_depths', 'meadow_fields'],
+        'drops': ['rare_flower', 'golden_honey'],
+        'dragon_ability': None,  # Friendly - feed for bonuses
+        'color': (140, 220, 180),  # Soft green glow
+        'speed': 1.5,
+    },
+    CREATURE_WILD_BOAR: {
+        'name': 'Wild Boar',
+        'behavior': CREATURE_BEHAVIOR_GUARD,
+        'hostile': True,
+        'zones': ['forest_depths', 'mountain_pass'],
+        'drops': ['wild_game'],
+        'dragon_ability': 'creature_scare',
+        'color': (120, 80, 60),  # Brown
+        'speed': 2.0,
+    },
+    CREATURE_CLIFF_BIRD: {
+        'name': 'Cliff Bird',
+        'behavior': CREATURE_BEHAVIOR_FLEE,
+        'hostile': False,
+        'zones': ['mountain_pass', 'coastal_shore'],
+        'drops': ['rare_flower', 'alpine_flower'],
+        'dragon_ability': 'glide',  # Need glide to reach nests
+        'color': (200, 180, 140),  # Tan feathers
+        'speed': 3.0,
+    },
+    CREATURE_SHORE_CRAB: {
+        'name': 'Shore Crab',
+        'behavior': CREATURE_BEHAVIOR_GUARD,
+        'hostile': True,
+        'zones': ['coastal_shore'],
+        'drops': ['coastal_crab', 'pearl_oyster'],
+        'dragon_ability': 'rock_smash',
+        'color': (180, 100, 80),  # Reddish shell
+        'speed': 1.0,
+    },
+    CREATURE_CAVE_BAT: {
+        'name': 'Cave Bat',
+        'behavior': CREATURE_BEHAVIOR_FLEE,
+        'hostile': False,
+        'zones': ['ancient_ruins'],
+        'drops': ['rare_mushroom', 'crystal_shard'],
+        'dragon_ability': 'ember_breath',  # Light reveals them
+        'color': (80, 70, 90),  # Dark purple
+        'speed': 2.5,
+    },
+}
+
+# Creature spawn settings per zone (using string zone IDs)
+CREATURE_SPAWN_POINTS = {
+    'meadow_fields': [
+        (CREATURE_FOREST_SPRITE, 8, 6),
+        (CREATURE_FOREST_SPRITE, 14, 12),
+    ],
+    'forest_depths': [
+        (CREATURE_FOREST_SPRITE, 5, 8),
+        (CREATURE_WILD_BOAR, 12, 10),
+        (CREATURE_WILD_BOAR, 18, 14),
+    ],
+    'coastal_shore': [
+        (CREATURE_CLIFF_BIRD, 16, 4),
+        (CREATURE_SHORE_CRAB, 8, 12),
+        (CREATURE_SHORE_CRAB, 14, 15),
+    ],
+    'mountain_pass': [
+        (CREATURE_WILD_BOAR, 10, 8),
+        (CREATURE_CLIFF_BIRD, 6, 4),
+        (CREATURE_CLIFF_BIRD, 18, 6),
+    ],
+    'ancient_ruins': [
+        (CREATURE_CAVE_BAT, 8, 10),
+        (CREATURE_CAVE_BAT, 14, 8),
+        (CREATURE_CAVE_BAT, 10, 14),
+    ],
+}
+
+# Creature interaction rewards
+CREATURE_FEED_BOND_BONUS = 5      # Bond bonus for feeding friendly creatures
+CREATURE_SCARE_STAMINA_COST = 20  # Stamina to scare hostile creatures
+CREATURE_RESPAWN_HOURS = 4        # Hours until scared creatures return
+
+# =============================================================================
 # INVENTORY SYSTEM
 # =============================================================================
 # Item categories

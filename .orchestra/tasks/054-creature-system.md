@@ -4,7 +4,7 @@
 | Field | Value |
 |-------|-------|
 | **ID** | 054 |
-| **Status** | blocked |
+| **Status** | done |
 | **Branch** | task/054 |
 | **Assigned** | |
 | **Depends** | 052, 053 |
@@ -48,15 +48,15 @@ Add wildlife creatures to exploration zones that interact with dragon abilities,
 7. Update exploration state to render and update creatures
 
 ## Acceptance Criteria
-- [ ] Creature entity class created
-- [ ] CreatureManager singleton implemented
-- [ ] At least 5 creature types defined
-- [ ] Creatures spawn in appropriate zones
-- [ ] Creatures have basic AI behaviors
-- [ ] Dragon abilities affect creatures (Creature Scare, etc.)
-- [ ] Creatures render with procedural sprites
-- [ ] Creature state persists in save/load
-- [ ] Performance: 60 FPS with 10+ creatures on screen
+- [x] Creature entity class created
+- [x] CreatureManager singleton implemented
+- [x] At least 5 creature types defined
+- [x] Creatures spawn in appropriate zones
+- [x] Creatures have basic AI behaviors
+- [x] Dragon abilities affect creatures (Creature Scare, etc.)
+- [x] Creatures render with procedural sprites
+- [x] Creature state persists in save/load
+- [x] Performance: 60 FPS with 10+ creatures on screen
 
 ## Context Files
 - `src/entities/` - Entity patterns
@@ -65,8 +65,27 @@ Add wildlife creatures to exploration zones that interact with dragon abilities,
 - `src/sprites.py` - Procedural sprite generation
 
 ## Outputs
-<!-- Filled when complete -->
+Created `src/entities/creature.py` with:
+- `Creature` dataclass with position, AI state, behavior patterns
+- AI behaviors: patrol, flee, guard, follow, stationary
+- `scare()` and `interact()` methods for dragon ability integration
+- `draw()` method for procedural creature sprites
+- `to_dict()`/`from_dict()` for save/load serialization
+
+Created `CreatureManager` singleton with:
+- Zone-based creature spawning from `CREATURE_SPAWN_POINTS`
+- Active creature tracking and updates
+- `use_ability_on_creatures()` for dragon ability effects
+- `get_nearby_creature()` for interaction detection
+- Save/load state management
+
+Added to `src/constants.py`:
+- 5 creature types: Forest Sprite, Wild Boar, Cliff Bird, Shore Crab, Cave Bat
+- Creature behavior constants (patrol, flee, guard, follow, stationary)
+- `CREATURE_DATA` with name, behavior, hostile, zones, drops, dragon_ability, color, speed
+- `CREATURE_SPAWN_POINTS` for each zone
+- Creature interaction reward constants
 
 ---
 ## Work Log
-<!-- Appended during work -->
+- 2026-01-20: Implemented core creature system with 5 types, AI behaviors, and manager
