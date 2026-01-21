@@ -21,6 +21,7 @@ from constants import (
     REPUTATION_MIN, REPUTATION_MAX,
     REPUTATION_LEVEL_UNKNOWN, REPUTATION_LEVEL_LOCAL,
     REPUTATION_LEVEL_TOWN, REPUTATION_LEVEL_REGIONAL,
+    REPUTATION_LEVEL_LEGENDARY,
     REPUTATION_LEVELS, REPUTATION_CUSTOMER_RANGE, REPUTATION_UNLOCKS,
     REPUTATION_DAILY_DECAY,
 )
@@ -436,7 +437,7 @@ class CafeManager:
         for level_id, level_data in REPUTATION_LEVELS.items():
             if level_data['min'] <= self._reputation <= level_data['max']:
                 return level_id
-        return REPUTATION_LEVEL_REGIONAL  # Max level if above all
+        return REPUTATION_LEVEL_LEGENDARY  # Max level if above all
 
     def get_reputation_level_name(self) -> str:
         """Get the display name of current reputation level."""

@@ -21,6 +21,7 @@ from constants import (
     ORDER_CATEGORY_APPETIZER, ORDER_CATEGORY_MAIN, ORDER_CATEGORY_DESSERT, ORDER_CATEGORY_DRINK,
     TIP_BASE_PERCENT, TIP_SATISFACTION_BONUS, TIP_MAX_PERCENT,
     SERVICE_CATEGORY_PREFERENCE, SERVICE_PERIOD_MORNING, SERVICE_PERIOD_EVENING,
+    REPUTATION_LEVEL_LEGENDARY, LEGENDARY_TIP_BONUS,
 )
 
 
@@ -324,7 +325,7 @@ class Customer:
         }
 
     def _calculate_tip(self) -> int:
-        """Calculate tip amount based on satisfaction."""
+        """Calculate tip amount based on satisfaction and reputation level."""
         if self._satisfaction < CUSTOMER_SATISFACTION_NEUTRAL:
             return 0
 
@@ -337,7 +338,15 @@ class Customer:
 
         tip_percent = min(tip_percent, TIP_MAX_PERCENT)
 
-        return int(base_price * tip_percent)
+        base_tip = int(base_price * tip_percent)
+
+        # Apply Legendary tier bonus (25% extra tips)
+        from systems.cafe import get_cafe_manager
+        cafe_mgr = get_cafe_manager()
+        if cafe_mgr.get_reputation_level() == REPUTATION_LEVEL_LEGENDARY:
+            base_tip = int(base_tip * (1 + LEGENDARY_TIP_BONUS))
+
+        return base_tip
 
     def _get_reputation_change(self) -> int:
         """Get reputation change based on satisfaction."""

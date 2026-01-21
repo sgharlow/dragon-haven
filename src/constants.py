@@ -207,19 +207,21 @@ CAFE_SKIP_REP_PENALTY = 10      # Backwards compatibility
 # =============================================================================
 # Reputation range
 REPUTATION_MIN = 0
-REPUTATION_MAX = 500
+REPUTATION_MAX = 1000  # Extended for Legendary tier
 
 # Reputation levels (tier name, min reputation, max reputation)
 REPUTATION_LEVEL_UNKNOWN = 'unknown'
 REPUTATION_LEVEL_LOCAL = 'local_favorite'
 REPUTATION_LEVEL_TOWN = 'town_attraction'
 REPUTATION_LEVEL_REGIONAL = 'regional_fame'
+REPUTATION_LEVEL_LEGENDARY = 'legendary'  # Phase 3: 5th tier
 
 REPUTATION_LEVELS = {
     REPUTATION_LEVEL_UNKNOWN: {'min': 0, 'max': 49, 'name': 'Unknown'},
     REPUTATION_LEVEL_LOCAL: {'min': 50, 'max': 149, 'name': 'Local Favorite'},
     REPUTATION_LEVEL_TOWN: {'min': 150, 'max': 299, 'name': 'Town Attraction'},
-    REPUTATION_LEVEL_REGIONAL: {'min': 300, 'max': 500, 'name': 'Regional Fame'},
+    REPUTATION_LEVEL_REGIONAL: {'min': 300, 'max': 499, 'name': 'Regional Fame'},
+    REPUTATION_LEVEL_LEGENDARY: {'min': 500, 'max': 1000, 'name': 'Legendary'},
 }
 
 # Customer count range per reputation level
@@ -228,6 +230,7 @@ REPUTATION_CUSTOMER_RANGE = {
     REPUTATION_LEVEL_LOCAL: (2, 4),
     REPUTATION_LEVEL_TOWN: (3, 6),
     REPUTATION_LEVEL_REGIONAL: (5, 8),
+    REPUTATION_LEVEL_LEGENDARY: (7, 10),  # VIP customer volume
 }
 
 # Daily reputation decay (if cafe not operated)
@@ -238,7 +241,11 @@ REPUTATION_UNLOCKS = {
     REPUTATION_LEVEL_LOCAL: ['berry_juice', 'mushroom_skewers'],
     REPUTATION_LEVEL_TOWN: ['forest_fish_plate', 'honey_cake'],
     REPUTATION_LEVEL_REGIONAL: ['game_roast', 'all_recipes'],
+    REPUTATION_LEVEL_LEGENDARY: ['legendary_dragon_feast', 'mythic_tea_ceremony'],
 }
+
+# Legendary tier bonus (25% tip bonus)
+LEGENDARY_TIP_BONUS = 0.25
 
 # =============================================================================
 # CHARACTER AFFINITY SYSTEM

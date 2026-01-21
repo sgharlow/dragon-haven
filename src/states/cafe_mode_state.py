@@ -26,6 +26,7 @@ from constants import (
     REAL_SECONDS_PER_GAME_HOUR,
     RECIPES, DEFAULT_UNLOCKED_RECIPES,
     SERVICE_PERIOD_MORNING, SERVICE_PERIOD_EVENING,
+    REPUTATION_LEVEL_LEGENDARY,
 )
 
 
@@ -543,10 +544,12 @@ class CafeModeState(BaseScreen):
         stats_surface = self.small_font.render(stats_text, True, UI_TEXT_DIM)
         screen.blit(stats_surface, (SCREEN_WIDTH - stats_surface.get_width() - 20, 55))
 
-        # Reputation
+        # Reputation - gold color for Legendary tier
         rep = self.cafe.get_reputation()
         rep_name = self.cafe.get_reputation_level_name()
-        rep_surface = self.text_font.render(f"Reputation: {rep} ({rep_name})", True, CAFE_WARM)
+        rep_level = self.cafe.get_reputation_level()
+        rep_color = (255, 215, 0) if rep_level == REPUTATION_LEVEL_LEGENDARY else CAFE_WARM  # Gold for legendary
+        rep_surface = self.text_font.render(f"Reputation: {rep} ({rep_name})", True, rep_color)
         screen.blit(rep_surface, (SCREEN_WIDTH - rep_surface.get_width() - 20, 25))
 
     def _draw_kitchen(self, screen):
@@ -781,12 +784,14 @@ class CafeModeState(BaseScreen):
 
             y += 30
 
-        # Reputation
+        # Reputation - gold color for Legendary tier
         rep_y = y + 20
         rep = self.cafe.get_reputation()
         rep_name = self.cafe.get_reputation_level_name()
+        rep_level = self.cafe.get_reputation_level()
+        rep_color = (255, 215, 0) if rep_level == REPUTATION_LEVEL_LEGENDARY else CAFE_WARM  # Gold for legendary
         rep_text = f"Reputation: {rep} ({rep_name})"
-        rep_surface = self.text_font.render(rep_text, True, CAFE_WARM)
+        rep_surface = self.text_font.render(rep_text, True, rep_color)
         rep_rect = rep_surface.get_rect(centerx=panel_rect.centerx, y=rep_y)
         screen.blit(rep_surface, rep_rect)
 
