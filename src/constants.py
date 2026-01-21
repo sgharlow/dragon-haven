@@ -809,6 +809,26 @@ INGREDIENTS = {
     'dragon_tear': ('Dragon Tear', ITEM_SPECIAL, 250, 0, (0.6, 0.8, 1.0)),  # Legendary, never spoils
     'phoenix_feather': ('Phoenix Feather', ITEM_SPECIAL, 300, 0, (1.0, 0.6, 0.3)),  # Mythical, never spoils
     'sky_honey': ('Sky Honey', ITEM_SPECIAL, 160, 0, (1.0, 0.9, 0.6)),  # Never spoils
+
+    # Common cooking ingredients - Used across many recipes
+    'honey': ('Honey', ITEM_SPECIAL, 15, 0, (0.9, 0.7, 0.2)),  # Generic honey, never spoils
+    'herb': ('Herb', ITEM_SPICE, 8, 3, (0.3, 0.7, 0.3)),  # Generic cooking herb
+    'berry': ('Berry', ITEM_FRUIT, 10, 2, (0.8, 0.2, 0.4)),  # Generic berry
+    'mushroom': ('Mushroom', ITEM_VEGETABLE, 12, 2, (0.5, 0.4, 0.3)),  # Generic mushroom
+    'flour': ('Flour', ITEM_VEGETABLE, 8, 0, (0.95, 0.95, 0.9)),  # Never spoils
+    'grain': ('Grain', ITEM_VEGETABLE, 6, 0, (0.8, 0.7, 0.4)),  # Never spoils
+    'egg': ('Egg', ITEM_SPECIAL, 12, 2, (0.95, 0.9, 0.8)),  # Fresh egg
+    'butter': ('Butter', ITEM_SPECIAL, 15, 2, (1.0, 0.95, 0.7)),  # Dairy butter
+    'cream': ('Cream', ITEM_SPECIAL, 18, 1, (0.98, 0.98, 0.95)),  # Fresh cream
+    'bread': ('Bread', ITEM_VEGETABLE, 10, 2, (0.8, 0.6, 0.4)),  # Baked bread
+    'wild_meat': ('Wild Meat', ITEM_MEAT, 25, 1, (0.7, 0.3, 0.3)),  # Hunted game meat
+    'wild_mushroom': ('Wild Mushroom', ITEM_VEGETABLE, 20, 2, (0.5, 0.4, 0.35)),  # Foraged mushroom
+    'root_vegetable': ('Root Vegetable', ITEM_VEGETABLE, 12, 4, (0.7, 0.5, 0.3)),  # Carrot, potato, etc.
+    'exotic_spice': ('Exotic Spice', ITEM_SPICE, 35, 0, (0.8, 0.4, 0.2)),  # Imported spice, never spoils
+    'fire_pepper': ('Fire Pepper', ITEM_SPICE, 28, 3, (0.9, 0.2, 0.1)),  # Spicy hot pepper
+    'rare_flower': ('Rare Flower', ITEM_SPECIAL, 40, 2, (0.9, 0.5, 0.7)),  # Decorative/edible flower
+    'premium_tea': ('Premium Tea', ITEM_SPICE, 30, 0, (0.4, 0.6, 0.3)),  # Fine tea leaves, never spoils
+    'premium_ingredient': ('Premium Ingredient', ITEM_SPECIAL, 50, 2, (0.8, 0.7, 0.6)),  # High-quality ingredient
 }
 
 # Spawn point definitions per zone: list of (id, name, x, y, ingredient_id, rarity, ability_required)
