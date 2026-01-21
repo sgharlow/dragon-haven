@@ -547,10 +547,15 @@ CREATURE_WILD_BOAR = 'wild_boar'
 CREATURE_CLIFF_BIRD = 'cliff_bird'
 CREATURE_SHORE_CRAB = 'shore_crab'
 CREATURE_CAVE_BAT = 'cave_bat'
+# Sky Islands creatures (Phase 3)
+CREATURE_SKY_SERPENT = 'sky_serpent'
+CREATURE_CLOUD_WISP = 'cloud_wisp'
+CREATURE_STORM_HAWK = 'storm_hawk'
 
 ALL_CREATURE_TYPES = [
     CREATURE_FOREST_SPRITE, CREATURE_WILD_BOAR, CREATURE_CLIFF_BIRD,
-    CREATURE_SHORE_CRAB, CREATURE_CAVE_BAT
+    CREATURE_SHORE_CRAB, CREATURE_CAVE_BAT,
+    CREATURE_SKY_SERPENT, CREATURE_CLOUD_WISP, CREATURE_STORM_HAWK
 ]
 
 # Creature behavior types
@@ -613,6 +618,37 @@ CREATURE_DATA = {
         'color': (80, 70, 90),  # Dark purple
         'speed': 2.5,
     },
+    # Sky Islands creatures
+    CREATURE_SKY_SERPENT: {
+        'name': 'Sky Serpent',
+        'behavior': CREATURE_BEHAVIOR_PATROL,
+        'hostile': False,
+        'zones': ['sky_islands'],
+        'drops': ['cloud_essence', 'sky_crystal'],
+        'dragon_ability': None,  # Majestic, non-hostile
+        'color': (180, 200, 255),  # Iridescent blue
+        'speed': 2.0,
+    },
+    CREATURE_CLOUD_WISP: {
+        'name': 'Cloud Wisp',
+        'behavior': CREATURE_BEHAVIOR_FOLLOW,
+        'hostile': False,
+        'zones': ['sky_islands'],
+        'drops': ['starlight_nectar', 'rainbow_essence'],
+        'dragon_ability': None,  # Guides to resources
+        'color': (255, 255, 230),  # Glowing white-gold
+        'speed': 1.5,
+    },
+    CREATURE_STORM_HAWK: {
+        'name': 'Storm Hawk',
+        'behavior': CREATURE_BEHAVIOR_GUARD,
+        'hostile': True,
+        'zones': ['sky_islands'],
+        'drops': ['phoenix_feather', 'lightning_crystal'],
+        'dragon_ability': 'fire_breath',  # Challenge for rewards
+        'color': (100, 80, 120),  # Stormy purple
+        'speed': 3.5,
+    },
 }
 
 # Creature spawn settings per zone (using string zone IDs)
@@ -640,6 +676,13 @@ CREATURE_SPAWN_POINTS = {
         (CREATURE_CAVE_BAT, 8, 10),
         (CREATURE_CAVE_BAT, 14, 8),
         (CREATURE_CAVE_BAT, 10, 14),
+    ],
+    'sky_islands': [
+        (CREATURE_SKY_SERPENT, 7, 5),
+        (CREATURE_SKY_SERPENT, 12, 12),
+        (CREATURE_CLOUD_WISP, 4, 8),
+        (CREATURE_CLOUD_WISP, 10, 6),
+        (CREATURE_STORM_HAWK, 8, 14),
     ],
 }
 
