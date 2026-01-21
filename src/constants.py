@@ -2158,6 +2158,100 @@ RECIPES = {
         'color_influence': (1.0, 0.95, 0.8),  # Radiant gold
         'unlock': {'type': UNLOCK_TYPE_EVENT, 'event': 'finale_end'},
     },
+
+    # =========================================================================
+    # LEGENDARY TIER RECIPES (6) - Phase 3 Polish
+    # =========================================================================
+    'legendary_dragon_feast': {
+        'name': 'Legendary Dragon Feast',
+        'description': 'An extravagant multi-course meal featuring dragon-touched ingredients. Only the most renowned chefs dare attempt this legendary dish.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 5,
+        'base_price': 500,
+        'ingredients': [
+            ('dragon_scale_herb', 2, 3),
+            ('wild_game', 1, 3),
+            ('exotic_spice', 2, 3),
+            ('golden_honey', 1, 2),
+        ],
+        'color_influence': (0.8, 0.3, 0.2),  # Fiery red-orange
+        'unlock': {'type': UNLOCK_TYPE_REPUTATION, 'requirement': 500},
+    },
+    'mythic_tea_ceremony': {
+        'name': 'Mythic Tea Ceremony',
+        'description': 'An ancient tea ritual passed down through generations. The ethereal blend calms even the most troubled spirit.',
+        'category': RECIPE_CATEGORY_BEVERAGE,
+        'difficulty': 4,
+        'base_price': 300,
+        'ingredients': [
+            ('premium_tea', 2, 3),
+            ('rare_flower', 1, 3),
+            ('golden_honey', 1, 2),
+            ('moonbeam_honey', 1, 3),
+        ],
+        'color_influence': (0.5, 0.8, 0.9),  # Serene blue-teal
+        'unlock': {'type': UNLOCK_TYPE_REPUTATION, 'requirement': 500},
+    },
+    'ancient_relic_cake': {
+        'name': 'Ancient Relic Cake',
+        'description': 'A recipe discovered in the Ancient Ruins, featuring spices lost to time. Each bite tells a story of civilizations past.',
+        'category': RECIPE_CATEGORY_DESSERT,
+        'difficulty': 4,
+        'base_price': 250,
+        'ingredients': [
+            ('ancient_spice', 2, 3),
+            ('flour', 2, 1),
+            ('ancient_honey', 1, 3),
+            ('egg', 2, 1),
+        ],
+        'color_influence': (0.7, 0.6, 0.4),  # Ancient gold-brown
+        'unlock': {'type': UNLOCK_TYPE_DISCOVERY},
+    },
+    'cloud_puffs': {
+        'name': 'Cloud Puffs',
+        'description': 'Light-as-air pastries that melt on the tongue. Said to taste like floating among the clouds.',
+        'category': RECIPE_CATEGORY_DESSERT,
+        'difficulty': 3,
+        'base_price': 85,
+        'ingredients': [
+            ('cream', 2, 2),
+            ('egg', 2, 1),
+            ('flour', 2, 1),
+            ('golden_honey', 1, 1),
+        ],
+        'color_influence': (0.95, 0.95, 1.0),  # Fluffy white
+        'unlock': {'type': UNLOCK_TYPE_DEFAULT},
+    },
+    'storm_brew': {
+        'name': 'Storm Brew',
+        'description': 'A electrifying herbal drink that crackles with energy. Brewers say it captures the essence of a thunderstorm.',
+        'category': RECIPE_CATEGORY_BEVERAGE,
+        'difficulty': 3,
+        'base_price': 75,
+        'ingredients': [
+            ('storm_flower', 2, 2),
+            ('golden_honey', 1, 2),
+            ('wild_herb', 1, 1),
+        ],
+        'color_influence': (0.4, 0.3, 0.7),  # Electric purple
+        'unlock': {'type': UNLOCK_TYPE_DISCOVERY},
+    },
+    'founders_original': {
+        'name': "Founder's Original Recipe",
+        'description': "The secret recipe that made Dragon Haven Cafe famous. Mother's masterpiece, now passed down to you.",
+        'category': RECIPE_CATEGORY_SPECIAL,
+        'difficulty': 5,
+        'base_price': 400,
+        'ingredients': [
+            ('dragon_scale_herb', 1, 3),
+            ('moonbeam_honey', 2, 3),
+            ('premium_tea', 1, 2),
+            ('rare_flower', 1, 3),
+            ('ancient_spice', 1, 3),
+        ],
+        'color_influence': (0.9, 0.8, 0.6),  # Warm nostalgic gold
+        'unlock': {'type': UNLOCK_TYPE_STORY, 'chapter': 8},
+    },
 }
 
 # Default unlocked recipes (available from game start)
@@ -2168,6 +2262,7 @@ DEFAULT_UNLOCKED_RECIPES = [
     'berry_tart',
     'herb_tea',
     'autumn_harvest_soup',  # Seasonal comfort food
+    'cloud_puffs',  # Phase 3: Light fluffy dessert
 ]
 
 # =============================================================================

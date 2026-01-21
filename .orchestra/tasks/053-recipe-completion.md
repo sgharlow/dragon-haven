@@ -4,7 +4,7 @@
 | Field | Value |
 |-------|-------|
 | **ID** | 053 |
-| **Status** | ready |
+| **Status** | done |
 | **Branch** | task/053 |
 | **Assigned** | |
 | **Depends** | none |
@@ -36,20 +36,28 @@ Add 4-6 new recipes to exceed the 80 recipe target from the original specificati
 5. Balance pricing based on difficulty
 
 ## Acceptance Criteria
-- [ ] At least 80 recipes total in RECIPES dict
-- [ ] All new recipes have valid ingredients
-- [ ] New recipes appear in recipe book
-- [ ] New recipes can be cooked in cafe mode
-- [ ] Dragon color system works with new recipes
-- [ ] Game runs without errors
+- [x] At least 80 recipes total in RECIPES dict (82 total)
+- [x] All new recipes have valid ingredients
+- [x] New recipes appear in recipe book
+- [x] New recipes can be cooked in cafe mode
+- [x] Dragon color system works with new recipes
+- [x] Game runs without errors
 
 ## Context Files
 - `src/constants.py` - Recipe and ingredient definitions
 - `src/systems/recipes.py` - Recipe manager
 
 ## Outputs
-<!-- Filled when complete -->
+Added 6 new legendary tier recipes:
+1. `legendary_dragon_feast` - Main, Diff 5, 500g, unlocks at Legendary rep (500)
+2. `mythic_tea_ceremony` - Beverage, Diff 4, 300g, unlocks at Legendary rep (500)
+3. `ancient_relic_cake` - Dessert, Diff 4, 250g, discovery unlock
+4. `cloud_puffs` - Dessert, Diff 3, 85g, default unlock (added to DEFAULT_UNLOCKED_RECIPES)
+5. `storm_brew` - Beverage, Diff 3, 75g, discovery unlock
+6. `founders_original` - Special, Diff 5, 400g, story unlock (Chapter 8)
+
+Total recipes: 76 -> 82 (+6)
 
 ---
 ## Work Log
-<!-- Appended during work -->
+- 2026-01-20: Added 6 new legendary tier recipes, validated all ingredients
