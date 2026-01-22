@@ -48,37 +48,86 @@ python main.py
 
 ## Controls
 
-### Movement & Interaction
-| Key | Action |
-|-----|--------|
-| W/↑ | Move Up |
-| S/↓ | Move Down |
-| A/← | Move Left |
-| D/→ | Move Right |
-| E/Space | Interact |
+### Quick Reference Card
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  EXPLORATION                    MENUS                       │
+│  ───────────                    ─────                       │
+│  W/↑ = Up                       ↑/↓ = Navigate              │
+│  S/↓ = Down                     Enter/Space = Select        │
+│  A/← = Left                     ESC = Back/Close            │
+│  D/→ = Right                                                │
+│  E/Space = Interact             QUICK ACCESS                │
+│  P = Pet Dragon                 ─────────────               │
+│  C = Open Cafe (at cafe)        I = Inventory               │
+│                                 R = Recipe Book             │
+│  ABILITIES                      D = Dragon Status           │
+│  ─────────                      ESC = Pause Menu            │
+│  1-9, 0 = Dragon Abilities                                  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Exploration Mode (Walking Around)
+
+| Key | Action | Notes |
+|-----|--------|-------|
+| **W** or **↑** | Move Up | Hold for continuous movement |
+| **S** or **↓** | Move Down | Hold for continuous movement |
+| **A** or **←** | Move Left | Hold for continuous movement |
+| **D** or **→** | Move Right | Hold for continuous movement |
+| **E** or **Space** | Interact | Talk to NPCs, gather resources, use objects |
+| **P** | Pet Dragon | Increases dragon happiness and bond |
+| **C** | Open Cafe | Only works when at cafe grounds |
 
 ### Dragon Abilities
-| Key | Action |
-|-----|--------|
-| 1 | Primary Ability |
-| 2 | Secondary Ability |
-| 3 | Special Ability |
 
-### Menu & Navigation
-| Key | Action |
-|-----|--------|
-| ESC | Pause Menu |
-| I | Open Inventory |
-| R | Open Recipe Book |
-| D | Dragon Status |
-| Enter | Confirm Selection |
-| Tab | Switch between modes |
+| Key | Ability Slot | Notes |
+|-----|--------------|-------|
+| **1** | Ability 1 | Unlocked abilities vary by dragon stage |
+| **2** | Ability 2 | |
+| **3** | Ability 3 | |
+| **4** | Ability 4 | |
+| **5** | Ability 5 | |
+| **6** | Ability 6 | |
+| **7** | Ability 7 | |
+| **8** | Ability 8 | |
+| **9** | Ability 9 | |
+| **0** | Ability 10 | |
+
+### Menu Navigation
+
+| Key | Action | Where it works |
+|-----|--------|----------------|
+| **↑** / **↓** | Navigate options | All menus |
+| **Enter** or **Space** | Confirm selection | All menus |
+| **ESC** | Go back / Close menu | All menus |
+| **Delete** | Delete save file | Save/Load screen only |
+
+### Quick Access (Works Anytime During Gameplay)
+
+| Key | Opens | Notes |
+|-----|-------|-------|
+| **ESC** | Pause Menu | Access settings, save/load, quit |
+| **I** | Inventory | View and manage your items |
+| **R** | Recipe Book | Browse recipes and mastery levels |
+| **D** | Dragon Status | Check dragon stats, feed, and care |
 
 ### Cooking Minigame
-| Key | Action |
-|-----|--------|
-| Space | Hit timing beat |
-| Arrow Keys | Direction inputs |
+
+The cooking minigame uses a **4-lane rhythm system**. Notes fall down 4 lanes - press the matching key when they hit the target line.
+
+| Key | Lane | Alternative Key |
+|-----|------|-----------------|
+| **A** | Lane 1 (Left) | **←** |
+| **S** | Lane 2 (Down) | **↓** |
+| **D** | Lane 3 (Up) | **↑** |
+| **F** | Lane 4 (Right) | **→** |
+
+**Tips:**
+- Hit notes as close to the target line as possible
+- Perfect timing = higher dish quality
+- Chain successful hits for combo bonuses
 
 ## Gameplay Guide
 
