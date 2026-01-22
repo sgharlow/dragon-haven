@@ -150,7 +150,7 @@ class EconomyManager:
             reputation: Current reputation points
 
         Returns:
-            Final selling price
+            Final selling price (includes NG+ gold bonus)
         """
         # Quality multiplier
         quality = max(1, min(5, quality))
@@ -160,7 +160,11 @@ class EconomyManager:
         rep_tiers = reputation // 100
         rep_bonus = 1.0 + (rep_tiers * REPUTATION_PRICE_BONUS)
 
-        final_price = int(base_price * quality_mult * rep_bonus)
+        # NG+ gold bonus (Phase 4)
+        from game_state import get_game_state_manager
+        ng_plus_bonus = get_game_state_manager().get_ng_plus_modifier('gold_bonus')
+
+        final_price = int(base_price * quality_mult * rep_bonus * ng_plus_bonus)
         return max(1, final_price)
 
     def calculate_ingredient_price(self, base_price: int, quality: float = 1.0) -> int:
@@ -189,7 +193,7 @@ class EconomyManager:
             satisfaction: Customer satisfaction (1-5)
 
         Returns:
-            Tip amount
+            Tip amount (includes NG+ gold bonus)
         """
         # Base tip percentage
         tip_percent = TIP_BASE_PERCENT
@@ -205,7 +209,11 @@ class EconomyManager:
         if satisfaction <= 1:
             return 0
 
-        return max(0, int(dish_price * tip_percent))
+        # NG+ gold bonus applies to tips too (Phase 4)
+        from game_state import get_game_state_manager
+        ng_plus_bonus = get_game_state_manager().get_ng_plus_modifier('gold_bonus')
+
+        return max(0, int(dish_price * tip_percent * ng_plus_bonus))
 
     # =========================================================================
     # UPGRADE SYSTEM

@@ -559,6 +559,52 @@ class GameStateManager:
 
         return True
 
+    def get_ng_plus_modifier(self, modifier_name: str) -> float:
+        """
+        Get the current NG+ modifier value for a given system.
+
+        Modifiers scale with NG+ level using:
+        base_modifier * (scaling ^ (ng_plus_level - 1))
+
+        Args:
+            modifier_name: One of 'customer_expectations', 'service_time',
+                          'resource_scarcity', 'gold_bonus', 'reputation_decay'
+
+        Returns:
+            Modifier value (1.0 = no change, >1.0 = increase, <1.0 = decrease)
+        """
+        from constants import NG_PLUS_MODIFIERS, NG_PLUS_SCALING_PER_CYCLE
+
+        if self._ng_plus_level == 0:
+            return 1.0  # No modifiers in normal game
+
+        base = NG_PLUS_MODIFIERS.get(modifier_name, 1.0)
+        scaling = NG_PLUS_SCALING_PER_CYCLE.get(modifier_name, 1.0)
+
+        # Apply scaling for each NG+ level beyond 1
+        if self._ng_plus_level > 1:
+            for _ in range(self._ng_plus_level - 1):
+                base *= scaling
+
+        return base
+
+    def get_all_ng_plus_modifiers(self) -> Dict[str, float]:
+        """
+        Get all current NG+ modifiers.
+
+        Returns:
+            Dict mapping modifier names to their current values
+        """
+        from constants import NG_PLUS_MODIFIERS
+
+        if self._ng_plus_level == 0:
+            return {name: 1.0 for name in NG_PLUS_MODIFIERS}
+
+        return {
+            name: self.get_ng_plus_modifier(name)
+            for name in NG_PLUS_MODIFIERS
+        }
+
     def get_ng_plus_carryover_summary(self) -> Dict[str, Any]:
         """
         Get a summary of what will carry over to NG+.

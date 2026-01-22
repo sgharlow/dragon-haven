@@ -123,6 +123,29 @@ class CafeManager:
 
     def is_prep(self) -> bool:
         """Check if in prep phase."""
+
+    def get_effective_service_end(self, service_start: float, service_end: float) -> float:
+        """
+        Get the effective service end time with NG+ modifier.
+
+        In NG+, service periods are shortened by the service_time modifier.
+        E.g., with modifier 0.9, a 4-hour service becomes 3.6 hours.
+
+        Args:
+            service_start: Normal service start time
+            service_end: Normal service end time
+
+        Returns:
+            Effective service end time (may be earlier in NG+)
+        """
+        from game_state import get_game_state_manager
+        time_modifier = get_game_state_manager().get_ng_plus_modifier('service_time')
+
+        # Calculate effective duration
+        normal_duration = service_end - service_start
+        effective_duration = normal_duration * time_modifier
+
+        return service_start + effective_duration
         return self._state == CAFE_STATE_PREP
 
     def is_closed(self) -> bool:
@@ -143,15 +166,23 @@ class CafeManager:
         new_state = CAFE_STATE_CLOSED
         new_period = None
 
+        # Calculate effective service end times (NG+ may shorten service periods)
+        morning_service_end = self.get_effective_service_end(
+            CAFE_MORNING_SERVICE_START, CAFE_MORNING_SERVICE_END
+        )
+        evening_service_end = self.get_effective_service_end(
+            CAFE_EVENING_SERVICE_START, CAFE_EVENING_SERVICE_END
+        )
+
         # Check morning service
         if not self._morning_skipped and not self._morning_completed:
             if CAFE_MORNING_PREP_START <= current_hour < CAFE_MORNING_SERVICE_START:
                 new_state = CAFE_STATE_PREP
                 new_period = SERVICE_PERIOD_MORNING
-            elif CAFE_MORNING_SERVICE_START <= current_hour < CAFE_MORNING_SERVICE_END:
+            elif CAFE_MORNING_SERVICE_START <= current_hour < morning_service_end:
                 new_state = CAFE_STATE_SERVICE
                 new_period = SERVICE_PERIOD_MORNING
-            elif CAFE_MORNING_SERVICE_END <= current_hour < CAFE_MORNING_CLEANUP_END:
+            elif morning_service_end <= current_hour < CAFE_MORNING_CLEANUP_END:
                 new_state = CAFE_STATE_CLEANUP
                 new_period = SERVICE_PERIOD_MORNING
 
@@ -160,10 +191,10 @@ class CafeManager:
             if CAFE_EVENING_PREP_START <= current_hour < CAFE_EVENING_SERVICE_START:
                 new_state = CAFE_STATE_PREP
                 new_period = SERVICE_PERIOD_EVENING
-            elif CAFE_EVENING_SERVICE_START <= current_hour < CAFE_EVENING_SERVICE_END:
+            elif CAFE_EVENING_SERVICE_START <= current_hour < evening_service_end:
                 new_state = CAFE_STATE_SERVICE
                 new_period = SERVICE_PERIOD_EVENING
-            elif CAFE_EVENING_SERVICE_END <= current_hour < CAFE_EVENING_CLEANUP_END:
+            elif evening_service_end <= current_hour < CAFE_EVENING_CLEANUP_END:
                 new_state = CAFE_STATE_CLEANUP
                 new_period = SERVICE_PERIOD_EVENING
 
