@@ -121,10 +121,36 @@ See `.orchestra/PHASE3_PLAN.md` for detailed implementation plan.
 - Extensive dragon customization (cosmetic-only)
 - Seasonal events system (live-service model)
 
-### Success Criteria (Phase 3)
-- [ ] 5 reputation tiers including Legendary
-- [ ] 80+ recipes available
-- [ ] Creature system with 5+ creature types
-- [ ] 20+ achievements trackable
-- [ ] 9 explorable zones
-- [ ] All Phase 1 & 2 functionality preserved
+### Success Criteria (Phase 3 - COMPLETE ✓)
+- [x] 5 reputation tiers including Legendary
+- [x] 82 recipes available
+- [x] Creature system with 8 creature types
+- [x] 24 achievements trackable
+- [x] 9 explorable zones
+- [x] All Phase 1 & 2 functionality preserved
+
+---
+
+## Phase 4: Replayability & Personalization
+
+See `.orchestra/PHASE4_PLAN.md` for detailed implementation plan.
+
+**Included:**
+- New Game+ Mode (carryover, difficulty scaling)
+- Dragon Customization System (accessories, patterns, effects)
+- Seasonal Events System (4 events, limited recipes)
+- Quality of Life Improvements
+
+**Deferred to Phase 5+:**
+- Multiplayer/Sharing System (requires networking infrastructure)
+
+### Success Criteria (Phase 4)
+- [ ] New Game+ mode unlockable after completing story
+- [ ] NG+ counter tracks multiple playthroughs
+- [ ] 6+ dragon accessories unlockable
+- [ ] 5+ color patterns available
+- [ ] Customization screen functional
+- [ ] 4 seasonal events active
+- [ ] 16 limited-time recipes available
+- [ ] QoL improvements implemented
+- [ ] All Phase 1-3 functionality preserved
