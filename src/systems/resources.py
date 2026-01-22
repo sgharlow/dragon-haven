@@ -134,6 +134,11 @@ class SpawnPoint:
         if self.rarity == SPAWN_RARITY_RARE:
             spawn_chance *= WEATHER_RESOURCE_MULTIPLIER.get(weather, 1.0)
 
+        # NG+ resource scarcity (Phase 4) - reduces spawn chance
+        from game_state import get_game_state_manager
+        scarcity_modifier = get_game_state_manager().get_ng_plus_modifier('resource_scarcity')
+        spawn_chance *= scarcity_modifier
+
         if random.random() > spawn_chance:
             return False
 

@@ -248,8 +248,16 @@ class Customer:
         Returns:
             Satisfaction score (1-5)
         """
+        # NG+ customer expectations modifier (Phase 4)
+        # Higher modifier = customers are harder to please
+        from game_state import get_game_state_manager
+        expectations_modifier = get_game_state_manager().get_ng_plus_modifier('customer_expectations')
+
+        # Effective quality expectation (raised in NG+)
+        effective_expectation = self.quality_expectation * expectations_modifier
+
         # Quality component (how dish compares to expectations)
-        quality_diff = quality - self.quality_expectation
+        quality_diff = quality - effective_expectation
         quality_score = 3.0 + quality_diff  # 1-5 based on diff
 
         # Speed component (faster = better)
