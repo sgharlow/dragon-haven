@@ -18,6 +18,7 @@ from systems.dialogue import get_dialogue_manager
 from systems.story import get_story_manager
 from entities.story_character import get_character_manager
 from systems.dragon_manager import get_dragon_manager
+from systems.achievements import get_achievement_manager
 
 # Note: Dragon is now managed through DragonManager singleton
 # Player is still managed per-state
@@ -433,6 +434,160 @@ class GameStateManager:
         # Create fresh dragon
         dragon_mgr = get_dragon_manager()
         dragon_mgr.create_dragon()
+
+    def new_game_plus(self) -> bool:
+        """
+        Start a New Game+ with carryover from current save.
+
+        Carries over:
+        - Unlocked recipes
+        - Mastered recipes
+        - Achievements
+        - Dragon names history
+        - Character affinity (50%)
+        - Total playtime (cumulative)
+
+        Resets with bonuses:
+        - New dragon (egg)
+        - Gold: Starting + 500 bonus
+        - Reputation: 50 (starting boost)
+        - Story: Back to prologue
+        - Inventory items: Cleared
+        - Zones: Reset to initial
+
+        Returns:
+            True if NG+ started successfully, False if not unlocked
+        """
+        if not self._ng_plus_unlocked:
+            return False
+
+        from constants import (
+            STARTING_GOLD, DEFAULT_UNLOCKED_RECIPES,
+            NG_PLUS_STARTING_GOLD_BONUS, NG_PLUS_STARTING_REPUTATION,
+            NG_PLUS_AFFINITY_RETENTION
+        )
+
+        # === CAPTURE CARRYOVER DATA ===
+
+        # Recipes: Keep all unlocked and mastery
+        recipe_mgr = get_recipe_manager()
+        recipe_state = recipe_mgr.get_state()
+        carryover_recipes = recipe_state.get('unlocked', [])
+        carryover_mastery = recipe_state.get('mastery', {})
+
+        # Achievements: Keep all unlocked
+        achievement_mgr = get_achievement_manager()
+        # Achievements don't reset - they're cumulative
+
+        # Character affinity: Keep 50%
+        char_mgr = get_character_manager()
+        char_state = char_mgr.get_state()
+        carryover_affinity = {}
+        for char_id, char_data in char_state.get('characters', {}).items():
+            original_affinity = char_data.get('affinity', 0)
+            retained_affinity = int(original_affinity * NG_PLUS_AFFINITY_RETENTION)
+            carryover_affinity[char_id] = {
+                'affinity': retained_affinity,
+                'met': char_data.get('met', False),
+            }
+
+        # Dragon name: Add to history
+        dragon_mgr = get_dragon_manager()
+        dragon = dragon_mgr.get_dragon()
+        if dragon:
+            dragon_name = dragon.get_name()
+            if dragon_name and dragon_name not in self._dragon_names_history:
+                self._dragon_names_history.append(dragon_name)
+
+        # Playtime: Keep cumulative
+        total_playtime = self._playtime_seconds
+
+        # === INCREMENT NG+ LEVEL ===
+        self._ng_plus_level += 1
+
+        # === RESET GAME STATE ===
+
+        # Time system starts at Day 1, 8:00 AM
+        time_mgr = get_time_manager()
+        time_mgr.load_state({
+            'current_day': 1,
+            'current_hour': 8.0,
+            'current_season_index': 0,
+            'time_scale': 1.0,
+        })
+
+        # Inventory: Starting gold + NG+ bonus, with carryover recipes
+        inventory = get_inventory()
+        ng_plus_gold = STARTING_GOLD + NG_PLUS_STARTING_GOLD_BONUS
+        inventory.load_state({
+            'gold': ng_plus_gold,
+            'unlocked_recipes': carryover_recipes,
+            'mastered_recipes': carryover_mastery,
+        })
+
+        # Cafe: Starting reputation boost
+        cafe_mgr = get_cafe_manager()
+        cafe_mgr.load_state({
+            'reputation': NG_PLUS_STARTING_REPUTATION,
+            'cafe_level': 1,
+        })
+
+        # Story: Reset to prologue
+        story_mgr = get_story_manager()
+        story_mgr.load_state({
+            'current_chapter': 'prologue',
+            'completed_events': [],
+            'flags': {},
+        })
+
+        # World: Reset to cafe_grounds
+        world_mgr = get_world_manager()
+        world_mgr.load_state({
+            'current_zone': 'cafe_grounds',
+        })
+
+        # Characters: Apply carryover affinity
+        char_mgr.load_state({
+            'characters': carryover_affinity,
+        })
+
+        # Create fresh dragon (new egg)
+        dragon_mgr.create_dragon()
+
+        # Restore cumulative playtime
+        self._playtime_seconds = total_playtime
+
+        return True
+
+    def get_ng_plus_carryover_summary(self) -> Dict[str, Any]:
+        """
+        Get a summary of what will carry over to NG+.
+        Useful for displaying to player before starting NG+.
+        """
+        recipe_mgr = get_recipe_manager()
+        recipe_state = recipe_mgr.get_state()
+
+        char_mgr = get_character_manager()
+        char_state = char_mgr.get_state()
+
+        achievement_mgr = get_achievement_manager()
+
+        dragon_mgr = get_dragon_manager()
+        dragon = dragon_mgr.get_dragon()
+
+        return {
+            'ng_plus_level': self._ng_plus_level + 1,  # What it will become
+            'recipes_unlocked': len(recipe_state.get('unlocked', [])),
+            'recipes_mastered': len(recipe_state.get('mastery', {})),
+            'characters_met': sum(
+                1 for c in char_state.get('characters', {}).values()
+                if c.get('met', False)
+            ),
+            'achievements_unlocked': len(achievement_mgr._unlocked),
+            'dragon_name': dragon.get_name() if dragon else None,
+            'dragon_names_history': self._dragon_names_history.copy(),
+            'total_playtime': self._playtime_seconds,
+        }
 
 
 # =============================================================================

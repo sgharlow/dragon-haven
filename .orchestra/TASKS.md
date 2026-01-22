@@ -1,10 +1,9 @@
 # Tasks
 
 > Last updated: 2026-01-21
-> Progress: 57/70 complete (Phase 1 done, Phase 2 done, Phase 3 done, Phase 4 in progress)
+> Progress: 58/70 complete (Phase 1 done, Phase 2 done, Phase 3 done, Phase 4: 1/13)
 
 ## Ready
-- [ ] `059` NG+ Carryover Logic (recipe/achievement retention)
 - [ ] `060` NG+ Difficulty Modifiers (customer expectations, time pressure)
 - [ ] `061` Customization System Core (DragonCustomization class)
 - [ ] `062` Dragon Accessories (6 unlockable items)
@@ -18,9 +17,12 @@
 - [ ] `070` QoL Improvements (favorites, auto-sort, previews)
 
 ## In Progress
-- [ ] `058` NG+ Foundation (save flag, unlock condition)
+- [ ] `059` NG+ Carryover Logic (recipe/achievement retention)
 
 ## Blocked
+
+## Done (Phase 4 - Replayability)
+- [x] `058` NG+ Foundation (save flag, unlock condition) ✓
 
 ## Done (Phase 3 - Polish)
 - [x] `052` Legendary Reputation Tier ✓
