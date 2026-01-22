@@ -1,7 +1,7 @@
 # Tasks
 
 > Last updated: 2026-01-21
-> Progress: 59/70 complete (Phase 1 done, Phase 2 done, Phase 3 done, Phase 4: 2/13)
+> Progress: 60/70 complete (Phase 1 done, Phase 2 done, Phase 3 done, Phase 4: 3/13)
 
 ## Ready
 - [ ] `061` Customization System Core (DragonCustomization class)
@@ -16,11 +16,11 @@
 - [ ] `070` QoL Improvements (favorites, auto-sort, previews)
 
 ## In Progress
-- [ ] `060` NG+ Difficulty Modifiers (customer expectations, time pressure)
 
 ## Blocked
 
 ## Done (Phase 4 - Replayability)
+- [x] `060` NG+ Difficulty Modifiers (customer expectations, time pressure) ✓
 - [x] `059` NG+ Carryover Logic (recipe/achievement retention) ✓
 - [x] `058` NG+ Foundation (save flag, unlock condition) ✓
 
