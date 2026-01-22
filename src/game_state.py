@@ -43,6 +43,10 @@ class GameStateManager:
         self._playtime_seconds = 0.0
         self._save_manager = get_save_manager()
         self._autosave_enabled = False
+        # New Game+ tracking (Phase 4)
+        self._ng_plus_level = 0  # Current NG+ level (0 = normal)
+        self._ng_plus_unlocked = False  # True after completing Finale
+        self._dragon_names_history = []  # Names of dragons from previous runs
 
     def update_playtime(self, dt: float):
         """Update playtime counter (call each frame)."""
@@ -127,6 +131,10 @@ class GameStateManager:
             'recipes': recipe_state,
             'dragon': dragon_state,
             'playtime_seconds': self._playtime_seconds,
+            # New Game+ data (Phase 4)
+            'ng_plus_level': self._ng_plus_level,
+            'ng_plus_unlocked': self._ng_plus_unlocked,
+            'dragon_names_history': self._dragon_names_history,
         }
 
     def apply_game_state(self, state: Dict[str, Any]):
@@ -191,6 +199,11 @@ class GameStateManager:
         # Playtime
         self._playtime_seconds = state.get('playtime_seconds', 0.0)
 
+        # New Game+ data (Phase 4)
+        self._ng_plus_level = state.get('ng_plus_level', 0)
+        self._ng_plus_unlocked = state.get('ng_plus_unlocked', False)
+        self._dragon_names_history = state.get('dragon_names_history', [])
+
     def save_game(self, slot: int) -> bool:
         """
         Save current game state to a slot.
@@ -212,6 +225,8 @@ class GameStateManager:
         cafe_mgr = get_cafe_manager()
 
         save_data.meta.playtime_seconds = self._playtime_seconds
+        save_data.meta.ng_plus_level = self._ng_plus_level
+        save_data.meta.ng_plus_unlocked = self._ng_plus_unlocked
 
         # Player data
         save_data.player.name = "Player"
@@ -310,14 +325,66 @@ class GameStateManager:
         # Playtime
         self._playtime_seconds = save_data.meta.playtime_seconds
 
+        # New Game+ data (Phase 4)
+        self._ng_plus_level = save_data.meta.ng_plus_level
+        self._ng_plus_unlocked = save_data.meta.ng_plus_unlocked
+
+    # =========================================================================
+    # NEW GAME+ METHODS (Phase 4)
+    # =========================================================================
+
+    def get_ng_plus_level(self) -> int:
+        """Get current New Game+ level (0 = normal game)."""
+        return self._ng_plus_level
+
+    def is_ng_plus_unlocked(self) -> bool:
+        """Check if New Game+ is unlocked (completed Finale)."""
+        return self._ng_plus_unlocked
+
+    def check_ng_plus_unlock(self) -> bool:
+        """
+        Check if NG+ should be unlocked based on story completion.
+        Call this after completing story events.
+        """
+        from constants import NG_PLUS_UNLOCK_CHAPTER
+        story_mgr = get_story_manager()
+        story_state = story_mgr.get_state()
+
+        # Check if chapter 8 (Finale) is complete
+        completed_events = story_state.get('completed_events', [])
+        # Look for finale completion event
+        if 'finale_end' in completed_events or 'chapter_8_complete' in completed_events:
+            self._ng_plus_unlocked = True
+            return True
+
+        # Also check current chapter
+        current_chapter = story_state.get('current_chapter', 'prologue')
+        if current_chapter == 'complete' or story_state.get('game_complete', False):
+            self._ng_plus_unlocked = True
+            return True
+
+        return self._ng_plus_unlocked
+
+    def get_dragon_names_history(self) -> list:
+        """Get list of dragon names from previous playthroughs."""
+        return self._dragon_names_history.copy()
+
+    def can_start_ng_plus(self) -> bool:
+        """Check if player can start a New Game+."""
+        return self._ng_plus_unlocked
+
     def new_game(self):
         """
         Initialize a new game with default state.
+        Resets NG+ level to 0 (normal game).
         """
         from constants import STARTING_GOLD, DEFAULT_UNLOCKED_RECIPES
 
-        # Reset playtime
+        # Reset playtime and NG+ (Phase 4)
         self._playtime_seconds = 0.0
+        self._ng_plus_level = 0
+        # Note: _ng_plus_unlocked is NOT reset - once unlocked, always available
+        # Note: _dragon_names_history is NOT reset - cumulative across all games
 
         # Time system starts at Day 1, 8:00 AM
         time_mgr = get_time_manager()

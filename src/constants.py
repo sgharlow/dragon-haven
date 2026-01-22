@@ -2846,3 +2846,56 @@ MOOD_FACES = {
 # GAME VERSION
 # =============================================================================
 VERSION = "0.1.0"
+
+# =============================================================================
+# NEW GAME+ SYSTEM (Phase 4)
+# =============================================================================
+
+# NG+ Unlock condition
+NG_PLUS_UNLOCK_CHAPTER = 8  # Must complete chapter 8 (Finale)
+NG_PLUS_UNLOCK_ACHIEVEMENT = 'story_chapter_8'
+
+# NG+ Starting bonuses
+NG_PLUS_STARTING_GOLD_BONUS = 500  # Extra gold at start
+NG_PLUS_STARTING_REPUTATION = 50  # Start with some reputation
+NG_PLUS_AFFINITY_RETENTION = 0.5  # Keep 50% of character affinity
+
+# NG+ Difficulty modifiers (applied as multipliers)
+NG_PLUS_MODIFIERS = {
+    'customer_expectations': 1.2,   # 20% higher quality required
+    'service_time': 0.9,            # 10% shorter service periods
+    'resource_scarcity': 0.8,       # 20% fewer resource spawns
+    'gold_bonus': 1.25,             # 25% more gold from sales
+    'reputation_decay': 0.8,        # 20% slower reputation decay
+}
+
+# NG+ scaling per cycle (stacks multiplicatively)
+NG_PLUS_SCALING_PER_CYCLE = {
+    'customer_expectations': 1.05,  # +5% per NG+ level
+    'service_time': 0.98,           # -2% per NG+ level
+    'resource_scarcity': 0.95,      # -5% per NG+ level
+    'gold_bonus': 1.05,             # +5% per NG+ level
+}
+
+# Maximum NG+ level (for display purposes, no hard cap on mechanics)
+NG_PLUS_MAX_DISPLAY = 99
+
+# What carries over to NG+
+NG_PLUS_CARRYOVER = {
+    'unlocked_recipes': True,       # All unlocked recipes
+    'mastered_recipes': True,       # Recipe mastery levels
+    'achievements': True,           # All achievements
+    'dragon_names_history': True,   # Previous dragon names
+    'character_affinity': True,     # Partial affinity (50%)
+    'total_playtime': True,         # Cumulative playtime
+}
+
+# What resets in NG+
+NG_PLUS_RESET = {
+    'dragon': True,                 # New egg
+    'gold': False,                  # Gets bonus instead
+    'reputation': False,            # Gets starting boost
+    'story_progress': True,         # Replay from beginning
+    'inventory_items': True,        # Empty inventory
+    'zones_unlocked': True,         # Re-unlock zones
+}

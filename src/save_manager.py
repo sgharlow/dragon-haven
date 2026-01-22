@@ -87,6 +87,9 @@ class SaveMeta:
     playtime_seconds: float = 0.0
     last_saved: str = ""
     created_at: str = ""
+    # New Game+ fields (Phase 4)
+    ng_plus_level: int = 0  # 0 = normal game, 1+ = NG+ cycles
+    ng_plus_unlocked: bool = False  # True after completing Finale
 
 
 @dataclass
@@ -135,6 +138,9 @@ class SaveSlotInfo:
     dragon_stage: str = ""
     day_number: int = 0
     cafe_level: int = 0
+    # New Game+ fields (Phase 4)
+    ng_plus_level: int = 0
+    ng_plus_unlocked: bool = False
 
 
 # =============================================================================
@@ -322,7 +328,9 @@ class SaveManager:
                     dragon_name=dragon.get('name', 'No Dragon'),
                     dragon_stage=dragon.get('stage', 'egg'),
                     day_number=world.get('day_number', 1),
-                    cafe_level=cafe.get('level', 1)
+                    cafe_level=cafe.get('level', 1),
+                    ng_plus_level=meta.get('ng_plus_level', 0),
+                    ng_plus_unlocked=meta.get('ng_plus_unlocked', False)
                 ))
             except (IOError, json.JSONDecodeError, KeyError):
                 slots.append(SaveSlotInfo(slot=slot, exists=False))

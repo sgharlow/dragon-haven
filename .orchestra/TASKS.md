@@ -1,11 +1,24 @@
 # Tasks
 
-> Last updated: 2026-01-20
-> Progress: 57/57 complete (Phase 1 done, Phase 2 done, Phase 3 done)
+> Last updated: 2026-01-21
+> Progress: 57/70 complete (Phase 1 done, Phase 2 done, Phase 3 done, Phase 4 in progress)
 
 ## Ready
+- [ ] `059` NG+ Carryover Logic (recipe/achievement retention)
+- [ ] `060` NG+ Difficulty Modifiers (customer expectations, time pressure)
+- [ ] `061` Customization System Core (DragonCustomization class)
+- [ ] `062` Dragon Accessories (6 unlockable items)
+- [ ] `063` Color Patterns (5 pattern types)
+- [ ] `064` Special Effects (particle system)
+- [ ] `065` Customization Screen (UI for equipping)
+- [ ] `066` Event Manager (seasonal event system)
+- [ ] `067` Seasonal Decorations (cafe/zone visuals)
+- [ ] `068` Limited Recipes (16 seasonal recipes)
+- [ ] `069` Event Customers (festival customer types)
+- [ ] `070` QoL Improvements (favorites, auto-sort, previews)
 
 ## In Progress
+- [ ] `058` NG+ Foundation (save flag, unlock condition)
 
 ## Blocked
 
@@ -98,4 +111,43 @@ See `.orchestra/PHASE3_PLAN.md` for detailed implementation plan.
 053 Recipes ─────────┼──→ 054 Creatures ──→ 056 Ancient Ruins ──→ 057 Sky Islands
                      │         │
                      └─────────┴──→ 055 Achievements
+```
+
+---
+
+## Phase 4 - Replayability & Personalization
+
+See `.orchestra/PHASE4_PLAN.md` for detailed implementation plan.
+
+### Sprint 1: NG+ Mode (6-8 hours)
+- `058` NG+ Foundation - Save flag, unlock condition
+- `059` NG+ Carryover - Recipe/achievement retention
+- `060` NG+ Modifiers - Difficulty scaling system
+
+### Sprint 2: Dragon Customization (8-10 hours)
+- `061` Customization System - Core manager class
+- `062` Accessories - 6 unlockable items
+- `063` Color Patterns - 5 pattern types
+- `064` Special Effects - Particle system
+- `065` Customization Screen - UI for equipping
+
+### Sprint 3: Events & Polish (9-12 hours)
+- `066` Event Manager - Seasonal event system
+- `067` Seasonal Decorations - Cafe/zone visuals
+- `068` Limited Recipes - 16 seasonal recipes
+- `069` Event Customers - Festival customer types
+- `070` QoL Improvements - Favorites, auto-sort, previews
+
+### Dependencies
+```
+058 NG+ Foundation ──→ 059 NG+ Carryover ──→ 060 NG+ Modifiers
+                                                    │
+061 Customization ──→ 062 Accessories ──┐           │
+                  ├──→ 063 Patterns ────┼──→ 065 Customization Screen
+                  └──→ 064 Effects ─────┘
+                                                    │
+066 Event Manager ──→ 067 Decorations ──┐           │
+                  ├──→ 068 Recipes ─────┼──→ 069 Event Customers
+                                        │
+                                        └──→ 070 QoL Improvements
 ```
