@@ -1,14 +1,9 @@
 # Tasks
 
 > Last updated: 2026-01-21
-> Progress: 60/70 complete (Phase 1 done, Phase 2 done, Phase 3 done, Phase 4: 3/13)
+> Progress: 64/70 complete (Phase 1 done, Phase 2 done, Phase 3 done, Phase 4: 7/13)
 
 ## Ready
-- [ ] `061` Customization System Core (DragonCustomization class)
-- [ ] `062` Dragon Accessories (6 unlockable items)
-- [ ] `063` Color Patterns (5 pattern types)
-- [ ] `064` Special Effects (particle system)
-- [ ] `065` Customization Screen (UI for equipping)
 - [ ] `066` Event Manager (seasonal event system)
 - [ ] `067` Seasonal Decorations (cafe/zone visuals)
 - [ ] `068` Limited Recipes (16 seasonal recipes)
@@ -16,10 +11,15 @@
 - [ ] `070` QoL Improvements (favorites, auto-sort, previews)
 
 ## In Progress
+- [ ] `065` Customization Screen (UI for equipping)
 
 ## Blocked
 
 ## Done (Phase 4 - Replayability)
+- [x] `064` Special Effects (3 effect types) ✓
+- [x] `063` Color Patterns (5 pattern types) ✓
+- [x] `062` Dragon Accessories (6 unlockable items) ✓
+- [x] `061` Customization System Core (DragonCustomization class) ✓
 - [x] `060` NG+ Difficulty Modifiers (customer expectations, time pressure) ✓
 - [x] `059` NG+ Carryover Logic (recipe/achievement retention) ✓
 - [x] `058` NG+ Foundation (save flag, unlock condition) ✓

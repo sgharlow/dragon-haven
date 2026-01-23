@@ -26,6 +26,7 @@ from states.dragon_status_state import DragonStatusState
 from states.pause_menu_state import PauseMenuState
 from states.save_load_state import SaveLoadState
 from states.dragon_naming_state import DragonNamingState
+from states.customization_state import CustomizationState
 
 # Initialize managers
 from save_manager import get_save_manager
@@ -119,6 +120,7 @@ def main():
     game.register_state("recipe_book", RecipeBookState(game))
     game.register_state("dragon_status", DragonStatusState(game))
     game.register_state("dragon_naming", DragonNamingState(game))
+    game.register_state("customization", CustomizationState(game))
 
     # Set initial state to main menu
     game.set_initial_state("main_menu")

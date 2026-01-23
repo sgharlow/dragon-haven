@@ -62,6 +62,7 @@ class DragonStatusState(BaseScreen):
         # UI components
         self._feed_button: Optional[Button] = None
         self._pet_button: Optional[Button] = None
+        self._customize_button: Optional[Button] = None
         self._close_button: Optional[Button] = None
 
         # Status bars
@@ -112,6 +113,7 @@ class DragonStatusState(BaseScreen):
         # Create buttons
         self._feed_button = Button(50, SCREEN_HEIGHT - 100, 100, 40, "Feed", self._on_feed)
         self._pet_button = Button(170, SCREEN_HEIGHT - 100, 100, 40, "Pet", self._on_pet)
+        self._customize_button = Button(290, SCREEN_HEIGHT - 100, 120, 40, "Customize", self._on_customize)
         self._close_button = Button(SCREEN_WIDTH - 110, 20, 90, 35, "Close", self._on_close)
 
     def _on_feed(self):
@@ -125,6 +127,11 @@ class DragonStatusState(BaseScreen):
         """Handle pet button click."""
         if self._dragon and self._dragon.get_stage() != DRAGON_STAGE_EGG:
             self._dragon.pet()
+
+    def _on_customize(self):
+        """Handle customize button click - open customization screen."""
+        if self._dragon and self._dragon.get_stage() != DRAGON_STAGE_EGG:
+            self.transition_to('customization')
 
     def _on_close(self):
         """Handle close button click."""
@@ -163,6 +170,9 @@ class DragonStatusState(BaseScreen):
                     return
                 if self._pet_button and self._pet_button.rect.collidepoint(pos):
                     self._on_pet()
+                    return
+                if self._customize_button and self._customize_button.rect.collidepoint(pos):
+                    self._on_customize()
                     return
                 if self._close_button and self._close_button.rect.collidepoint(pos):
                     self._on_close()
@@ -224,6 +234,7 @@ class DragonStatusState(BaseScreen):
         if self._dragon.get_stage() != DRAGON_STAGE_EGG:
             self._feed_button.draw(screen)
             self._pet_button.draw(screen)
+            self._customize_button.draw(screen)
         self._close_button.draw(screen)
 
         # Draw fade overlay
