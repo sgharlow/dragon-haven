@@ -200,8 +200,8 @@ def validate_event_files(test: DataValidationTest):
     # Required fields for each event
     required_fields = ['id', 'chapter', 'name']
     valid_condition_types = ['flag', 'not_flag', 'day_range', 'day_min', 'time_of_day',
-                             'location', 'dragon_stage', 'reputation_min', 'affinity_min',
-                             'has_item', 'recipe_unlocked']
+                             'location', 'dragon_stage', 'dragon_stage_min', 'reputation_min',
+                             'affinity_min', 'has_item', 'recipe_unlocked', 'chapter']
     valid_outcome_types = ['set_flag', 'clear_flag', 'unlock_zone', 'unlock_recipe',
                            'gold_reward', 'reputation_change', 'affinity_change',
                            'set_chapter', 'give_item', 'trigger_event']
@@ -466,6 +466,7 @@ def validate_zone_consistency(test: DataValidationTest):
     from systems.world import get_world_manager
 
     world_mgr = get_world_manager()
+    world_mgr.initialize()  # Must initialize to create zones
     zone_ids = set(world_mgr._zones.keys())
 
     test.test("Zones defined", len(zone_ids) > 0, f"Found {len(zone_ids)} zones")

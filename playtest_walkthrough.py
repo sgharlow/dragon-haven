@@ -308,7 +308,7 @@ set_story_flags("prologue_started", "arrival_complete")
 
 test.event("Egg Discovery")
 set_story_flags("egg_discovered")
-test.unlock_zone("cellar")
+# Note: cellar is a narrative location, not a playable zone
 
 # Day 2: First Morning
 advance_to_day(2)

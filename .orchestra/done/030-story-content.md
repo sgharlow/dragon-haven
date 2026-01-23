@@ -69,5 +69,5 @@ Write and implement the actual story content for the Prologue and Chapter 1. Thi
 - Configured prologue events with conditions (day, flags, reputation)
 - Configured chapter 1 events with sequential unlocks
 - Recipe unlocks: dragon_treat, comfort_stew, traveler_stew, wanderers_feast
-- Zone unlocks: cellar, meadow, forest
+- Zone unlocks: meadow, forest
 - Tested loading: 7 dialogues, 13 events loaded successfully

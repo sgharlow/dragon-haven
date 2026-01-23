@@ -27,8 +27,7 @@
     ],
     "dialogue_id": "prologue_egg",
     "outcomes": [
-      {"type": "set_flag", "value": "egg_discovered"},
-      {"type": "unlock_zone", "value": "cellar"}
+      {"type": "set_flag", "value": "egg_discovered"}
     ]
   },
   {
