@@ -11,7 +11,7 @@ from constants import (
     RECIPE_CATEGORY_DESSERT, RECIPE_CATEGORY_BEVERAGE,
     RECIPE_BASE_QUALITY, RECIPE_MASTERY_COOK_COUNT, RECIPE_MASTERY_PERFECT_COUNT,
     UNLOCK_TYPE_DEFAULT, UNLOCK_TYPE_REPUTATION,
-    UNLOCK_TYPE_STORY, UNLOCK_TYPE_DISCOVERY,
+    UNLOCK_TYPE_STORY, UNLOCK_TYPE_DISCOVERY, UNLOCK_TYPE_SEASONAL,
     QUALITY_MIN, QUALITY_MAX,
 )
 
@@ -107,6 +107,8 @@ class Recipe:
     def from_definition(cls, recipe_id: str, data: Dict[str, Any]) -> 'Recipe':
         """Create a Recipe from the RECIPES constant format."""
         unlock_data = data.get('unlock', {'type': UNLOCK_TYPE_DEFAULT})
+        # Handle requirement field - could be 'requirement' or 'event' for seasonal
+        unlock_req = unlock_data.get('requirement') or unlock_data.get('event')
         return cls(
             id=recipe_id,
             name=data['name'],
@@ -120,7 +122,7 @@ class Recipe:
             ],
             color_influence=tuple(data.get('color_influence', (0.5, 0.5, 0.5))),
             unlock_type=unlock_data.get('type', UNLOCK_TYPE_DEFAULT),
-            unlock_requirement=unlock_data.get('requirement'),
+            unlock_requirement=unlock_req,
         )
 
 
@@ -387,6 +389,97 @@ class RecipeManager:
         """Add a completed story chapter."""
         if chapter not in self._story_progress:
             self._story_progress.append(chapter)
+
+    # =========================================================================
+    # SEASONAL RECIPES (Phase 4)
+    # =========================================================================
+
+    def get_seasonal_recipes(self) -> List[Recipe]:
+        """Get all seasonal recipes."""
+        return [r for r in self._recipes.values()
+                if r.unlock_type == UNLOCK_TYPE_SEASONAL]
+
+    def get_seasonal_recipes_for_event(self, event_id: str) -> List[Recipe]:
+        """Get seasonal recipes available during a specific event."""
+        return [r for r in self._recipes.values()
+                if r.unlock_type == UNLOCK_TYPE_SEASONAL
+                and r.unlock_requirement == event_id]
+
+    def is_seasonal_recipe_available(self, recipe_id: str) -> bool:
+        """
+        Check if a seasonal recipe is currently available.
+
+        Args:
+            recipe_id: Recipe to check
+
+        Returns:
+            True if the event for this recipe is currently active
+        """
+        recipe = self.get_recipe(recipe_id)
+        if not recipe or recipe.unlock_type != UNLOCK_TYPE_SEASONAL:
+            return False
+
+        # Check with event manager
+        from systems.events import get_event_manager
+        event_mgr = get_event_manager()
+        active_event = event_mgr.get_active_event()
+
+        if active_event and active_event.event_id == recipe.unlock_requirement:
+            return True
+        return False
+
+    def get_available_seasonal_recipes(self) -> List[Recipe]:
+        """
+        Get seasonal recipes available during the current event.
+
+        Returns:
+            List of available seasonal recipes
+        """
+        from systems.events import get_event_manager
+        event_mgr = get_event_manager()
+        active_event = event_mgr.get_active_event()
+
+        if not active_event:
+            return []
+
+        return self.get_seasonal_recipes_for_event(active_event.event_id)
+
+    def can_cook_seasonal(self, recipe_id: str, inventory) -> Dict[str, Any]:
+        """
+        Check if a seasonal recipe can be cooked.
+        First checks if the seasonal event is active.
+
+        Args:
+            recipe_id: Recipe to check
+            inventory: Inventory instance
+
+        Returns:
+            Dict with 'can_cook', 'error', etc.
+        """
+        recipe = self.get_recipe(recipe_id)
+        if not recipe:
+            return {'can_cook': False, 'error': 'Recipe not found'}
+
+        if recipe.unlock_type == UNLOCK_TYPE_SEASONAL:
+            if not self.is_seasonal_recipe_available(recipe_id):
+                return {'can_cook': False, 'error': 'Seasonal event not active'}
+
+        # Now check ingredients
+        missing = []
+        for ing in recipe.ingredients:
+            count = inventory.get_count(ing.item_id, check_all=True)
+            if count < ing.quantity:
+                missing.append({
+                    'item_id': ing.item_id,
+                    'needed': ing.quantity,
+                    'have': count,
+                })
+
+        can_cook = len(missing) == 0
+        return {
+            'can_cook': can_cook,
+            'missing_ingredients': missing,
+        }
 
     # =========================================================================
     # MASTERY

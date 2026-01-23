@@ -356,6 +356,7 @@ STAFF_DEFINITIONS = {
 # Customer types
 CUSTOMER_TYPE_REGULAR = 'regular'
 CUSTOMER_TYPE_STORY = 'story'
+CUSTOMER_TYPE_EVENT = 'event'  # Special customers during seasonal events (Phase 4)
 
 # Customer states
 CUSTOMER_STATE_WAITING = 'waiting'       # Waiting to be seated
@@ -1394,6 +1395,7 @@ UNLOCK_TYPE_STORY = 'story'           # Requires story progress
 UNLOCK_TYPE_DISCOVERY = 'discovery'   # Found through exploration
 UNLOCK_TYPE_AFFINITY = 'affinity'     # Requires character affinity (secret recipes)
 UNLOCK_TYPE_EVENT = 'event'           # Requires specific story event
+UNLOCK_TYPE_SEASONAL = 'seasonal'     # Available during seasonal events (Phase 4)
 
 # Recipe definitions
 # Format: id -> {name, description, category, difficulty, base_price, ingredients, color_influence, unlock}
@@ -2595,6 +2597,241 @@ RECIPES = {
         ],
         'color_influence': (0.9, 0.8, 0.6),  # Warm nostalgic gold
         'unlock': {'type': UNLOCK_TYPE_STORY, 'chapter': 8},
+    },
+
+    # =========================================================================
+    # SEASONAL RECIPES (16) - Phase 4 Event-Limited
+    # =========================================================================
+
+    # --- SPRING FESTIVAL (Dragon Hatching Festival) ---
+    'blossom_tea': {
+        'name': 'Cherry Blossom Tea',
+        'description': 'Delicate tea infused with cherry blossoms. A spring festival specialty.',
+        'category': RECIPE_CATEGORY_BEVERAGE,
+        'difficulty': 2,
+        'base_price': 45,
+        'ingredients': [
+            ('edible_flower', 2, 2),
+            ('premium_tea', 1, 1),
+            ('golden_honey', 1, 1),
+        ],
+        'color_influence': (0.9, 0.7, 0.8),  # Pink
+        'unlock': {'type': UNLOCK_TYPE_SEASONAL, 'event': 'spring_festival'},
+    },
+    'spring_roll': {
+        'name': 'Dragon Spring Roll',
+        'description': 'Crispy rolls filled with fresh spring vegetables and herbs.',
+        'category': RECIPE_CATEGORY_APPETIZER,
+        'difficulty': 2,
+        'base_price': 55,
+        'ingredients': [
+            ('garden_herb', 2, 2),
+            ('field_mushroom', 1, 1),
+            ('wild_herb', 1, 1),
+        ],
+        'color_influence': (0.5, 0.8, 0.4),  # Fresh green
+        'unlock': {'type': UNLOCK_TYPE_SEASONAL, 'event': 'spring_festival'},
+    },
+    'honey_cake': {
+        'name': 'Festival Honey Cake',
+        'description': 'Sweet layered cake drizzled with golden honey. Perfect for celebrations.',
+        'category': RECIPE_CATEGORY_DESSERT,
+        'difficulty': 3,
+        'base_price': 75,
+        'ingredients': [
+            ('golden_honey', 2, 2),
+            ('meadow_berry', 1, 2),
+            ('edible_flower', 1, 1),
+        ],
+        'color_influence': (0.9, 0.7, 0.3),  # Golden
+        'unlock': {'type': UNLOCK_TYPE_SEASONAL, 'event': 'spring_festival'},
+    },
+    'flower_salad': {
+        'name': 'Spring Flower Salad',
+        'description': 'A vibrant salad adorned with edible spring flowers.',
+        'category': RECIPE_CATEGORY_APPETIZER,
+        'difficulty': 1,
+        'base_price': 40,
+        'ingredients': [
+            ('edible_flower', 3, 1),
+            ('garden_herb', 1, 1),
+        ],
+        'color_influence': (0.7, 0.8, 0.9),  # Light floral
+        'unlock': {'type': UNLOCK_TYPE_SEASONAL, 'event': 'spring_festival'},
+    },
+
+    # --- SUMMER FEAST (Harvest Moon Feast) ---
+    'starlight_sorbet': {
+        'name': 'Starlight Sorbet',
+        'description': 'Refreshing frozen treat that sparkles like summer stars.',
+        'category': RECIPE_CATEGORY_DESSERT,
+        'difficulty': 3,
+        'base_price': 70,
+        'ingredients': [
+            ('moonbeam_honey', 1, 2),
+            ('wild_berry', 2, 2),
+            ('crystal_water', 1, 1),
+        ],
+        'color_influence': (0.6, 0.7, 1.0),  # Starlight blue
+        'unlock': {'type': UNLOCK_TYPE_SEASONAL, 'event': 'summer_feast'},
+    },
+    'grilled_feast': {
+        'name': 'Harvest Grilled Platter',
+        'description': 'An abundant platter of grilled summer vegetables and mushrooms.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 3,
+        'base_price': 90,
+        'ingredients': [
+            ('field_mushroom', 2, 2),
+            ('garden_herb', 2, 2),
+            ('root_vegetable', 2, 2),
+        ],
+        'color_influence': (0.7, 0.5, 0.3),  # Earthy grilled
+        'unlock': {'type': UNLOCK_TYPE_SEASONAL, 'event': 'summer_feast'},
+    },
+    'summer_punch': {
+        'name': 'Summer Moon Punch',
+        'description': 'A refreshing berry punch perfect for warm summer nights.',
+        'category': RECIPE_CATEGORY_BEVERAGE,
+        'difficulty': 2,
+        'base_price': 50,
+        'ingredients': [
+            ('wild_berry', 2, 2),
+            ('meadow_berry', 2, 1),
+            ('golden_honey', 1, 1),
+        ],
+        'color_influence': (0.8, 0.3, 0.5),  # Berry red
+        'unlock': {'type': UNLOCK_TYPE_SEASONAL, 'event': 'summer_feast'},
+    },
+    'moonberry_pie': {
+        'name': 'Moonberry Harvest Pie',
+        'description': 'Traditional summer pie filled with moonlit berries.',
+        'category': RECIPE_CATEGORY_DESSERT,
+        'difficulty': 4,
+        'base_price': 95,
+        'ingredients': [
+            ('moonbeam_honey', 1, 2),
+            ('meadow_berry', 3, 2),
+            ('golden_honey', 1, 2),
+        ],
+        'color_influence': (0.6, 0.4, 0.8),  # Purple moonlit
+        'unlock': {'type': UNLOCK_TYPE_SEASONAL, 'event': 'summer_feast'},
+    },
+
+    # --- AUTUMN LANTERN (Lantern Festival) ---
+    'lantern_cake': {
+        'name': 'Lantern Festival Cake',
+        'description': 'A glowing orange cake shaped like a festival lantern.',
+        'category': RECIPE_CATEGORY_DESSERT,
+        'difficulty': 3,
+        'base_price': 80,
+        'ingredients': [
+            ('golden_honey', 2, 2),
+            ('root_vegetable', 1, 2),
+            ('ancient_spice', 1, 1),
+        ],
+        'color_influence': (1.0, 0.6, 0.2),  # Lantern orange
+        'unlock': {'type': UNLOCK_TYPE_SEASONAL, 'event': 'autumn_lantern'},
+    },
+    'spiced_cider': {
+        'name': 'Autumn Spiced Cider',
+        'description': 'Warm apple cider infused with autumn spices.',
+        'category': RECIPE_CATEGORY_BEVERAGE,
+        'difficulty': 2,
+        'base_price': 45,
+        'ingredients': [
+            ('wild_berry', 2, 1),
+            ('ancient_spice', 1, 1),
+            ('golden_honey', 1, 1),
+        ],
+        'color_influence': (0.8, 0.5, 0.2),  # Cider amber
+        'unlock': {'type': UNLOCK_TYPE_SEASONAL, 'event': 'autumn_lantern'},
+    },
+    'autumn_stew': {
+        'name': 'Lantern Night Stew',
+        'description': 'A hearty stew to warm souls during the lantern festival.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 3,
+        'base_price': 85,
+        'ingredients': [
+            ('root_vegetable', 3, 2),
+            ('field_mushroom', 2, 2),
+            ('wild_herb', 1, 2),
+        ],
+        'color_influence': (0.6, 0.4, 0.3),  # Warm brown
+        'unlock': {'type': UNLOCK_TYPE_SEASONAL, 'event': 'autumn_lantern'},
+    },
+    'candied_nuts': {
+        'name': 'Festival Candied Nuts',
+        'description': 'Sweet candied nuts sold at lantern festival stalls.',
+        'category': RECIPE_CATEGORY_APPETIZER,
+        'difficulty': 1,
+        'base_price': 35,
+        'ingredients': [
+            ('golden_honey', 2, 1),
+            ('ancient_spice', 1, 1),
+        ],
+        'color_influence': (0.7, 0.5, 0.3),  # Caramelized
+        'unlock': {'type': UNLOCK_TYPE_SEASONAL, 'event': 'autumn_lantern'},
+    },
+
+    # --- WINTER CELEBRATION (Frost Dragon Celebration) ---
+    'frost_cocoa': {
+        'name': 'Frost Dragon Cocoa',
+        'description': 'Rich hot cocoa topped with frost dragon breath cream.',
+        'category': RECIPE_CATEGORY_BEVERAGE,
+        'difficulty': 2,
+        'base_price': 55,
+        'ingredients': [
+            ('moonbeam_honey', 1, 2),
+            ('premium_tea', 1, 1),
+            ('crystal_water', 1, 1),
+        ],
+        'color_influence': (0.5, 0.3, 0.2),  # Chocolate brown
+        'unlock': {'type': UNLOCK_TYPE_SEASONAL, 'event': 'winter_celebration'},
+    },
+    'winter_stew': {
+        'name': 'Frost Hearth Stew',
+        'description': 'A warming stew to chase away winter chills.',
+        'category': RECIPE_CATEGORY_MAIN,
+        'difficulty': 3,
+        'base_price': 90,
+        'ingredients': [
+            ('root_vegetable', 2, 2),
+            ('field_mushroom', 2, 2),
+            ('wild_herb', 2, 2),
+            ('ancient_spice', 1, 1),
+        ],
+        'color_influence': (0.5, 0.4, 0.3),  # Warm hearth
+        'unlock': {'type': UNLOCK_TYPE_SEASONAL, 'event': 'winter_celebration'},
+    },
+    'gingerbread': {
+        'name': 'Dragon Gingerbread',
+        'description': 'Spiced gingerbread cookies shaped like friendly dragons.',
+        'category': RECIPE_CATEGORY_DESSERT,
+        'difficulty': 2,
+        'base_price': 50,
+        'ingredients': [
+            ('golden_honey', 1, 2),
+            ('ancient_spice', 2, 1),
+            ('edible_flower', 1, 1),
+        ],
+        'color_influence': (0.7, 0.5, 0.3),  # Ginger brown
+        'unlock': {'type': UNLOCK_TYPE_SEASONAL, 'event': 'winter_celebration'},
+    },
+    'mulled_wine': {
+        'name': 'Celebration Mulled Wine',
+        'description': 'Warm spiced wine for festive winter gatherings.',
+        'category': RECIPE_CATEGORY_BEVERAGE,
+        'difficulty': 3,
+        'base_price': 65,
+        'ingredients': [
+            ('wild_berry', 3, 2),
+            ('ancient_spice', 2, 2),
+            ('golden_honey', 1, 1),
+        ],
+        'color_influence': (0.8, 0.2, 0.3),  # Deep wine red
+        'unlock': {'type': UNLOCK_TYPE_SEASONAL, 'event': 'winter_celebration'},
     },
 }
 

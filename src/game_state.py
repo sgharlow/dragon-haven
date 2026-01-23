@@ -20,6 +20,8 @@ from entities.story_character import get_character_manager
 from systems.dragon_manager import get_dragon_manager
 from systems.achievements import get_achievement_manager
 from systems.customization import get_customization_manager
+from systems.events import get_event_manager
+from systems.decorations import get_decoration_manager
 
 # Note: Dragon is now managed through DragonManager singleton
 # Player is still managed per-state
@@ -50,9 +52,53 @@ class GameStateManager:
         self._ng_plus_unlocked = False  # True after completing Finale
         self._dragon_names_history = []  # Names of dragons from previous runs
 
+        # Stats tracking (Phase 4 QoL)
+        self._stats = {
+            'total_gold_earned': 0,
+            'total_gold_spent': 0,
+            'dishes_served': 0,
+            'perfect_dishes': 0,
+            'customers_served': 0,
+            'customers_lost': 0,  # Left due to impatience
+            'resources_gathered': 0,
+            'zones_discovered': 0,
+            'events_participated': 0,
+            'highest_tip': 0,
+            'recipes_cooked': {},  # recipe_id -> count
+        }
+
     def update_playtime(self, dt: float):
         """Update playtime counter (call each frame)."""
         self._playtime_seconds += dt
+
+    def update_seasonal_systems(self, dt: float):
+        """
+        Update seasonal event and decoration systems.
+        Call this each frame to keep events and decorations in sync.
+        """
+        time_mgr = get_time_manager()
+        current_season = time_mgr.get_current_season()
+        day_in_season = time_mgr.get_day_in_season()
+
+        # Update event manager
+        event_mgr = get_event_manager()
+        event_started = event_mgr.update(current_season, day_in_season)
+
+        # Sync decorations with event state
+        decoration_mgr = get_decoration_manager()
+        decoration_mgr.update(dt)
+
+        active_event = event_mgr.get_active_event()
+        if active_event:
+            # Activate decorations for current event
+            if decoration_mgr.get_active_event() != active_event.event_id:
+                decoration_mgr.activate_event_decorations(active_event.event_id)
+        else:
+            # No event active - deactivate decorations
+            if decoration_mgr.is_event_active():
+                decoration_mgr.deactivate_decorations()
+
+        return event_started
 
     def get_playtime(self) -> float:
         """Get total playtime in seconds."""
@@ -124,6 +170,14 @@ class GameStateManager:
         customization_mgr = get_customization_manager()
         customization_state = customization_mgr.get_state()
 
+        # Events (Phase 4)
+        event_mgr = get_event_manager()
+        events_state = event_mgr.get_state()
+
+        # Decorations (Phase 4)
+        decoration_mgr = get_decoration_manager()
+        decorations_state = decoration_mgr.get_state()
+
         return {
             'time': time_state,
             'inventory': inventory_state,
@@ -137,11 +191,15 @@ class GameStateManager:
             'recipes': recipe_state,
             'dragon': dragon_state,
             'customization': customization_state,
+            'events': events_state,
+            'decorations': decorations_state,
             'playtime_seconds': self._playtime_seconds,
             # New Game+ data (Phase 4)
             'ng_plus_level': self._ng_plus_level,
             'ng_plus_unlocked': self._ng_plus_unlocked,
             'dragon_names_history': self._dragon_names_history,
+            # Stats data (Phase 4 QoL)
+            'stats': self._stats.copy(),
         }
 
     def apply_game_state(self, state: Dict[str, Any]):
@@ -208,6 +266,16 @@ class GameStateManager:
             customization_mgr = get_customization_manager()
             customization_mgr.load_state(state['customization'])
 
+        # Events (Phase 4)
+        if 'events' in state:
+            event_mgr = get_event_manager()
+            event_mgr.load_state(state['events'])
+
+        # Decorations (Phase 4)
+        if 'decorations' in state:
+            decoration_mgr = get_decoration_manager()
+            decoration_mgr.load_state(state['decorations'])
+
         # Playtime
         self._playtime_seconds = state.get('playtime_seconds', 0.0)
 
@@ -215,6 +283,10 @@ class GameStateManager:
         self._ng_plus_level = state.get('ng_plus_level', 0)
         self._ng_plus_unlocked = state.get('ng_plus_unlocked', False)
         self._dragon_names_history = state.get('dragon_names_history', [])
+
+        # Stats data (Phase 4 QoL)
+        if 'stats' in state:
+            self._stats.update(state['stats'])
 
     def save_game(self, slot: int) -> bool:
         """
@@ -645,6 +717,112 @@ class GameStateManager:
             'dragon_names_history': self._dragon_names_history.copy(),
             'total_playtime': self._playtime_seconds,
         }
+
+    # =========================================================================
+    # STATS TRACKING (Phase 4 QoL)
+    # =========================================================================
+
+    def record_stat(self, stat_name: str, value: int = 1, mode: str = 'add'):
+        """
+        Record a stat update.
+
+        Args:
+            stat_name: Name of the stat to update
+            value: Value to add/set
+            mode: 'add' to increment, 'set' to replace, 'max' to set if higher
+        """
+        if stat_name not in self._stats:
+            self._stats[stat_name] = 0
+
+        if mode == 'add':
+            self._stats[stat_name] += value
+        elif mode == 'set':
+            self._stats[stat_name] = value
+        elif mode == 'max':
+            self._stats[stat_name] = max(self._stats[stat_name], value)
+
+    def record_dish_cooked(self, recipe_id: str, quality: int, tip: int):
+        """
+        Record cooking a dish (convenience method).
+
+        Args:
+            recipe_id: Recipe that was cooked
+            quality: Quality of the dish (1-5)
+            tip: Tip amount received
+        """
+        self._stats['dishes_served'] += 1
+        if quality >= 5:
+            self._stats['perfect_dishes'] += 1
+        if tip > self._stats['highest_tip']:
+            self._stats['highest_tip'] = tip
+
+        # Track per-recipe counts
+        if 'recipes_cooked' not in self._stats:
+            self._stats['recipes_cooked'] = {}
+        if recipe_id not in self._stats['recipes_cooked']:
+            self._stats['recipes_cooked'][recipe_id] = 0
+        self._stats['recipes_cooked'][recipe_id] += 1
+
+    def get_stat(self, stat_name: str, default: int = 0) -> int:
+        """Get a specific stat value."""
+        return self._stats.get(stat_name, default)
+
+    def get_all_stats(self) -> Dict[str, Any]:
+        """Get all tracked stats."""
+        return self._stats.copy()
+
+    def get_stats_summary(self) -> Dict[str, Any]:
+        """
+        Get a formatted summary of stats for display.
+
+        Returns:
+            Dict with formatted stat categories
+        """
+        recipe_mgr = get_recipe_manager()
+
+        # Find most cooked recipe
+        most_cooked = None
+        most_count = 0
+        for rid, count in self._stats.get('recipes_cooked', {}).items():
+            if count > most_count:
+                most_count = count
+                recipe = recipe_mgr.get_recipe(rid)
+                if recipe:
+                    most_cooked = recipe.name
+
+        return {
+            'economy': {
+                'Total Gold Earned': self._stats.get('total_gold_earned', 0),
+                'Total Gold Spent': self._stats.get('total_gold_spent', 0),
+                'Highest Tip': self._stats.get('highest_tip', 0),
+            },
+            'service': {
+                'Dishes Served': self._stats.get('dishes_served', 0),
+                'Perfect Dishes': self._stats.get('perfect_dishes', 0),
+                'Customers Served': self._stats.get('customers_served', 0),
+                'Customers Lost': self._stats.get('customers_lost', 0),
+            },
+            'exploration': {
+                'Resources Gathered': self._stats.get('resources_gathered', 0),
+                'Zones Discovered': self._stats.get('zones_discovered', 0),
+                'Events Participated': self._stats.get('events_participated', 0),
+            },
+            'favorites': {
+                'Most Cooked Recipe': most_cooked or 'None',
+                'Times Cooked': most_count,
+            },
+            'time': {
+                'Total Playtime': self._format_playtime(self._playtime_seconds),
+            },
+        }
+
+    def _format_playtime(self, seconds: float) -> str:
+        """Format playtime as human-readable string."""
+        hours = int(seconds // 3600)
+        minutes = int((seconds % 3600) // 60)
+        if hours > 0:
+            return f"{hours}h {minutes}m"
+        return f"{minutes}m"
 
 
 # =============================================================================

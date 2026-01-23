@@ -276,6 +276,28 @@ class InventoryContainer:
         for i in spoiled_items:
             self.slots[i] = None
 
+    def sort_by_category(self):
+        """
+        Sort items by category then by name (Phase 4 QoL).
+        Compacts items and moves empty slots to the end.
+        """
+        # Extract non-empty slots
+        items = [slot for slot in self.slots if slot is not None]
+
+        # Sort by category, then by name
+        category_order = {
+            ITEM_VEGETABLE: 0,
+            ITEM_FRUIT: 1,
+            ITEM_SPECIAL: 2,
+        }
+        items.sort(key=lambda s: (
+            category_order.get(s.item.category, 99),
+            s.item.name
+        ))
+
+        # Rebuild slots with sorted items and trailing Nones
+        self.slots = items + [None] * (self.max_slots - len(items))
+
     def to_dict(self) -> Dict[str, Any]:
         return {
             'max_slots': self.max_slots,
@@ -324,6 +346,10 @@ class Inventory:
         # Recipe book
         self.unlocked_recipes: List[str] = []
         self.mastered_recipes: List[str] = []  # Recipes made multiple times
+
+        # QoL Features (Phase 4)
+        self.favorite_recipes: List[str] = []  # Pinned recipes for quick access
+        self.auto_sort_enabled: bool = True  # Auto-sort on pickup
 
     # =========================================================================
     # ITEM MANAGEMENT
@@ -518,6 +544,56 @@ class Inventory:
         return recipe_id in self.mastered_recipes
 
     # =========================================================================
+    # QoL FEATURES (Phase 4)
+    # =========================================================================
+
+    def toggle_favorite_recipe(self, recipe_id: str) -> bool:
+        """
+        Toggle a recipe's favorite status.
+
+        Args:
+            recipe_id: Recipe to toggle
+
+        Returns:
+            True if recipe is now favorited, False if unfavorited
+        """
+        if recipe_id in self.favorite_recipes:
+            self.favorite_recipes.remove(recipe_id)
+            return False
+        else:
+            self.favorite_recipes.append(recipe_id)
+            return True
+
+    def is_recipe_favorite(self, recipe_id: str) -> bool:
+        """Check if a recipe is favorited."""
+        return recipe_id in self.favorite_recipes
+
+    def get_favorite_recipes(self) -> List[str]:
+        """Get list of favorited recipe IDs."""
+        return self.favorite_recipes.copy()
+
+    def sort_inventory(self, container_name: str = 'storage'):
+        """
+        Sort an inventory container by category then by name.
+
+        Args:
+            container_name: 'carried', 'storage', or 'fridge'
+        """
+        container = getattr(self, container_name, None)
+        if container:
+            container.sort_by_category()
+
+    def sort_all_inventories(self):
+        """Sort all inventory containers."""
+        self.carried.sort_by_category()
+        self.storage.sort_by_category()
+        self.fridge.sort_by_category()
+
+    def set_auto_sort(self, enabled: bool):
+        """Enable or disable auto-sorting on item pickup."""
+        self.auto_sort_enabled = enabled
+
+    # =========================================================================
     # TIME UPDATES
     # =========================================================================
 
@@ -539,7 +615,10 @@ class Inventory:
             'fridge': self.fridge.to_dict(),
             'gold': self.gold,
             'unlocked_recipes': self.unlocked_recipes.copy(),
-            'mastered_recipes': self.mastered_recipes.copy()
+            'mastered_recipes': self.mastered_recipes.copy(),
+            # QoL data (Phase 4)
+            'favorite_recipes': self.favorite_recipes.copy(),
+            'auto_sort_enabled': self.auto_sort_enabled,
         }
 
     def load_state(self, state: Dict[str, Any]):
@@ -554,6 +633,9 @@ class Inventory:
         self.gold = state.get('gold', STARTING_GOLD)
         self.unlocked_recipes = state.get('unlocked_recipes', [])
         self.mastered_recipes = state.get('mastered_recipes', [])
+        # QoL data (Phase 4)
+        self.favorite_recipes = state.get('favorite_recipes', [])
+        self.auto_sort_enabled = state.get('auto_sort_enabled', True)
 
 
 # =============================================================================

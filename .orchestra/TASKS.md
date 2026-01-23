@@ -1,18 +1,20 @@
 # Tasks
 
-> Last updated: 2026-01-21
-> Progress: 65/70 complete (Phase 1 done, Phase 2 done, Phase 3 done, Phase 4: 8/13)
+> Last updated: 2026-01-22
+> Progress: 70/70 complete (Phase 1 done, Phase 2 done, Phase 3 done, Phase 4 done)
 
 ## Ready
-- [ ] `066` Event Manager (seasonal event system)
-- [ ] `067` Seasonal Decorations (cafe/zone visuals)
-- [ ] `068` Limited Recipes (16 seasonal recipes)
-- [ ] `069` Event Customers (festival customer types)
-- [ ] `070` QoL Improvements (favorites, auto-sort, previews)
 
 ## In Progress
 
 ## Blocked
+
+## Done (Phase 4 - Events & QoL)
+- [x] `070` QoL Improvements (favorites, auto-sort, stats) ✓
+- [x] `069` Event Customers (8 festival customer types) ✓
+- [x] `068` Limited Recipes (16 seasonal recipes) ✓
+- [x] `067` Seasonal Decorations (cafe/zone visuals) ✓
+- [x] `066` Event Manager (seasonal event system) ✓
 
 ## Done (Phase 4 - Replayability)
 - [x] `065` Customization Screen (UI for equipping) ✓
