@@ -19,6 +19,7 @@ from systems.story import get_story_manager
 from entities.story_character import get_character_manager
 from systems.dragon_manager import get_dragon_manager
 from systems.achievements import get_achievement_manager
+from systems.customization import get_customization_manager
 
 # Note: Dragon is now managed through DragonManager singleton
 # Player is still managed per-state
@@ -119,6 +120,10 @@ class GameStateManager:
         dragon_mgr = get_dragon_manager()
         dragon_state = dragon_mgr.get_state()
 
+        # Customization (Phase 4)
+        customization_mgr = get_customization_manager()
+        customization_state = customization_mgr.get_state()
+
         return {
             'time': time_state,
             'inventory': inventory_state,
@@ -131,6 +136,7 @@ class GameStateManager:
             'dialogue': dialogue_state,
             'recipes': recipe_state,
             'dragon': dragon_state,
+            'customization': customization_state,
             'playtime_seconds': self._playtime_seconds,
             # New Game+ data (Phase 4)
             'ng_plus_level': self._ng_plus_level,
@@ -196,6 +202,11 @@ class GameStateManager:
         if 'dragon' in state:
             dragon_mgr = get_dragon_manager()
             dragon_mgr.load_state(state['dragon'])
+
+        # Customization (Phase 4)
+        if 'customization' in state:
+            customization_mgr = get_customization_manager()
+            customization_mgr.load_state(state['customization'])
 
         # Playtime
         self._playtime_seconds = state.get('playtime_seconds', 0.0)
