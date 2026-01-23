@@ -9,7 +9,7 @@ from typing import Dict, List, Optional, Any, Tuple
 from uuid import uuid4
 
 from constants import (
-    CUSTOMER_TYPE_REGULAR, CUSTOMER_TYPE_STORY,
+    CUSTOMER_TYPE_REGULAR, CUSTOMER_TYPE_STORY, CUSTOMER_TYPE_EVENT,
     CUSTOMER_STATE_WAITING, CUSTOMER_STATE_SEATED, CUSTOMER_STATE_ORDERING,
     CUSTOMER_STATE_WAITING_FOOD, CUSTOMER_STATE_EATING, CUSTOMER_STATE_LEAVING,
     CUSTOMER_PATIENCE_BASE, CUSTOMER_PATIENCE_VARIATION, CUSTOMER_EATING_TIME,
@@ -23,6 +23,110 @@ from constants import (
     SERVICE_CATEGORY_PREFERENCE, SERVICE_PERIOD_MORNING, SERVICE_PERIOD_EVENING,
     REPUTATION_LEVEL_LEGENDARY, LEGENDARY_TIP_BONUS,
 )
+
+
+# =============================================================================
+# EVENT CUSTOMER DEFINITIONS (Phase 4)
+# =============================================================================
+
+# Event customer types with special traits
+EVENT_CUSTOMER_TYPES = {
+    # Spring Festival customers
+    'festival_goer': {
+        'names': ['Joy', 'Blossom', 'Petal', 'Spring', 'Flora'],
+        'tip_bonus': 1.2,  # 20% better tips
+        'patience_bonus': 1.1,  # 10% more patient
+        'quality_preference': CUSTOMER_QUALITY_MEDIUM,
+        'preferred_categories': [ORDER_CATEGORY_DESSERT, ORDER_CATEGORY_DRINK],
+        'preferred_recipes': ['blossom_tea', 'flower_salad', 'honey_cake'],
+        'dialogue_happy': "What a wonderful festival day!",
+        'dialogue_order': "I'd love something festive!",
+    },
+    'dragon_enthusiast': {
+        'names': ['Drake', 'Ember', 'Scale', 'Cinder', 'Fyre'],
+        'tip_bonus': 1.3,  # 30% better tips (big dragon fans!)
+        'patience_bonus': 1.2,  # Very patient, here for the dragons
+        'quality_preference': CUSTOMER_QUALITY_HIGH,
+        'preferred_categories': [ORDER_CATEGORY_MAIN, ORDER_CATEGORY_APPETIZER],
+        'preferred_recipes': ['spring_roll', 'dragon_delight'],
+        'dialogue_happy': "Your dragon is amazing!",
+        'dialogue_order': "Anything your dragon helped make!",
+    },
+
+    # Summer Feast customers
+    'merchant': {
+        'names': ['Barton', 'Gilda', 'Trade', 'Coin', 'Silver'],
+        'tip_bonus': 1.4,  # Very generous with coin
+        'patience_bonus': 0.9,  # Slightly impatient, busy with trade
+        'quality_preference': CUSTOMER_QUALITY_HIGH,
+        'preferred_categories': [ORDER_CATEGORY_MAIN],
+        'preferred_recipes': ['grilled_feast', 'moonberry_pie'],
+        'dialogue_happy': "Excellent! Worth every coin!",
+        'dialogue_order': "What's your finest dish?",
+    },
+    'traveling_chef': {
+        'names': ['Chef Marco', 'Chef Aria', 'Chef Yuki', 'Chef Rene'],
+        'tip_bonus': 1.1,  # Modest tips
+        'patience_bonus': 1.0,  # Normal patience
+        'quality_preference': CUSTOMER_QUALITY_HIGH,  # Very discerning
+        'preferred_categories': [ORDER_CATEGORY_APPETIZER, ORDER_CATEGORY_DESSERT],
+        'preferred_recipes': ['starlight_sorbet', 'summer_punch'],
+        'dialogue_happy': "Impressive technique! I must learn this!",
+        'dialogue_order': "Surprise me with your specialty!",
+    },
+
+    # Autumn Lantern Festival customers
+    'lantern_maker': {
+        'names': ['Glow', 'Lumina', 'Wicker', 'Amber', 'Flicker'],
+        'tip_bonus': 1.25,
+        'patience_bonus': 1.3,  # Very patient crafters
+        'quality_preference': CUSTOMER_QUALITY_MEDIUM,
+        'preferred_categories': [ORDER_CATEGORY_DRINK, ORDER_CATEGORY_DESSERT],
+        'preferred_recipes': ['lantern_cake', 'spiced_cider'],
+        'dialogue_happy': "This warms my heart like lantern light!",
+        'dialogue_order': "Something warm to fuel my craft!",
+    },
+    'night_owl': {
+        'names': ['Dusk', 'Twilight', 'Shadow', 'Moon', 'Star'],
+        'tip_bonus': 1.15,
+        'patience_bonus': 1.4,  # Very patient, no rush at night
+        'quality_preference': CUSTOMER_QUALITY_LOW,  # Easy to please
+        'preferred_categories': [ORDER_CATEGORY_DRINK, ORDER_CATEGORY_APPETIZER],
+        'preferred_recipes': ['spiced_cider', 'candied_nuts'],
+        'dialogue_happy': "Perfect for a quiet evening.",
+        'dialogue_order': "Just a little something for the night...",
+    },
+
+    # Winter Celebration customers
+    'gift_giver': {
+        'names': ['Holly', 'Frost', 'Jingle', 'Snow', 'Carol'],
+        'tip_bonus': 1.5,  # Very generous during holidays!
+        'patience_bonus': 1.2,
+        'quality_preference': CUSTOMER_QUALITY_MEDIUM,
+        'preferred_categories': [ORDER_CATEGORY_DESSERT, ORDER_CATEGORY_DRINK],
+        'preferred_recipes': ['gingerbread', 'frost_cocoa'],
+        'dialogue_happy': "This is the perfect gift for myself!",
+        'dialogue_order': "Something with holiday cheer!",
+    },
+    'caroler': {
+        'names': ['Melody', 'Harmony', 'Bell', 'Verse', 'Chorus'],
+        'tip_bonus': 1.2,
+        'patience_bonus': 1.1,
+        'quality_preference': CUSTOMER_QUALITY_LOW,  # Easy to please
+        'preferred_categories': [ORDER_CATEGORY_DRINK],
+        'preferred_recipes': ['mulled_wine', 'frost_cocoa', 'winter_stew'],
+        'dialogue_happy': "~This cafe is the best!~ *hums happily*",
+        'dialogue_order': "Something to warm our voices!",
+    },
+}
+
+# Map events to their special customer types
+EVENT_CUSTOMER_MAP = {
+    'spring_festival': ['festival_goer', 'dragon_enthusiast'],
+    'summer_feast': ['merchant', 'traveling_chef'],
+    'autumn_lantern': ['lantern_maker', 'night_owl'],
+    'winter_celebration': ['gift_giver', 'caroler'],
+}
 
 
 @dataclass
@@ -47,17 +151,48 @@ class Customer:
     """
 
     def __init__(self, customer_type: str = CUSTOMER_TYPE_REGULAR,
-                 name: str = None, quality_expectation: int = None):
+                 name: str = None, quality_expectation: int = None,
+                 event_type: str = None):
         """
         Initialize a customer.
 
         Args:
-            customer_type: REGULAR or STORY
+            customer_type: REGULAR, STORY, or EVENT
             name: Display name (generated if None for regulars)
             quality_expectation: Expected dish quality (randomized if None)
+            event_type: For EVENT customers, the specific event customer type
         """
         self.id = str(uuid4())[:8]
         self.customer_type = customer_type
+        self.event_type = event_type  # e.g., 'festival_goer', 'merchant'
+
+        # Event customer traits
+        self._tip_bonus = 1.0
+        self._patience_bonus = 1.0
+        self._preferred_categories = []
+        self._preferred_recipes = []
+        self._dialogue_happy = None
+        self._dialogue_order = None
+
+        # Load event customer traits if applicable
+        if customer_type == CUSTOMER_TYPE_EVENT and event_type:
+            event_data = EVENT_CUSTOMER_TYPES.get(event_type, {})
+            self._tip_bonus = event_data.get('tip_bonus', 1.0)
+            self._patience_bonus = event_data.get('patience_bonus', 1.0)
+            self._preferred_categories = event_data.get('preferred_categories', [])
+            self._preferred_recipes = event_data.get('preferred_recipes', [])
+            self._dialogue_happy = event_data.get('dialogue_happy')
+            self._dialogue_order = event_data.get('dialogue_order')
+
+            # Use event customer names if no name provided
+            if name is None:
+                names = event_data.get('names', [])
+                name = random.choice(names) if names else None
+
+            # Use event customer quality preference
+            if quality_expectation is None:
+                quality_expectation = event_data.get('quality_preference')
+
         self.name = name or self._generate_name()
 
         # Quality expectations
@@ -72,10 +207,11 @@ class Customer:
         else:
             self.quality_expectation = quality_expectation
 
-        # Patience
-        self.patience_max = CUSTOMER_PATIENCE_BASE + random.uniform(
+        # Patience (apply event customer patience bonus)
+        base_patience = CUSTOMER_PATIENCE_BASE + random.uniform(
             -CUSTOMER_PATIENCE_VARIATION, CUSTOMER_PATIENCE_VARIATION
         )
+        self.patience_max = base_patience * self._patience_bonus
         self.patience_remaining = self.patience_max
 
         # State
@@ -354,6 +490,10 @@ class Customer:
         if cafe_mgr.get_reputation_level() == REPUTATION_LEVEL_LEGENDARY:
             base_tip = int(base_tip * (1 + LEGENDARY_TIP_BONUS))
 
+        # Apply event customer tip bonus (Phase 4)
+        if self._tip_bonus != 1.0:
+            base_tip = int(base_tip * self._tip_bonus)
+
         return base_tip
 
     def _get_reputation_change(self) -> int:
@@ -445,6 +585,7 @@ class Customer:
         return {
             'id': self.id,
             'customer_type': self.customer_type,
+            'event_type': self.event_type,  # Phase 4
             'name': self.name,
             'quality_expectation': self.quality_expectation,
             'patience_max': self.patience_max,
@@ -455,6 +596,7 @@ class Customer:
             'time_eating': self._time_eating,
             'table_id': self.table_id,
             'seat_id': self.seat_id,
+            'tip_bonus': self._tip_bonus,  # Phase 4
             'order': {
                 'category': self._order.category,
                 'recipe_id': self._order.recipe_id,
@@ -469,7 +611,8 @@ class Customer:
         customer = cls(
             customer_type=data['customer_type'],
             name=data['name'],
-            quality_expectation=data['quality_expectation']
+            quality_expectation=data['quality_expectation'],
+            event_type=data.get('event_type')  # Phase 4
         )
         customer.id = data['id']
         customer.patience_max = data['patience_max']
@@ -480,6 +623,9 @@ class Customer:
         customer._time_eating = data['time_eating']
         customer.table_id = data.get('table_id')
         customer.seat_id = data.get('seat_id')
+        # Restore tip bonus (Phase 4 - needed for saved event customers)
+        if 'tip_bonus' in data:
+            customer._tip_bonus = data['tip_bonus']
 
         if data.get('order'):
             customer._order = Order(
@@ -513,7 +659,8 @@ class CustomerManager:
 
     def spawn_customer(self, reputation: int = 0) -> Customer:
         """
-        Spawn a new customer.
+        Spawn a new customer. During seasonal events, has a chance
+        to spawn special event customers.
 
         Args:
             reputation: Current cafe reputation (affects spawn rate)
@@ -521,7 +668,42 @@ class CustomerManager:
         Returns:
             The new customer
         """
+        # Check if event is active and maybe spawn event customer
+        from systems.events import get_event_manager
+        event_mgr = get_event_manager()
+        active_event = event_mgr.get_active_event()
+
+        if active_event and random.random() < 0.4:  # 40% chance during events
+            return self.spawn_event_customer(active_event.event_id)
+
         customer = Customer()
+        self._customers[customer.id] = customer
+        return customer
+
+    def spawn_event_customer(self, event_id: str) -> Customer:
+        """
+        Spawn a special event customer.
+
+        Args:
+            event_id: The ID of the active seasonal event
+
+        Returns:
+            An event customer with special traits
+        """
+        customer_types = EVENT_CUSTOMER_MAP.get(event_id, [])
+        if not customer_types:
+            # Fallback to regular customer
+            customer = Customer()
+            self._customers[customer.id] = customer
+            return customer
+
+        # Pick a random event customer type
+        event_type = random.choice(customer_types)
+
+        customer = Customer(
+            customer_type=CUSTOMER_TYPE_EVENT,
+            event_type=event_type
+        )
         self._customers[customer.id] = customer
         return customer
 
