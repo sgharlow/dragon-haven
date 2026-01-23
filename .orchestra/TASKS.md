@@ -1,7 +1,7 @@
 # Tasks
 
 > Last updated: 2026-01-21
-> Progress: 64/70 complete (Phase 1 done, Phase 2 done, Phase 3 done, Phase 4: 7/13)
+> Progress: 65/70 complete (Phase 1 done, Phase 2 done, Phase 3 done, Phase 4: 8/13)
 
 ## Ready
 - [ ] `066` Event Manager (seasonal event system)
@@ -11,11 +11,11 @@
 - [ ] `070` QoL Improvements (favorites, auto-sort, previews)
 
 ## In Progress
-- [ ] `065` Customization Screen (UI for equipping)
 
 ## Blocked
 
 ## Done (Phase 4 - Replayability)
+- [x] `065` Customization Screen (UI for equipping) ✓
 - [x] `064` Special Effects (3 effect types) ✓
 - [x] `063` Color Patterns (5 pattern types) ✓
 - [x] `062` Dragon Accessories (6 unlockable items) ✓
